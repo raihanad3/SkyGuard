@@ -9,16 +9,27 @@ import os
 # AISstream.io API Configuration
 # ============================================================
 # Daftar gratis di https://aisstream.io untuk mendapatkan API key
-AISSTREAM_API_KEY = os.environ.get("AISSTREAM_API_KEY", "YOUR_API_KEY_HERE")
+AISSTREAM_API_KEY = os.environ.get("AISSTREAM_API_KEY", "a6ee4b08fab1ea836ba530d140c35dd6d1139b4a")
 AISSTREAM_WS_URL = "wss://stream.aisstream.io/v0/stream"
 
 # ============================================================
 # Indonesia Maritime Boundaries (Bounding Boxes)
 # ============================================================
-# EEZ (Exclusive Economic Zone) - area terluas
+# Full Indonesian EEZ (Exclusive Economic Zone)
 INDONESIA_EEZ_BBOX = [
-    [[-14.0, 92.0], [8.0, 141.5]]
+    [[-14.0, 92.0], [8.0, 141.5]]  # Full Indonesian waters
 ]
+
+# Focus areas (uncomment untuk focus ke area tertentu):
+# INDONESIA_EEZ_BBOX = [
+#     [[1.0, 105.0], [7.0, 112.0]]  # Natuna Sea (high risk area)
+# ]
+# INDONESIA_EEZ_BBOX = [
+#     [[0.5, 98.0], [4.0, 104.0]]  # Malacca Strait
+# ]
+# INDONESIA_EEZ_BBOX = [
+#     [[-8.0, 106.0], [-4.0, 117.0]]  # Java Sea
+# ]
 
 # Zona Kritis - area yang sering terjadi pelanggaran
 CRITICAL_ZONES = {

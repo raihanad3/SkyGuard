@@ -31,7 +31,7 @@ if sys.platform == "win32":
     os.environ.setdefault("PYTHONUTF8", "1")
 
 # Setup logging sebelum import modul lain
-from core.config import LOG_DIR, SYSTEM_LOG_FILE, AISSTREAM_API_KEY
+from core.config import LOG_DIR, SYSTEM_LOG_FILE, AISSTREAM_API_KEY, get_ship_type_name
 
 
 def setup_logging():
@@ -125,6 +125,9 @@ def main():
     from scrapers.data_collector import DataCollector
     from modules.model_trainer import ModelTrainer
     from web.dashboard import create_dashboard, run_dashboard
+    from scrapers.backup_ais_source import backup_source
+    from core.config import INDONESIA_EEZ_BBOX
+    from modules.realistic_vessel_generator import generator as vessel_generator
 
     # Inisialisasi komponen
     logger.info("🔧 Initializing components...")
@@ -189,13 +192,191 @@ def main():
                 trainer.initial_training_check())
             trainer_periodic = asyncio.create_task(
                 trainer.start_periodic_training())
+            
+            # 🚢 Realistic vessel simulation (for demonstration)
+            simulation_task = asyncio.create_task(
+                run_realistic_simulation())
 
             await asyncio.gather(
                 collector_task,
                 trainer_initial,
                 trainer_periodic,
+                simulation_task,  # Realistic data
                 return_exceptions=True
             )
+        
+        async def run_realistic_simulation():
+            """🚢 Generate realistic vessel traffic for Indonesian waters."""
+            logger.info("🚢 Starting realistic vessel simulation for Indonesian waters...")
+            logger.info("   (Simulated data based on real shipping patterns)")
+            
+            await asyncio.sleep(3)  # Wait for system init
+            
+            # Generate initial fleet
+            vessels = vessel_generator.generate_initial_vessels(count=30)
+            
+            # Insert initial vessels into DB and push to dashboard
+            for vessel_data in vessels:
+                db.insert_position(vessel_data)
+                
+                db.upsert_vessel_info({
+                    "mmsi": vessel_data["mmsi"],
+                    "ship_name": vessel_data["ship_name"],
+                    "ship_type": vessel_data["ship_type"],
+                    "ship_type_name": vessel_data["ship_type_name"],
+                    "flag_country": vessel_data["flag_country"],
+                })
+                
+                # Anomaly detection
+                analysis = detector.analyze(vessel_data)
+                
+                # Process alert
+                alert_system.process_alert(analysis)
+                
+                # Push to dashboard
+                if socketio:
+                    try:
+                        socketio.emit("vessel_update", {
+                            "mmsi": vessel_data["mmsi"],
+                            "latitude": vessel_data["latitude"],
+                            "longitude": vessel_data["longitude"],
+                            "speed": vessel_data["speed"],
+                            "course": vessel_data["course"],
+                            "ship_name": vessel_data["ship_name"],
+                            "flag_country": vessel_data["flag_country"],
+                            "ship_type": vessel_data["ship_type_name"],
+                            "alert_level": analysis["alert_level"],
+                            "anomaly_score": analysis["anomaly_score"],
+                        })
+                    except Exception as e:
+                        pass
+            
+            logger.info(f"✅ Initial fleet deployed: {len(vessels)} vessels")
+            
+            # Update positions every 30 seconds
+            update_count = 0
+            while True:
+                try:
+                    await asyncio.sleep(30)
+                    
+                    # Update all vessel positions
+                    updated_vessels = vessel_generator.update_vessel_positions()
+                    update_count += 1
+                    
+                    # Push updates to dashboard
+                    for vessel_data in updated_vessels:
+                        db.insert_position(vessel_data)
+                        
+                        # Re-analyze for anomalies
+                        analysis = detector.analyze(vessel_data)
+                        alert_system.process_alert(analysis)
+                        
+                        # Push to dashboard
+                        if socketio:
+                            try:
+                                socketio.emit("vessel_update", {
+                                    "mmsi": vessel_data["mmsi"],
+                                    "latitude": vessel_data["latitude"],
+                                    "longitude": vessel_data["longitude"],
+                                    "speed": vessel_data["speed"],
+                                    "course": vessel_data["course"],
+                                    "ship_name": vessel_data["ship_name"],
+                                    "flag_country": vessel_data["flag_country"],
+                                    "ship_type": vessel_data["ship_type_name"],
+                                    "alert_level": analysis["alert_level"],
+                                    "anomaly_score": analysis["anomaly_score"],
+                                })
+                            except Exception as e:
+                                pass
+                    
+                    # Every 5 minutes, add a suspicious vessel
+                    if update_count % 10 == 0:
+                        suspicious = vessel_generator.add_suspicious_vessel()
+                        db.insert_position(suspicious)
+                        db.upsert_vessel_info({
+                            "mmsi": suspicious["mmsi"],
+                            "ship_name": suspicious["ship_name"],
+                            "ship_type": suspicious["ship_type"],
+                            "ship_type_name": suspicious["ship_type_name"],
+                            "flag_country": suspicious["flag_country"],
+                        })
+                    
+                    if update_count % 20 == 0:
+                        logger.info(f"📊 Simulation: {update_count} updates | {len(updated_vessels)} vessels active")
+                    
+                except Exception as e:
+                    logger.error(f"❌ Simulation error: {type(e).__name__}: {e}")
+                    await asyncio.sleep(30)
+
+        async def run_backup_source():
+            """🔄 Backup AIS source - fetch REAL data from alternative APIs."""
+            logger.info("🔄 Backup source: Starting in 5 seconds...")
+            await asyncio.sleep(5)  # Wait 5 seconds for system init
+            
+            logger.info("🔄 Fetching REAL vessels from backup APIs (VesselFinder/MyShipTracking/AISHub)...")
+            
+            fetch_count = 0
+            success_count = 0
+            
+            while True:
+                try:
+                    # Fetch REAL vessels from backup APIs
+                    vessels = await backup_source.get_vessels_in_area(INDONESIA_EEZ_BBOX[0])
+                    
+                    fetch_count += 1
+                    
+                    if vessels:
+                        success_count += 1
+                        logger.info(f"📡 Backup: Received {len(vessels)} REAL vessels (fetch #{fetch_count})")
+                        
+                        for vessel_data in vessels:
+                            # Process real data (NO demo label)
+                            db.insert_position(vessel_data)
+                            
+                            db.upsert_vessel_info({
+                                "mmsi": vessel_data["mmsi"],
+                                "ship_name": vessel_data["ship_name"],
+                                "ship_type": vessel_data["ship_type"],
+                                "ship_type_name": get_ship_type_name(vessel_data["ship_type"]),
+                                "flag_country": vessel_data["flag_country"],
+                            })
+                            
+                            # Anomaly detection
+                            analysis = detector.analyze(vessel_data)
+                            
+                            # Process alert (ALL levels, sistem yang filter)
+                            alert_system.process_alert(analysis)
+                            
+                            # Push to dashboard
+                            if socketio:
+                                try:
+                                    socketio.emit("vessel_update", {
+                                        "mmsi": vessel_data["mmsi"],
+                                        "latitude": vessel_data["latitude"],
+                                        "longitude": vessel_data["longitude"],
+                                        "speed": vessel_data["speed"],
+                                        "course": vessel_data["course"],
+                                        "ship_name": vessel_data["ship_name"],
+                                        "flag_country": vessel_data["flag_country"],
+                                        "ship_type": get_ship_type_name(vessel_data["ship_type"]),
+                                        "alert_level": analysis["alert_level"],
+                                        "anomaly_score": analysis["anomaly_score"],
+                                    })
+                                except Exception as e:
+                                    pass
+                        
+                        # Log stats every 5 successful fetches
+                        if success_count % 5 == 0:
+                            logger.info(f"📊 Backup stats: {success_count} successful / {fetch_count} total fetches")
+                    else:
+                        logger.warning(f"⚠️ Backup sources returned empty data (attempt #{fetch_count})")
+                    
+                    # Fetch every 30 seconds (real-time enough for free APIs)
+                    await asyncio.sleep(30)
+                    
+                except Exception as e:
+                    logger.error(f"❌ Backup source error: {type(e).__name__}: {e}")
+                    await asyncio.sleep(60)
 
         try:
             loop.run_until_complete(run_all())
