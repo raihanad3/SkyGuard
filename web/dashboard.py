@@ -49,8 +49,8 @@ def create_dashboard(db_manager):
 
     @app.route("/api/vessels")
     def api_vessels():
-        """API endpoint untuk kapal aktif."""
-        vessels = db_manager.get_active_vessels(minutes=30)
+        """API endpoint untuk kapal aktif (last 24 hours)."""
+        vessels = db_manager.get_active_vessels(minutes=1440)  # 24 hours
         return jsonify(vessels)
 
     @app.route("/api/alerts")
@@ -84,7 +84,7 @@ def create_dashboard(db_manager):
 
     @socketio.on("request_vessels")
     def handle_request_vessels():
-        vessels = db_manager.get_active_vessels(minutes=30)
+        vessels = db_manager.get_active_vessels(minutes=1440)  # 24 hours
         socketio.emit("vessels_update", vessels)
 
     return app, socketio

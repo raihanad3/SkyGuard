@@ -193,15 +193,14 @@ def main():
             trainer_periodic = asyncio.create_task(
                 trainer.start_periodic_training())
             
-            # 🚢 Realistic vessel simulation (for demonstration)
-            simulation_task = asyncio.create_task(
-                run_realistic_simulation())
+            # 🔄 Realistic simulation DISABLED - using real AIS data + historical data
+            # simulation_task = asyncio.create_task(run_realistic_simulation())
 
             await asyncio.gather(
                 collector_task,
                 trainer_initial,
                 trainer_periodic,
-                simulation_task,  # Realistic data
+                # simulation_task,  # DISABLED
                 return_exceptions=True
             )
         
