@@ -9,7 +9,7 @@ import json
 import threading
 from datetime import datetime, timedelta
 
-from config import DATABASE_PATH
+from core.config import DATABASE_PATH
 
 
 class DatabaseManager:

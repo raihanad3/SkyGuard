@@ -7,7 +7,7 @@ import math
 from datetime import datetime, timedelta, timezone
 from geopy.distance import geodesic
 
-from config import (
+from core.config import (
     ANOMALY_CONFIG, HIGH_RISK_FLAGS, INDONESIA_FLAG_CODES,
     CRITICAL_ZONES, INDONESIA_EEZ_BBOX, get_ship_type_name
 )
@@ -20,6 +20,8 @@ class FeatureEngine:
         self.db = db_manager
         # Cache posisi terakhir per kapal untuk kalkulasi delta
         self.vessel_cache = {}
+        # NEW: Dark Vessel Tracking - track entry to Indonesia
+        self.vessel_entry_tracker = {}
 
     def extract_features(self, vessel_data: dict) -> dict:
         """
@@ -74,6 +76,15 @@ class FeatureEngine:
 
         # 10. Proximity to territorial boundary
         features["proximity_score"] = self._calc_proximity_score(lat, lon)
+
+        # 11. NEW: Dark Vessel Detection - Entry then disappear
+        dark_vessel_info = self._detect_dark_vessel_pattern(
+            mmsi, lat, lon, flag, timestamp
+        )
+        features["dark_vessel_score"] = dark_vessel_info["score"]
+        features["entry_timestamp"] = dark_vessel_info["entry_timestamp"]
+        features["time_since_entry_minutes"] = dark_vessel_info["time_since_entry"]
+        features["is_quick_disappearance"] = dark_vessel_info["is_quick_disappearance"]
 
         # Update cache
         self._update_cache(mmsi, lat, lon, speed, course, timestamp)
@@ -333,6 +344,140 @@ class FeatureEngine:
         except Exception:
             return 0.0
 
+    def _detect_dark_vessel_pattern(self, mmsi: str, lat: float, lon: float,
+                                     flag: str, timestamp: str) -> dict:
+        """
+        🆕 DARK VESSEL DETECTION
+        Mendeteksi kapal yang MASUK Indonesia kemudian HILANG (AIS disabled).
+        Ini adalah threat paling tinggi untuk illegal fishing.
+        
+        Returns:
+            Dict dengan score, entry_timestamp, time_since_entry, is_quick_disappearance
+        """
+        result = {
+            "score": 0.0,
+            "entry_timestamp": None,
+            "time_since_entry": 0,
+            "is_quick_disappearance": False
+        }
+        
+        # Cek apakah ini kapal asing
+        if flag in INDONESIA_FLAG_CODES:
+            return result  # Kapal lokal, tidak perlu tracking ketat
+        
+        try:
+            current_time = datetime.fromisoformat(timestamp.replace("Z", "+00:00"))
+            
+            # Cek apakah kapal ini sudah pernah tercatat masuk Indonesia
+            if mmsi not in self.vessel_entry_tracker:
+                # FIRST TIME DETECTED in Indonesia
+                self.vessel_entry_tracker[mmsi] = {
+                    "entry_timestamp": timestamp,
+                    "entry_position": (lat, lon),
+                    "flag": flag,
+                    "last_seen": timestamp,
+                    "appearance_count": 1,
+                    "disappeared": False
+                }
+                result["entry_timestamp"] = timestamp
+                result["time_since_entry"] = 0
+                result["score"] = 0.2  # Baru masuk = sedikit perhatian
+                
+            else:
+                # ALREADY TRACKED - Update tracking
+                tracker = self.vessel_entry_tracker[mmsi]
+                tracker["last_seen"] = timestamp
+                tracker["appearance_count"] += 1
+                tracker["disappeared"] = False  # Vessel re-appeared
+                
+                # Hitung berapa lama sejak pertama masuk Indonesia
+                entry_time = datetime.fromisoformat(
+                    tracker["entry_timestamp"].replace("Z", "+00:00")
+                )
+                time_since_entry = (current_time - entry_time).total_seconds() / 60
+                
+                result["entry_timestamp"] = tracker["entry_timestamp"]
+                result["time_since_entry"] = time_since_entry
+                
+                # SCORING: Kapal yang baru masuk = lebih suspicious
+                if time_since_entry < 30:  # Baru masuk < 30 menit
+                    result["score"] = 0.6
+                elif time_since_entry < 60:  # < 1 jam
+                    result["score"] = 0.4
+                elif time_since_entry < 180:  # < 3 jam
+                    result["score"] = 0.3
+                else:
+                    result["score"] = 0.1  # Sudah lama, mungkin legal
+        
+        except (ValueError, TypeError) as e:
+            pass
+        
+        return result
+
+    def check_for_disappeared_vessels(self, current_timestamp: str, 
+                                       gap_threshold_minutes: float = 15) -> list:
+        """
+        🆕 CHECK DISAPPEARED VESSELS
+        Scan semua kapal yang sedang di-track dan identifikasi yang "menghilang".
+        Dipanggil secara periodik oleh system.
+        
+        Returns:
+            List of dict dengan info kapal yang menghilang (dark vessels)
+        """
+        disappeared_vessels = []
+        
+        try:
+            current_time = datetime.fromisoformat(
+                current_timestamp.replace("Z", "+00:00")
+            )
+            
+            for mmsi, tracker in self.vessel_entry_tracker.items():
+                if tracker.get("disappeared", False):
+                    continue  # Already marked as disappeared
+                
+                last_seen_str = tracker.get("last_seen")
+                if not last_seen_str:
+                    continue
+                
+                last_seen = datetime.fromisoformat(
+                    last_seen_str.replace("Z", "+00:00")
+                )
+                
+                gap_minutes = (current_time - last_seen).total_seconds() / 60
+                
+                # DARK VESSEL DETECTED!
+                if gap_minutes > gap_threshold_minutes:
+                    entry_time = datetime.fromisoformat(
+                        tracker["entry_timestamp"].replace("Z", "+00:00")
+                    )
+                    time_since_entry = (last_seen - entry_time).total_seconds() / 60
+                    
+                    # Quick disappearance = VERY SUSPICIOUS
+                    is_quick = time_since_entry < 60  # Hilang < 1 jam setelah masuk
+                    
+                    threat_level = "HIGH" if is_quick else "MEDIUM"
+                    
+                    disappeared_vessels.append({
+                        "mmsi": mmsi,
+                        "flag": tracker.get("flag", "UNKNOWN"),
+                        "entry_timestamp": tracker["entry_timestamp"],
+                        "last_seen": last_seen_str,
+                        "entry_position": tracker.get("entry_position"),
+                        "gap_minutes": gap_minutes,
+                        "time_since_entry_minutes": time_since_entry,
+                        "is_quick_disappearance": is_quick,
+                        "threat_level": threat_level,
+                        "reason": f"Kapal asing masuk Indonesia kemudian hilang setelah {time_since_entry:.0f} menit"
+                    })
+                    
+                    # Mark as disappeared
+                    tracker["disappeared"] = True
+                    
+        except Exception as e:
+            pass
+        
+        return disappeared_vessels
+
     def _is_in_bbox(self, lat: float, lon: float, bbox: list) -> bool:
         """Cek apakah koordinat berada dalam bounding box."""
         min_lat, min_lon = bbox[0]
@@ -382,6 +527,7 @@ class FeatureEngine:
             "speed_variance",
             "is_foreign",
             "proximity_score",
+            "dark_vessel_score",  # NEW
         ]
 
         return [features.get(name, 0.0) for name in feature_names]
@@ -400,4 +546,5 @@ class FeatureEngine:
             "speed_variance",
             "is_foreign",
             "proximity_score",
+            "dark_vessel_score",  # NEW
         ]

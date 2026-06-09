@@ -10,7 +10,7 @@ import logging
 import websockets
 from datetime import datetime
 
-from config import (
+from core.config import (
     AISSTREAM_API_KEY, AISSTREAM_WS_URL,
     INDONESIA_EEZ_BBOX, get_ship_type_name
 )
@@ -36,9 +36,11 @@ class DataCollector:
             "messages_received": 0,
             "vessels_tracked": set(),
             "alerts_generated": 0,
+            "dark_vessels_detected": 0,  # NEW
             "connection_time": None,
             "last_message_time": None
         }
+        self.last_dark_vessel_check = datetime.utcnow()
 
     async def start_streaming(self):
         """Mulai streaming data AIS dari AISstream.io."""
@@ -110,11 +112,18 @@ class DataCollector:
         # Log progress setiap 100 pesan
         if self.stats["messages_received"] % 100 == 0:
             logger.info(
-                "📊 Stats: %d messages | %d vessels tracked | %d alerts",
+                "📊 Stats: %d messages | %d vessels tracked | %d alerts | %d dark vessels",
                 self.stats["messages_received"],
                 len(self.stats["vessels_tracked"]),
-                self.stats["alerts_generated"]
+                self.stats["alerts_generated"],
+                self.stats["dark_vessels_detected"]
             )
+
+        # 🆕 Periodic Dark Vessel Check (setiap 3 menit untuk lebih responsif)
+        now = datetime.utcnow()
+        if (now - self.last_dark_vessel_check).total_seconds() > 180:  # 180 detik = 3 menit
+            await self._check_for_dark_vessels()
+            self.last_dark_vessel_check = now
 
     async def _handle_position_report(self, message: dict, meta: dict):
         """Process position report message."""
@@ -233,6 +242,78 @@ class DataCollector:
 
         self.db.upsert_vessel_info(vessel_info)
 
+    async def _check_for_dark_vessels(self):
+        """
+        🆕 DARK VESSEL SCANNER
+        Periodik scan untuk detect kapal yang hilang setelah masuk Indonesia.
+        """
+        try:
+            current_timestamp = datetime.utcnow().isoformat()
+            
+            # Get feature engine from detector
+            feature_engine = self.detector.feature_engine
+            
+            # Check for disappeared vessels
+            disappeared = feature_engine.check_for_disappeared_vessels(
+                current_timestamp,
+                gap_threshold_minutes=10  # 10 menit tidak ada sinyal = hilang (lebih sensitif)
+            )
+            
+            if disappeared:
+                logger.warning(
+                    "🚨 DARK VESSEL ALERT: %d kapal hilang setelah masuk Indonesia!",
+                    len(disappeared)
+                )
+                
+                for vessel in disappeared:
+                    self.stats["dark_vessels_detected"] += 1
+                    
+                    # Create high priority alert
+                    alert_data = {
+                        "mmsi": vessel["mmsi"],
+                        "anomaly_score": 0.95,  # Very high score
+                        "alert_level": vessel["threat_level"],
+                        "reasons": [vessel["reason"]],
+                        "features": {
+                            "dark_vessel_score": 0.9,
+                            "is_quick_disappearance": vessel["is_quick_disappearance"],
+                            "time_since_entry_minutes": vessel["time_since_entry_minutes"],
+                            "gap_minutes": vessel["gap_minutes"]
+                        },
+                        "flag_country": vessel["flag"],
+                        "timestamp": current_timestamp,
+                        "entry_timestamp": vessel["entry_timestamp"],
+                        "last_seen": vessel["last_seen"]
+                    }
+                    
+                    # Process alert
+                    self.alert_system.process_alert(alert_data)
+                    
+                    # Push to dashboard
+                    if self.socketio:
+                        try:
+                            self.socketio.emit("dark_vessel_alert", {
+                                "mmsi": vessel["mmsi"],
+                                "flag": vessel["flag"],
+                                "threat_level": vessel["threat_level"],
+                                "reason": vessel["reason"],
+                                "entry_time": vessel["entry_timestamp"],
+                                "last_seen": vessel["last_seen"],
+                                "gap_minutes": vessel["gap_minutes"],
+                                "is_quick_disappearance": vessel["is_quick_disappearance"]
+                            })
+                        except Exception as e:
+                            logger.debug("SocketIO emit error: %s", e)
+                    
+                    logger.warning(
+                        "  🎯 MMSI: %s | Flag: %s | Gap: %.0f min | Threat: %s",
+                        vessel["mmsi"], vessel["flag"], 
+                        vessel["gap_minutes"], vessel["threat_level"]
+                    )
+                    
+        except Exception as e:
+            logger.error("Error in dark vessel check: %s", e)
+
     def stop(self):
         """Stop streaming."""
         self.is_running = False
@@ -244,6 +325,7 @@ class DataCollector:
             "messages_received": self.stats["messages_received"],
             "vessels_tracked": len(self.stats["vessels_tracked"]),
             "alerts_generated": self.stats["alerts_generated"],
+            "dark_vessels_detected": self.stats["dark_vessels_detected"],  # NEW
             "connection_time": self.stats["connection_time"],
             "last_message_time": self.stats["last_message_time"]
         }

@@ -7,7 +7,7 @@ import asyncio
 import logging
 from datetime import datetime
 
-from config import ANOMALY_CONFIG
+from core.config import ANOMALY_CONFIG
 
 logger = logging.getLogger("vessel_anomaly")
 

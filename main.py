@@ -31,7 +31,7 @@ if sys.platform == "win32":
     os.environ.setdefault("PYTHONUTF8", "1")
 
 # Setup logging sebelum import modul lain
-from config import LOG_DIR, SYSTEM_LOG_FILE, AISSTREAM_API_KEY
+from core.config import LOG_DIR, SYSTEM_LOG_FILE, AISSTREAM_API_KEY
 
 
 def setup_logging():
@@ -118,13 +118,13 @@ def main():
         sys.exit(1)
 
     # Import komponen (setelah logging setup)
-    from database import DatabaseManager
-    from feature_engine import FeatureEngine
-    from anomaly_model import AnomalyDetector
-    from alert_system import AlertSystem
-    from data_collector import DataCollector
-    from model_trainer import ModelTrainer
-    from dashboard import create_dashboard, run_dashboard
+    from core.database import DatabaseManager
+    from modules.feature_engine import FeatureEngine
+    from modules.anomaly_model import AnomalyDetector
+    from modules.alert_system import AlertSystem
+    from scrapers.data_collector import DataCollector
+    from modules.model_trainer import ModelTrainer
+    from web.dashboard import create_dashboard, run_dashboard
 
     # Inisialisasi komponen
     logger.info("🔧 Initializing components...")

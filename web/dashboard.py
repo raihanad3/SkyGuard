@@ -4,10 +4,11 @@ untuk monitoring kapal secara real-time.
 """
 
 import logging
+import os
 from flask import Flask, render_template, jsonify
 from flask_socketio import SocketIO
 
-from config import DASHBOARD_HOST, DASHBOARD_PORT
+from core.config import DASHBOARD_HOST, DASHBOARD_PORT
 
 logger = logging.getLogger("vessel_anomaly")
 
@@ -19,7 +20,14 @@ def create_dashboard(db_manager):
     Returns:
         tuple: (app, socketio)
     """
-    app = Flask(__name__)
+    # Get the correct template/static folder paths
+    base_dir = os.path.dirname(os.path.abspath(__file__))
+    template_folder = os.path.join(base_dir, 'templates')
+    static_folder = os.path.join(base_dir, 'static')
+    
+    app = Flask(__name__, 
+                template_folder=template_folder,
+                static_folder=static_folder)
     app.config["SECRET_KEY"] = "vessel-anomaly-detection-2026"
 
     socketio = SocketIO(app, cors_allowed_origins="*", async_mode="eventlet")

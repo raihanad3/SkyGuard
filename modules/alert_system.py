@@ -9,7 +9,7 @@ import json
 from datetime import datetime
 from colorama import Fore, Back, Style, init as colorama_init
 
-from config import (
+from core.config import (
     LOG_DIR, LOG_FILE, ALERT_COOLDOWN_MINUTES,
     get_flag_emoji
 )

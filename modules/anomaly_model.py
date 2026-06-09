@@ -11,11 +11,11 @@ from datetime import datetime
 from sklearn.ensemble import IsolationForest
 import joblib
 
-from config import (
+from core.config import (
     ANOMALY_CONFIG, ALERT_THRESHOLDS, INDONESIA_FLAG_CODES,
     MODEL_PATH, MODEL_DIR, get_ship_type_name
 )
-from feature_engine import FeatureEngine
+from modules.feature_engine import FeatureEngine
 
 logger = logging.getLogger("vessel_anomaly")
 
@@ -174,6 +174,25 @@ class AnomalyDetector:
             reasons.append(
                 f"Negara bendera berisiko tinggi: {flag}")
 
+        # Rule 10: 🆕 DARK VESSEL - Kapal masuk Indonesia lalu hilang
+        dark_vessel_score = features.get("dark_vessel_score", 0)
+        time_since_entry = features.get("time_since_entry_minutes", 0)
+        is_quick_disappearance = features.get("is_quick_disappearance", False)
+        
+        if dark_vessel_score > 0.5:
+            # Kapal baru masuk < 1 jam = SANGAT SUSPICIOUS
+            if time_since_entry > 0 and time_since_entry < 60:
+                score += 0.35
+                reasons.append(
+                    f"⚠️ DARK VESSEL THREAT: Kapal asing masuk Indonesia "
+                    f"{time_since_entry:.0f} menit lalu, pola mencurigakan terdeteksi"
+                )
+            elif time_since_entry > 0:
+                score += 0.2
+                reasons.append(
+                    f"Kapal asing baru masuk Indonesia ({time_since_entry:.0f} menit lalu)"
+                )
+
         # Clamp score 0-1
         score = min(1.0, score)
 
@@ -226,6 +245,11 @@ class AnomalyDetector:
         if (features.get("loitering_score", 0) > 0.5 and
             features.get("flag_risk_score", 0) > 0.5):
             bonus += 0.1
+
+        # 🆕 Dark Vessel + AIS Gap = EXTREME THREAT
+        if (features.get("dark_vessel_score", 0) > 0.5 and
+            features.get("ais_gap_score", 0) > 0.5):
+            bonus += 0.15  # Massive bonus untuk kombinasi ini
 
         return min(1.0, base_score + bonus)
 
