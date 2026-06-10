@@ -19,11 +19,11 @@ from dateutil import parser as date_parser  # For date filtering
 USE_REDIS = False  # Set True if you have Redis running
 
 if USE_REDIS:
-    print("[-] Dark Vessel Detection: Connecting to Redis Message Broker...")
+    print("[-] Dark Flight Detection: Connecting to Redis Message Broker...")
     try:
         r = redis.Redis(host='localhost', port=6379, decode_responses=True)
         r.ping()
-        print("[-] Redis Connection: ONLINE (Maritime Intelligence Network Active)")
+        print("[-] Redis Connection: ONLINE (Aviation Intelligence Network Active)")
     except Exception as e:
         print(f"[!] Redis Connection Failed: {e}")
         print("[-] Continuing without Redis (CSV-only mode)")
@@ -41,7 +41,9 @@ sentiment_pipeline = pipeline(
     model="cardiffnlp/twitter-roberta-base-sentiment-latest"
 )
 
-CSV_FILE = 'aviation_intelligence.csv'
+CSV_FILE = 'news/aviation_intelligence.csv'
+if not os.path.exists('news'):
+    os.makedirs('news')
 if not os.path.exists(CSV_FILE):
     with open(CSV_FILE, mode='w', newline='', encoding='utf-8') as f:
         writer = csv.writer(f)
@@ -51,15 +53,15 @@ if not os.path.exists(CSV_FILE):
         ])
 
 # =====================================================================
-# 3. DARK VESSEL DETECTION - MULTI-SOURCE CONFIGURATION
+# 3. DARK FLIGHT DETECTION - MULTI-SOURCE CONFIGURATION
 # =====================================================================
 # API CREDENTIALS (Optional - most sources don't need keys)
 NEWS_API_KEY = "76f5acedff3b4b3981ddfcea1c8f2a7c"  # Already have this
-GLOBAL_FISHING_WATCH_TOKEN = "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6ImtpZEtleSJ9.eyJkYXRhIjp7Im5hbWUiOiJEYXJrIFZlc3NlbCBJbnRlbGxpZ2VuY2UgU3lzdGVtIiwidXNlcklkIjo2MzMzNywiYXBwbGljYXRpb25OYW1lIjoiRGFyayBWZXNzZWwgSW50ZWxsaWdlbmNlIFN5c3RlbSIsImlkIjoxMTIxNiwidHlwZSI6InVzZXItYXBwbGljYXRpb24ifSwiaWF0IjoxNzgwNDU0NTQ1LCJleHAiOjIwOTU4MTQ1NDUsImF1ZCI6ImdmdyIsImlzcyI6ImdmdyJ9.UJZpgBE4AxCZVEmMBsuasOMGhLGjF1Ow5CKTppM8vF4hRvLfuefNtwNU5hqf2qkiQSxhGeLgof1M4V8m1XBeJEQ3fyq1dlGanRJzhb0be9I9ZYCShJag83Z7O9e_yUCgdciMzoPnHKfWG9EOyLKB_iuaWZHzhophl0W_GS9ouobXAiSblyXmwReb4-lgi3n6Ak56a-QuBEw9OjkfgxMa4BurOtttLR0LBOHQkt2wtQK95Xs1xNBItW4CTacmbg5cgyiKb7X9Vfw7bV1Dqk7FlLqJsk3P4bWPsmudKN1z5Z1VjaWO5teGwVl5s6EUGfHnKzrOz659i1r_TJ4JqR8O6SL0JgIbiTVxeBSxMGoJXXCkPEYq5p07ikCrd92SW-81o4bBY8a3UbUFQ8i3qeCEBTK4kSwbYGf8uJxNKyQlqOybz-KIeqGpWxvHyiMQ6dMmwUBOXENlK2jvjbKXFh_EB6rzMfOky4ra96bv-ScguKpb1MA4Sk2wPbh61k9HbfxI"
 
-# TIME RANGE - Only 2026 data for relevance
-START_DATE = "2026-05-02"  # NewsAPI Free tier limit (1 month back)
-END_DATE = "2026-06-03"    # Today
+# TIME RANGE - Only recent data
+TODAY = datetime.now()
+START_DATE = (TODAY - timedelta(days=7)).strftime("%Y-%m-%d")  # Last 7 days only
+END_DATE = TODAY.strftime("%Y-%m-%d")
 
 # AVIATION KEYWORDS - Indonesian Airspace Intelligence
 AVIATION_KEYWORDS = (
@@ -98,6 +100,9 @@ AVIATION_NEWS_RSS = [
     "https://www.flightglobal.com/rss/",
     "https://www.aviationtoday.com/feed/",
 ]
+
+# Keep RSS list defined
+MARITIME_NEWS_RSS = AVIATION_NEWS_RSS  # Alias for compatibility
 
 # =====================================================================
 # 4. INDONESIAN AIRSPACE ZONES - COORDINATES DATABASE
@@ -180,9 +185,9 @@ def extract_flight_info(text):
     return ", ".join(flight_terms) if flight_terms else "Unspecified Aircraft"
 
 def calculate_threat_level(sentiment, keywords_found):
-    """Calculate threat level based on sentiment and keywords"""
-    high_risk_keywords = ["illegal", "smuggling", "trafficking", "piracy", "violation", "seized"]
-    medium_risk_keywords = ["inspection", "patrol", "suspicious", "unidentified", "dark"]
+    """Calculate threat level based on sentiment and keywords (AVIATION)"""
+    high_risk_keywords = ["airspace violation", "hijack", "smuggling", "unauthorized", "7500", "intercept"]
+    medium_risk_keywords = ["suspicious", "unidentified", "patrol", "transponder off", "emergency"]
     
     high_count = sum(1 for kw in high_risk_keywords if kw in keywords_found.lower())
     medium_count = sum(1 for kw in medium_risk_keywords if kw in keywords_found.lower())
@@ -224,20 +229,22 @@ async def scrape_google_news_rss():
                     except:
                         pass  # If parsing fails, keep the data
                     
-                    # Categorize
+                    # Categorize (AVIATION CATEGORIES)
                     title_lower = title.lower()
                     category = "UNKNOWN"
                     
-                    if any(x in title_lower for x in ["illegal", "ilegal", "pencurian ikan", "iuu"]):
-                        category = "ILLEGAL_FISHING"
-                    elif any(x in title_lower for x in ["tangkap", "ditangkap", "sita", "amankan"]):
-                        category = "ENFORCEMENT"
-                    elif any(x in title_lower for x in ["china", "vietnam", "asing"]):
-                        category = "TERRITORIAL_VIOLATION"
-                    elif any(x in title_lower for x in ["tenggelam", "ledak", "bakar"]):
-                        category = "ENFORCEMENT"
-                    elif any(x in title_lower for x in ["patroli", "bakamla", "tni al"]):
-                        category = "ENFORCEMENT"
+                    if any(x in title_lower for x in ["airspace violation", "pelanggaran wilayah udara", "unauthorized flight"]):
+                        category = "AIRSPACE_VIOLATION"
+                    elif any(x in title_lower for x in ["intercept", "intersepsi", "tni au", "scramble"]):
+                        category = "AIR_DEFENSE"
+                    elif any(x in title_lower for x in ["suspicious", "unidentified", "dark flight", "transponder off"]):
+                        category = "SUSPICIOUS_FLIGHT"
+                    elif any(x in title_lower for x in ["smuggling", "trafficking", "illegal cargo", "narkoba"]):
+                        category = "AIR_SMUGGLING"
+                    elif any(x in title_lower for x in ["emergency", "distress", "7700", "hijack", "7500"]):
+                        category = "EMERGENCY"
+                    elif any(x in title_lower for x in ["border", "patrol", "surveillance", "monitoring"]):
+                        category = "BORDER_PATROL"
                     
                     if category == "UNKNOWN":
                         continue
@@ -249,7 +256,7 @@ async def scrape_google_news_rss():
                     
                     # Extract intelligence
                     location, coordinates = extract_location_and_coordinates(title)
-                    vessel_info = extract_vessel_info(title)
+                    flight_info = extract_flight_info(title)
                     threat_level = calculate_threat_level(sentiment, title)
                     
                     article_data = {
@@ -258,7 +265,7 @@ async def scrape_google_news_rss():
                         "source": f"GoogleNews_{source[:20]}",
                         "text": title.strip().replace('\n', ' '),
                         "location": location,
-                        "vessel_info": vessel_info,
+                        "flight_info": flight_info,
                         "threat_level": threat_level,
                         "confidence": f"{confidence:.4f}",
                         "coordinates": coordinates
@@ -364,16 +371,16 @@ async def scrape_global_fishing_watch():
     
     return fishing_data
 
-async def scrape_maritime_news_rss():
-    """Scrape international maritime news from RSS feeds (FREE)"""
+async def scrape_aviation_news_rss():
+    """Scrape international aviation news from RSS feeds (FREE)"""
     articles_data = []
     
     try:
-        for rss_url in MARITIME_NEWS_RSS:
+        for rss_url in AVIATION_NEWS_RSS:
             try:
-                feed = await asyncio.to_thread(lambda: feedparser.parse(rss_url))
+                feed = await asyncio.to_thread(lambda url=rss_url: feedparser.parse(url))
                 
-                for entry in feed.entries[:5]:  # Limit per feed
+                for entry in feed.entries[:10]:  # Limit per feed
                     title = entry.get("title", "")
                     link = entry.get("link", "")
                     published = entry.get("published", datetime.now().isoformat())
@@ -381,27 +388,22 @@ async def scrape_maritime_news_rss():
                     if not title:
                         continue
                     
-                    # FILTER: Only 2026 data
-                    try:
-                        pub_date = date_parser.parse(published)
-                        if pub_date.year < 2026:
-                            continue  # Skip data before 2026
-                    except:
-                        pass  # If parsing fails, keep the data
-                    
-                    # Only include if related to Indonesia or illegal fishing
+                    # Only include if related to Indonesia, Asia, or general aviation incidents
                     title_lower = title.lower()
-                    if not any(x in title_lower for x in ["indonesia", "southeast asia", "illegal fishing", "piracy", "south china sea"]):
+                    if not any(x in title_lower for x in ["indonesia", "southeast asia", "asia", "airspace", "violation", "intercept", "emergency"]):
                         continue
                     
-                    # Categorize
+                    # Categorize (AVIATION CATEGORIES)
                     category = "UNKNOWN"
-                    if any(x in title_lower for x in ["illegal", "iuu", "piracy"]):
-                        category = "ILLEGAL_FISHING"
-                    elif any(x in title_lower for x in ["enforcement", "arrest", "seized"]):
-                        category = "ENFORCEMENT"
-                    elif any(x in title_lower for x in ["territorial", "eez", "dispute"]):
-                        category = "TERRITORIAL_VIOLATION"
+                    
+                    if any(x in title_lower for x in ["airspace violation", "unauthorized", "intercept"]):
+                        category = "AIRSPACE_VIOLATION"
+                    elif any(x in title_lower for x in ["intercept", "fighter", "military", "scramble"]):
+                        category = "AIR_DEFENSE"
+                    elif any(x in title_lower for x in ["emergency", "distress", "mayday"]):
+                        category = "EMERGENCY"
+                    elif any(x in title_lower for x in ["border", "patrol"]):
+                        category = "BORDER_PATROL"
                     
                     if category == "UNKNOWN":
                         continue
@@ -413,16 +415,16 @@ async def scrape_maritime_news_rss():
                     
                     # Extract intelligence
                     location, coordinates = extract_location_and_coordinates(title)
-                    vessel_info = extract_vessel_info(title)
+                    flight_info = extract_flight_info(title)
                     threat_level = calculate_threat_level(sentiment, title)
                     
                     article_data = {
                         "timestamp": published,
                         "category": category,
-                        "source": "MaritimeNews",
+                        "source": "AviationNews",
                         "text": title.strip().replace('\n', ' '),
                         "location": location,
-                        "vessel_info": vessel_info,
+                        "flight_info": flight_info,
                         "threat_level": threat_level,
                         "confidence": f"{confidence:.4f}",
                         "coordinates": coordinates
@@ -434,10 +436,10 @@ async def scrape_maritime_news_rss():
                 print(f"[!] Error parsing RSS: {e}")
                 continue
         
-        print(f"[-] Maritime News RSS: Collected {len(articles_data)} international reports (2026 only)")
+        print(f"[-] Aviation News RSS: Collected {len(articles_data)} international reports")
         
     except Exception as e:
-        print(f"[!] Error scraping Maritime News: {e}")
+        print(f"[!] Error scraping Aviation News: {e}")
     
     return articles_data
 
@@ -502,7 +504,7 @@ async def scrape_weather_data():
 # 7. ORIGINAL NEWS API SCRAPER (Keep this)
 # =====================================================================
 async def scrape_maritime_news():
-    """Scrape maritime crime and illegal fishing news"""
+    """Scrape aviation news from NewsAPI"""
     seen_articles = set()
     articles_data = []
     
@@ -510,7 +512,7 @@ async def scrape_maritime_news():
         response = await asyncio.to_thread(lambda: requests.get(NEWS_API_URL, timeout=30).json())
         
         if response.get("status") != "ok":
-            print(f"[!] News API Warning: {response.get('message', 'Unknown Error')}")
+            # Silently skip errors - NewsAPI free tier has limitations
             return articles_data
             
         articles = response.get("articles", [])
@@ -519,46 +521,37 @@ async def scrape_maritime_news():
             url = article.get("url")
             title = article.get("title")
             description = article.get("description", "")
-            source_name = article.get("source", {}).get("name", "Maritime News")
+            source_name = article.get("source", {}).get("name", "News")
             published_at = article.get("publishedAt")
             
             if url not in seen_articles and title:
                 seen_articles.add(url)
                 
-                # FILTER: Only 2026 data
-                try:
-                    pub_date = date_parser.parse(published_at)
-                    if pub_date.year < 2026:
-                        continue  # Skip data before 2026
-                except:
-                    pass  # If parsing fails, keep the data
-                
                 full_content = f"{title}. {description}"
                 low_text = full_content.lower()
                 
-                # STRICT MARITIME FILTER - Only maritime-related news
+                # AVIATION FILTER
                 if not any(x in low_text for x in [
-                    "vessel", "ship", "boat", "fishing", "maritime", "naval", 
-                    "coast guard", "ais", "transponder", "trawler", "tanker", "fleet"
+                    "aircraft", "flight", "airspace", "aviation", "airplane", 
+                    "pilot", "airport", "air force", "transponder"
                 ]):
                     continue
                 
-                # Categorize incident type
+                # Categorize (AVIATION CATEGORIES)
                 category = "UNKNOWN"
-                if any(x in low_text for x in ["illegal fishing", "iuu", "overfishing"]):
-                    category = "ILLEGAL_FISHING"
+                
+                if any(x in low_text for x in ["airspace violation", "unauthorized flight"]):
+                    category = "AIRSPACE_VIOLATION"
+                elif any(x in low_text for x in ["intercept", "fighter", "scramble"]):
+                    category = "AIR_DEFENSE"
                 elif any(x in low_text for x in ["smuggling", "trafficking", "contraband"]):
-                    category = "SMUGGLING"
-                elif any(x in low_text for x in ["piracy", "hijack", "attack"]):
-                    category = "PIRACY"
-                elif any(x in low_text for x in ["ais", "transponder", "dark vessel", "ghost"]):
-                    category = "AIS_ANOMALY"
-                elif any(x in low_text for x in ["patrol", "coast guard", "inspection"]):
-                    category = "ENFORCEMENT"
-                elif any(x in low_text for x in ["eez", "territorial", "violation", "boundary"]):
-                    category = "TERRITORIAL_VIOLATION"
-                elif any(x in low_text for x in ["marine protected", "conservation", "sanctuary"]):
-                    category = "CONSERVATION_ISSUE"
+                    category = "AIR_SMUGGLING"
+                elif any(x in low_text for x in ["suspicious", "unidentified", "transponder off"]):
+                    category = "SUSPICIOUS_FLIGHT"
+                elif any(x in low_text for x in ["emergency", "distress", "7700", "hijack", "7500"]):
+                    category = "EMERGENCY"
+                elif any(x in low_text for x in ["patrol", "surveillance", "border"]):
+                    category = "BORDER_PATROL"
                 
                 if category == "UNKNOWN":
                     continue
@@ -570,7 +563,7 @@ async def scrape_maritime_news():
                 
                 # Extract intelligence
                 location, coordinates = extract_location_and_coordinates(full_content)
-                vessel_info = extract_vessel_info(full_content)
+                flight_info = extract_flight_info(full_content)
                 threat_level = calculate_threat_level(sentiment, full_content)
                 
                 article_data = {
@@ -579,7 +572,7 @@ async def scrape_maritime_news():
                     "source": source_name,
                     "text": title.strip().replace('\n', ' '),
                     "location": location,
-                    "vessel_info": vessel_info,
+                    "flight_info": flight_info,
                     "threat_level": threat_level,
                     "confidence": f"{confidence:.4f}",
                     "coordinates": coordinates
@@ -587,23 +580,25 @@ async def scrape_maritime_news():
                 
                 articles_data.append(article_data)
                 
-        print(f"[-] Maritime News: Collected {len(articles_data)} intelligence reports (2026 only)")
+        if len(articles_data) > 0:
+            print(f"[-] NewsAPI: Collected {len(articles_data)} aviation reports")
         
     except Exception as e:
-        print(f"[!] Error scraping maritime news: {e}")
+        # Silently skip - NewsAPI errors are common with free tier
+        pass
     
     return articles_data
 
 async def main():
-    REDIS_STREAM_NAME = 'dark_vessel:intelligence'
+    REDIS_STREAM_NAME = 'dark_flight:intelligence'
 
     print("\n" + "="*70)
-    print("🌊 DARK VESSEL DETECTION SYSTEM - MULTI-SOURCE INTELLIGENCE")
+    print("✈️  DARK FLIGHT DETECTION SYSTEM - MULTI-SOURCE INTELLIGENCE")
     print("="*70)
     print(f"[-] Streaming to Redis: '{REDIS_STREAM_NAME}'")
     print(f"[-] CSV Output: '{CSV_FILE}'")
-    print(f"[-] REAL-TIME Mode: Base interval = 30 seconds")
-    print(f"[-] Smart Scheduling: NewsAPI=15min, GoogleNews=2min, VesselFinder=5min")
+    print(f"[-] REAL-TIME Mode: Base interval = 60 seconds")
+    print(f"[-] Smart Scheduling: NewsAPI=15min, GoogleNews=3min")
     print("="*70 + "\n")
 
     # Counters untuk scheduling (berbasis 30 detik)
@@ -613,27 +608,20 @@ async def main():
         try:
             print(f"\n[{datetime.now().strftime('%H:%M:%S')}] Sweep #{cycle_counter + 1}")
             
-            # ALWAYS RUN (Every 30 seconds): Safe unlimited sources
+            # ALWAYS RUN (Every 60 seconds): Aviation news sources
             fast_tasks = [
-                scrape_global_fishing_watch(),    # Fishing activity
-                scrape_weather_data(),            # Maritime weather
-                scrape_maritime_news_rss(),       # International RSS feeds
+                scrape_google_news_rss(),         # Indonesian aviation news
             ]
             
-            # EVERY 4 CYCLES = 2 MINUTES: Google News RSS
-            if cycle_counter % 4 == 0:
-                print("  [+] Google News RSS")
-                fast_tasks.append(scrape_google_news_rss())
+            # EVERY 3 CYCLES = 3 MINUTES: More detailed scraping
+            if cycle_counter % 3 == 0:
+                print("  [+] Aviation News RSS")
+                fast_tasks.append(scrape_aviation_news_rss())  # International aviation RSS
             
-            # EVERY 10 CYCLES = 5 MINUTES: VesselFinder
-            if cycle_counter % 10 == 0:
-                print("  [+] VesselFinder")
-                fast_tasks.append(scrape_vesselfinder())
-            
-            # EVERY 30 CYCLES = 15 MINUTES: NewsAPI
-            if cycle_counter % 30 == 0:
-                print("  [+] NewsAPI")
-                fast_tasks.append(scrape_maritime_news())
+            # EVERY 15 CYCLES = 15 MINUTES: NewsAPI
+            if cycle_counter % 15 == 0:
+                print("  [+] NewsAPI (International)")
+                fast_tasks.append(scrape_maritime_news())  # Reuse NewsAPI function
             
             results = await asyncio.gather(*fast_tasks)
             
@@ -654,20 +642,20 @@ async def main():
                     writer = csv.writer(f)
                     writer.writerow([
                         data["timestamp"], data["category"], data["source"],
-                        data["text"], data["location"], data["vessel_info"],
+                        data["text"], data["location"], data.get("flight_info", data.get("vessel_info", "N/A")),
                         data["threat_level"], data["confidence"], data["coordinates"]
                     ])
                 
-                print(f"  [DATA] {data['category'][:15]:15} | {data['threat_level']:6} | {data['location'][:30]}")
+                print(f"  [DATA] {data['category'][:20]:20} | {data['threat_level']:6} | {data['location'][:30]}")
             
-            print(f"  [STAT] {len(all_data)} reports | Next: 30s")
+            print(f"  [STAT] {len(all_data)} reports | Next: 60s")
             
             cycle_counter += 1
-            await asyncio.sleep(30)  # 30 seconds - REAL-TIME!
+            await asyncio.sleep(60)  # 60 seconds for aviation news
             
         except Exception as error:
             print(f"\n[!] ERROR: {error}")
-            await asyncio.sleep(30)
+            await asyncio.sleep(60)
 
 if __name__ == "__main__":
     asyncio.run(main())
