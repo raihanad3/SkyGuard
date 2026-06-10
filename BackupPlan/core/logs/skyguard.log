@@ -1,0 +1,204 @@
+2026-06-10 07:37:37 [INFO] skyguard: 🔧 Initializing components...
+2026-06-10 07:37:37 [INFO] skyguard:   ✅ Database initialized
+2026-06-10 07:37:37 [INFO] skyguard:   ✅ Feature engine initialized
+2026-06-10 07:37:37 [INFO] skyguard:   ✅ Anomaly detector initialized
+2026-06-10 07:37:38 [INFO] skyguard:   ✅ Dashboard initialized
+2026-06-10 07:37:38 [INFO] skyguard:   ✅ Alert system initialized
+2026-06-10 07:37:38 [INFO] skyguard:   ✅ OpenSky collector initialized
+2026-06-10 07:37:38 [INFO] skyguard:   ✅ Model trainer initialized
+2026-06-10 07:37:38 [INFO] skyguard: 
+2026-06-10 07:37:38 [INFO] skyguard: 🚀 All components ready! Starting services...
+2026-06-10 07:37:38 [INFO] skyguard: 
+2026-06-10 07:37:38 [INFO] skyguard: 📡 OpenSky Collector started (background thread)
+2026-06-10 07:37:38 [INFO] skyguard: 🌐 Starting web dashboard...
+2026-06-10 07:37:38 [INFO] skyguard:    Open browser at: http://localhost:5000
+2026-06-10 07:37:38 [INFO] skyguard: 
+2026-06-10 07:37:38 [INFO] skyguard: ============================================================
+2026-06-10 07:37:38 [INFO] skyguard:    SKYGUARD is now ACTIVE
+2026-06-10 07:37:38 [INFO] skyguard:    Monitoring Indonesian airspace...
+2026-06-10 07:37:38 [INFO] skyguard: 🚀 Starting OpenSky Network collector...
+2026-06-10 07:37:38 [INFO] skyguard: ============================================================
+2026-06-10 07:37:38 [INFO] skyguard: 📡 Update interval: 10 seconds
+2026-06-10 07:37:38 [INFO] skyguard: 
+2026-06-10 07:37:38 [INFO] skyguard: 📍 Monitoring Indonesian airspace:
+2026-06-10 07:37:38 [INFO] skyguard: 🌐 Dashboard starting at http://0.0.0.0:5000
+2026-06-10 07:37:38 [INFO] skyguard:    Lat: -11.0 to 6.0
+2026-06-10 07:37:38 [INFO] skyguard:    Lon: 95.0 to 141.0
+2026-06-10 07:37:38 [INFO] skyguard: 
+2026-06-10 07:37:38 [INFO] skyguard: 📊 Model trainer: Using rule-based detection (no ML training needed)
+2026-06-10 07:37:39 [INFO] skyguard: ✈️  Received 106 flights (fetch #1)
+2026-06-10 07:37:39 [WARNING] skyguard: 🟡 MEDIUM ALERT:  (76b865) | Score: 55% | Very low altitude: 937 ft (not near airport), Rapid climb: 2688 ft/min
+2026-06-10 07:37:39 [INFO] skyguard: 🔵 LOW ALERT: AXM5431 (7500e4) | Score: 30% | Very low altitude: 784 ft (not near airport)
+2026-06-10 07:37:39 [INFO] skyguard: 🔵 LOW ALERT: QTR90C (06a2b5) | Score: 30% | Very low altitude: 982 ft (not near airport)
+2026-06-10 07:37:39 [WARNING] skyguard: 🟡 MEDIUM ALERT: 9MITN (75049b) | Score: 50% | Very low altitude: 297 ft (not near airport), Unusually slow: 89 knots
+2026-06-10 07:37:39 [WARNING] skyguard: 🟡 MEDIUM ALERT: 9MITW (7504c1) | Score: 50% | Very low altitude: 129 ft (not near airport), Unusually slow: 93 knots
+2026-06-10 07:37:39 [WARNING] skyguard: 🟡 MEDIUM ALERT: 9MMFA (7504d5) | Score: 50% | Very low altitude: 76 ft (not near airport), Unusually slow: 83 knots
+2026-06-10 07:37:50 [INFO] skyguard: ✈️  Received 109 flights (fetch #2)
+2026-06-10 07:37:51 [ERROR] skyguard: ❌ Fetch error: TypeError: unsupported operand type(s) for -: 'NoneType' and 'NoneType'
+2026-06-10 07:38:22 [INFO] skyguard: ✈️  Received 109 flights (fetch #3)
+2026-06-10 07:38:22 [INFO] skyguard: 🔵 LOW ALERT: LNI353 (8a0381) | Score: 30% | Very low altitude: 990 ft (not near airport)
+2026-06-10 07:38:23 [ERROR] skyguard: ❌ Fetch error: TypeError: unsupported operand type(s) for -: 'NoneType' and 'NoneType'
+2026-06-10 07:38:53 [INFO] skyguard: ✈️  Received 109 flights (fetch #4)
+2026-06-10 07:38:56 [INFO] skyguard: 🔵 LOW ALERT: AXM6123 (7504eb) | Score: 30% | Very low altitude: 922 ft (not near airport)
+2026-06-10 07:38:56 [ERROR] skyguard: ❌ Fetch error: TypeError: unsupported operand type(s) for -: 'NoneType' and 'NoneType'
+2026-06-10 07:39:27 [INFO] skyguard: ✈️  Received 113 flights (fetch #5)
+2026-06-10 07:39:27 [INFO] skyguard: 🔵 LOW ALERT: TLM117 (8830e9) | Score: 45% | Rapid climb: 2944 ft/min, Sudden course change: 95°
+2026-06-10 07:39:28 [INFO] skyguard: 🔵 LOW ALERT: AXM380 (750419) | Score: 30% | Very low altitude: 937 ft (not near airport)
+2026-06-10 07:39:28 [ERROR] skyguard: ❌ Fetch error: TypeError: unsupported operand type(s) for -: 'NoneType' and 'NoneType'
+2026-06-10 07:39:59 [INFO] skyguard: ✈️  Received 114 flights (fetch #6)
+2026-06-10 07:39:59 [INFO] skyguard: 🖥️ Dashboard client connected
+2026-06-10 07:40:00 [INFO] skyguard: 🔵 LOW ALERT: 9MMFA (7504d5) | Score: 30% | Very low altitude: 312 ft (not near airport)
+2026-06-10 07:40:00 [ERROR] skyguard: ❌ Fetch error: TypeError: unsupported operand type(s) for -: 'NoneType' and 'NoneType'
+2026-06-10 07:40:02 [INFO] skyguard: 🖥️ Dashboard client connected
+2026-06-10 07:40:31 [INFO] skyguard: ✈️  Received 111 flights (fetch #7)
+2026-06-10 07:40:32 [INFO] skyguard: 🔵 LOW ALERT: MAS797 (75020b) | Score: 30% | Very low altitude: 906 ft (not near airport)
+2026-06-10 07:40:32 [INFO] skyguard: 🔵 LOW ALERT: TNU633 (8a0947) | Score: 30% | Very low altitude: 937 ft (not near airport)
+2026-06-10 07:40:32 [ERROR] skyguard: ❌ Fetch error: TypeError: unsupported operand type(s) for -: 'NoneType' and 'NoneType'
+2026-06-10 07:40:44 [INFO] skyguard: 🖥️ Dashboard client disconnected
+2026-06-10 07:40:46 [INFO] skyguard: 🖥️ Dashboard client connected
+2026-06-10 07:41:03 [INFO] skyguard: ✈️  Received 113 flights (fetch #8)
+2026-06-10 07:41:04 [INFO] skyguard: 🔵 LOW ALERT: LNI241 (8a0295) | Score: 30% | Very low altitude: 944 ft (not near airport)
+2026-06-10 07:41:05 [WARNING] skyguard: 🟡 MEDIUM ALERT: 9MITJ (750497) | Score: 50% | Very low altitude: 83 ft (not near airport), Unusually slow: 91 knots
+2026-06-10 07:41:05 [CRITICAL] skyguard: 🔴 HIGH ALERT: 9MMFA (7504d5) | Score: 70% | Very low altitude: 320 ft (not near airport), Unusually slow: 96 knots, Sudden course change: 142°
+2026-06-10 07:41:05 [ERROR] skyguard: ❌ Fetch error: TypeError: unsupported operand type(s) for -: 'NoneType' and 'NoneType'
+2026-06-10 07:41:05 [INFO] skyguard: 🖥️ Dashboard client connected
+2026-06-10 07:41:11 [INFO] skyguard: 🖥️ Dashboard client disconnected
+2026-06-10 07:41:12 [INFO] skyguard: 🖥️ Dashboard client connected
+2026-06-10 07:41:14 [INFO] skyguard: 🖥️ Dashboard client disconnected
+2026-06-10 07:41:20 [INFO] skyguard: 🖥️ Dashboard client disconnected
+2026-06-10 07:41:21 [INFO] skyguard: 🖥️ Dashboard client connected
+2026-06-10 07:41:31 [INFO] skyguard: 🖥️ Dashboard client disconnected
+2026-06-10 07:41:36 [INFO] skyguard: ✈️  Received 113 flights (fetch #9)
+2026-06-10 07:41:37 [ERROR] skyguard: ❌ Fetch error: TypeError: unsupported operand type(s) for -: 'NoneType' and 'NoneType'
+2026-06-10 07:41:57 [INFO] skyguard: 
+🛑 Shutdown signal received...
+2026-06-10 07:41:57 [INFO] skyguard: 🛑 Stopping OpenSky collector...
+2026-06-10 07:42:16 [INFO] skyguard: 🖥️ Dashboard client disconnected
+2026-06-10 07:47:00 [INFO] skyguard: 🔧 Initializing components...
+2026-06-10 07:47:00 [INFO] skyguard:   ✅ Database initialized
+2026-06-10 07:47:00 [INFO] skyguard:   ✅ Feature engine initialized
+2026-06-10 07:47:00 [INFO] skyguard:   ✅ Anomaly detector initialized
+2026-06-10 07:47:00 [INFO] skyguard:   ✅ Dashboard initialized
+2026-06-10 07:47:00 [INFO] skyguard:   ✅ Alert system initialized
+2026-06-10 07:47:00 [INFO] skyguard:   ✅ OpenSky collector initialized
+2026-06-10 07:47:00 [INFO] skyguard:   ✅ Model trainer initialized
+2026-06-10 07:47:00 [INFO] skyguard: 
+2026-06-10 07:47:00 [INFO] skyguard: 🚀 All components ready! Starting services...
+2026-06-10 07:47:00 [INFO] skyguard: 
+2026-06-10 07:47:00 [INFO] skyguard: 📡 OpenSky Collector started (background thread)
+2026-06-10 07:47:00 [INFO] skyguard: 🌐 Starting web dashboard...
+2026-06-10 07:47:00 [INFO] skyguard:    Open browser at: http://localhost:5000
+2026-06-10 07:47:00 [INFO] skyguard: 
+2026-06-10 07:47:00 [INFO] skyguard: ============================================================
+2026-06-10 07:47:00 [INFO] skyguard:    SKYGUARD is now ACTIVE
+2026-06-10 07:47:00 [INFO] skyguard:    Monitoring Indonesian airspace...
+2026-06-10 07:47:00 [INFO] skyguard: ============================================================
+2026-06-10 07:47:00 [INFO] skyguard: 
+2026-06-10 07:47:00 [INFO] skyguard: 🌐 Dashboard starting at http://0.0.0.0:5000
+2026-06-10 07:47:00 [INFO] skyguard: 🚀 Starting OpenSky Network collector...
+2026-06-10 07:47:00 [INFO] skyguard: 📡 Update interval: 10 seconds
+2026-06-10 07:47:00 [INFO] skyguard: 📍 Monitoring Indonesian airspace:
+2026-06-10 07:47:00 [INFO] skyguard:    Lat: -11.0 to 6.0
+2026-06-10 07:47:00 [INFO] skyguard:    Lon: 95.0 to 141.0
+2026-06-10 07:47:00 [INFO] skyguard: 
+2026-06-10 07:47:00 [INFO] skyguard: 📊 Model trainer: Using rule-based detection (no ML training needed)
+2026-06-10 07:47:01 [INFO] skyguard: ✈️  Received 108 flights (fetch #1)
+2026-06-10 07:47:01 [INFO] skyguard: 🔵 LOW ALERT: SJV919 (8a09c4) | Score: 30% | Very low altitude: 960 ft (not near airport)
+2026-06-10 07:47:02 [INFO] skyguard: 🔵 LOW ALERT: GIA401 (8a028f) | Score: 30% | Very low altitude: 693 ft (not near airport)
+2026-06-10 07:47:02 [INFO] skyguard: 🔵 LOW ALERT: AXM5108 (750451) | Score: 30% | Very low altitude: 480 ft (not near airport)
+2026-06-10 07:47:02 [INFO] skyguard: 🔵 LOW ALERT: 9MITJ (750497) | Score: 30% | Very low altitude: 868 ft (not near airport)
+2026-06-10 07:47:02 [WARNING] skyguard: 🟡 MEDIUM ALERT: 9MITN (75049b) | Score: 50% | Very low altitude: 320 ft (not near airport), Unusually slow: 84 knots
+2026-06-10 07:47:02 [INFO] skyguard: 🔵 LOW ALERT: AXM700 (750562) | Score: 30% | Very low altitude: 716 ft (not near airport)
+2026-06-10 07:47:02 [INFO] skyguard: 🔵 LOW ALERT: AXM6123 (7504eb) | Score: 30% | Very low altitude: 777 ft (not near airport)
+2026-06-10 07:47:02 [WARNING] skyguard: 🟡 MEDIUM ALERT: 9MITW (7504c1) | Score: 50% | Very low altitude: 731 ft (not near airport), Unusually slow: 98 knots
+2026-06-10 07:47:02 [WARNING] skyguard: 🟡 MEDIUM ALERT: 9MSKE (7504d6) | Score: 50% | Very low altitude: 60 ft (not near airport), Unusually slow: 89 knots
+2026-06-10 07:47:02 [WARNING] skyguard: 🟡 MEDIUM ALERT: 9MMFA (7504d5) | Score: 50% | Very low altitude: 30 ft (not near airport), Unusually slow: 74 knots
+2026-06-10 07:47:09 [INFO] skyguard: 🖥️ Dashboard client connected
+2026-06-10 07:47:12 [INFO] skyguard: ✈️  Received 108 flights (fetch #2)
+2026-06-10 07:47:25 [INFO] skyguard: ✈️  Received 107 flights (fetch #3)
+2026-06-10 07:47:37 [INFO] skyguard: ✈️  Received 107 flights (fetch #4)
+2026-06-10 07:47:49 [INFO] skyguard: ✈️  Received 108 flights (fetch #5)
+2026-06-10 07:47:54 [INFO] skyguard: 🖥️ Dashboard client disconnected
+2026-06-10 07:47:56 [INFO] skyguard: 🖥️ Dashboard client connected
+2026-06-10 07:48:00 [INFO] skyguard: ✈️  Received 107 flights (fetch #6)
+2026-06-10 07:48:12 [INFO] skyguard: ✈️  Received 107 flights (fetch #7)
+2026-06-10 07:48:12 [WARNING] skyguard: 🟡 MEDIUM ALERT: RMY3091 (7503f3) | Score: 50% | Very low altitude: 868 ft (not near airport), Sudden course change: 136°
+2026-06-10 07:48:23 [INFO] skyguard: ✈️  Received 107 flights (fetch #8)
+2026-06-10 07:48:24 [INFO] skyguard: 🔵 LOW ALERT: RMY3091 (7503f3) | Score: 30% | Very low altitude: 868 ft (not near airport)
+2026-06-10 07:48:34 [INFO] skyguard: ✈️  Received 105 flights (fetch #9)
+2026-06-10 07:48:35 [INFO] skyguard: 🔵 LOW ALERT: 9MSKE (7504d6) | Score: 30% | Very low altitude: 312 ft (not near airport)
+2026-06-10 07:48:45 [INFO] skyguard: 🖥️ Dashboard client disconnected
+2026-06-10 07:48:45 [INFO] skyguard: ✈️  Received 105 flights (fetch #10)
+2026-06-10 07:48:46 [INFO] skyguard: 🔵 LOW ALERT: BTK6375 (8a09a2) | Score: 30% | Very low altitude: 929 ft (not near airport)
+2026-06-10 07:48:46 [INFO] skyguard: 🖥️ Dashboard client connected
+2026-06-10 07:48:57 [INFO] skyguard: ✈️  Received 103 flights (fetch #11)
+2026-06-10 07:49:08 [INFO] skyguard: ✈️  Received 102 flights (fetch #12)
+2026-06-10 07:49:19 [INFO] skyguard: ✈️  Received 106 flights (fetch #13)
+2026-06-10 07:49:30 [INFO] skyguard: ✈️  Received 106 flights (fetch #14)
+2026-06-10 07:49:31 [INFO] skyguard: 🔵 LOW ALERT: GIA073 (8a04f4) | Score: 30% | Very low altitude: 982 ft (not near airport)
+2026-06-10 07:49:31 [INFO] skyguard: 🖥️ Dashboard client disconnected
+2026-06-10 07:49:33 [INFO] skyguard: 🖥️ Dashboard client connected
+2026-06-10 07:49:42 [INFO] skyguard: ✈️  Received 108 flights (fetch #15)
+2026-06-10 07:49:42 [INFO] skyguard: 🔵 LOW ALERT:  (8a0428) | Score: 30% | Very low altitude: 411 ft (not near airport)
+2026-06-10 07:49:53 [INFO] skyguard: ✈️  Received 107 flights (fetch #16)
+2026-06-10 07:49:53 [WARNING] skyguard: 🟡 MEDIUM ALERT:  (76cd15) | Score: 55% | Very low altitude: 845 ft (not near airport), Rapid climb: 2175 ft/min
+2026-06-10 07:50:04 [INFO] skyguard: ✈️  Received 107 flights (fetch #17)
+2026-06-10 07:50:04 [WARNING] skyguard: 🟡 MEDIUM ALERT:  (8a0428) | Score: 50% | Very low altitude: 411 ft (not near airport), Unusually slow: 90 knots
+2026-06-10 07:50:16 [INFO] skyguard: ✈️  Received 106 flights (fetch #18)
+2026-06-10 07:50:18 [INFO] skyguard: 🖥️ Dashboard client disconnected
+2026-06-10 07:50:19 [INFO] skyguard: 🖥️ Dashboard client connected
+2026-06-10 07:50:28 [INFO] skyguard: ✈️  Received 106 flights (fetch #19)
+2026-06-10 07:50:41 [INFO] skyguard: ✈️  Received 106 flights (fetch #20)
+2026-06-10 07:50:53 [INFO] skyguard: ✈️  Received 107 flights (fetch #21)
+2026-06-10 07:51:05 [INFO] skyguard: ✈️  Received 107 flights (fetch #22)
+2026-06-10 07:51:05 [INFO] skyguard: 🖥️ Dashboard client disconnected
+2026-06-10 07:51:09 [INFO] skyguard: 🖥️ Dashboard client connected
+2026-06-10 07:51:17 [INFO] skyguard: ✈️  Received 106 flights (fetch #23)
+2026-06-10 07:51:18 [INFO] skyguard: 🔵 LOW ALERT:  (76cc65) | Score: 30% | Very low altitude: 929 ft (not near airport)
+2026-06-10 07:51:29 [INFO] skyguard: ✈️  Received 106 flights (fetch #24)
+2026-06-10 07:51:41 [INFO] skyguard: ✈️  Received 106 flights (fetch #25)
+2026-06-10 07:51:54 [INFO] skyguard: ✈️  Received 106 flights (fetch #26)
+2026-06-10 07:51:54 [INFO] skyguard: 🖥️ Dashboard client disconnected
+2026-06-10 07:51:55 [WARNING] skyguard: 🟡 MEDIUM ALERT: J935G (8a055d) | Score: 50% | Very low altitude: 365 ft (not near airport), Unusually slow: 90 knots
+2026-06-10 07:51:56 [INFO] skyguard: 🔵 LOW ALERT: UPS167 (a3c2d5) | Score: 30% | Very low altitude: 845 ft (not near airport)
+2026-06-10 07:51:59 [INFO] skyguard: 🖥️ Dashboard client connected
+2026-06-10 07:52:08 [INFO] skyguard: ✈️  Received 105 flights (fetch #27)
+2026-06-10 07:52:09 [INFO] skyguard: 🔵 LOW ALERT: AWQ807 (8a017c) | Score: 30% | Very low altitude: 998 ft (not near airport)
+2026-06-10 07:52:09 [INFO] skyguard: 🔵 LOW ALERT: 9MITN (75049b) | Score: 30% | Very low altitude: 297 ft (not near airport)
+2026-06-10 07:52:20 [INFO] skyguard: ✈️  Received 103 flights (fetch #28)
+2026-06-10 07:52:22 [CRITICAL] skyguard: 🔴 HIGH ALERT: 9MMFA (7504d5) | Score: 70% | Very low altitude: 320 ft (not near airport), Unusually slow: 94 knots, Sudden course change: 156°
+2026-06-10 07:52:32 [INFO] skyguard: ✈️  Received 102 flights (fetch #29)
+2026-06-10 07:52:44 [INFO] skyguard: ✈️  Received 105 flights (fetch #30)
+2026-06-10 07:52:44 [INFO] skyguard: 🖥️ Dashboard client disconnected
+2026-06-10 07:52:45 [INFO] skyguard: 🔵 LOW ALERT: PKCAA (8a09f9) | Score: 30% | Very low altitude: 449 ft (not near airport)
+2026-06-10 07:52:50 [INFO] skyguard: 🖥️ Dashboard client connected
+2026-06-10 07:52:57 [INFO] skyguard: ✈️  Received 103 flights (fetch #31)
+2026-06-10 07:53:10 [INFO] skyguard: ✈️  Received 104 flights (fetch #32)
+2026-06-10 07:53:22 [INFO] skyguard: ✈️  Received 105 flights (fetch #33)
+2026-06-10 07:53:33 [INFO] skyguard: ✈️  Received 107 flights (fetch #34)
+2026-06-10 07:53:35 [INFO] skyguard: 🔵 LOW ALERT:  (75027f) | Score: 30% | Very low altitude: 899 ft (not near airport)
+2026-06-10 07:53:35 [INFO] skyguard: 🖥️ Dashboard client disconnected
+2026-06-10 07:53:36 [INFO] skyguard: 🔵 LOW ALERT: 9MSBV (750547) | Score: 30% | Very low altitude: 609 ft (not near airport)
+2026-06-10 07:53:40 [INFO] skyguard: 🖥️ Dashboard client connected
+2026-06-10 07:53:46 [INFO] skyguard: ✈️  Received 106 flights (fetch #35)
+2026-06-10 07:53:49 [INFO] skyguard: 🔵 LOW ALERT: MAS197 (750551) | Score: 30% | Very low altitude: 960 ft (not near airport)
+2026-06-10 07:53:59 [INFO] skyguard: ✈️  Received 105 flights (fetch #36)
+2026-06-10 07:54:12 [INFO] skyguard: ✈️  Received 106 flights (fetch #37)
+2026-06-10 07:54:24 [INFO] skyguard: ✈️  Received 106 flights (fetch #38)
+2026-06-10 07:54:29 [INFO] skyguard: 🖥️ Dashboard client disconnected
+2026-06-10 07:54:31 [INFO] skyguard: 🖥️ Dashboard client connected
+2026-06-10 07:54:36 [INFO] skyguard: ✈️  Received 107 flights (fetch #39)
+2026-06-10 07:54:36 [INFO] skyguard: 🔵 LOW ALERT:  (c81d80) | Score: 30% | Very low altitude: 982 ft (not near airport)
+2026-06-10 07:54:48 [INFO] skyguard: ✈️  Received 106 flights (fetch #40)
+2026-06-10 07:54:50 [INFO] skyguard: 🔵 LOW ALERT: MYU6011 (8a0a64) | Score: 30% | Very low altitude: 967 ft (not near airport)
+2026-06-10 07:55:01 [INFO] skyguard: ✈️  Received 106 flights (fetch #41)
+2026-06-10 07:55:01 [INFO] skyguard: 🔵 LOW ALERT: BTK7369 (8a051f) | Score: 30% | Very low altitude: 937 ft (not near airport)
+2026-06-10 07:55:03 [INFO] skyguard: 🔵 LOW ALERT:  (75043f) | Score: 30% | Very low altitude: 22 ft (not near airport)
+2026-06-10 07:55:14 [INFO] skyguard: ✈️  Received 105 flights (fetch #42)
+2026-06-10 07:55:15 [WARNING] skyguard: 🟡 MEDIUM ALERT:  (75043f) | Score: 55% | Very low altitude: 53 ft (not near airport), Rapid climb: 2879 ft/min
+2026-06-10 07:55:16 [INFO] skyguard: 🖥️ Dashboard client disconnected
+2026-06-10 07:55:23 [INFO] skyguard: 🖥️ Dashboard client connected
+2026-06-10 07:55:26 [INFO] skyguard: ✈️  Received 105 flights (fetch #43)
+2026-06-10 07:55:31 [INFO] skyguard: 
+🛑 Shutdown signal received...
+2026-06-10 07:55:31 [INFO] skyguard: 🛑 Stopping OpenSky collector...

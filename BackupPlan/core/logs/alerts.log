@@ -1,0 +1,49 @@
+2026-06-10 07:37:39,172 [WARNING] 🟡 MEDIUM ALERT:  (76b865) | Score: 55% | Very low altitude: 937 ft (not near airport), Rapid climb: 2688 ft/min
+2026-06-10 07:37:39,385 [INFO] 🔵 LOW ALERT: AXM5431 (7500e4) | Score: 30% | Very low altitude: 784 ft (not near airport)
+2026-06-10 07:37:39,590 [INFO] 🔵 LOW ALERT: QTR90C (06a2b5) | Score: 30% | Very low altitude: 982 ft (not near airport)
+2026-06-10 07:37:39,842 [WARNING] 🟡 MEDIUM ALERT: 9MITN (75049b) | Score: 50% | Very low altitude: 297 ft (not near airport), Unusually slow: 89 knots
+2026-06-10 07:37:39,926 [WARNING] 🟡 MEDIUM ALERT: 9MITW (7504c1) | Score: 50% | Very low altitude: 129 ft (not near airport), Unusually slow: 93 knots
+2026-06-10 07:37:39,947 [WARNING] 🟡 MEDIUM ALERT: 9MMFA (7504d5) | Score: 50% | Very low altitude: 76 ft (not near airport), Unusually slow: 83 knots
+2026-06-10 07:38:22,252 [INFO] 🔵 LOW ALERT: LNI353 (8a0381) | Score: 30% | Very low altitude: 990 ft (not near airport)
+2026-06-10 07:38:56,793 [INFO] 🔵 LOW ALERT: AXM6123 (7504eb) | Score: 30% | Very low altitude: 922 ft (not near airport)
+2026-06-10 07:39:27,958 [INFO] 🔵 LOW ALERT: TLM117 (8830e9) | Score: 45% | Rapid climb: 2944 ft/min, Sudden course change: 95°
+2026-06-10 07:39:28,458 [INFO] 🔵 LOW ALERT: AXM380 (750419) | Score: 30% | Very low altitude: 937 ft (not near airport)
+2026-06-10 07:40:00,254 [INFO] 🔵 LOW ALERT: 9MMFA (7504d5) | Score: 30% | Very low altitude: 312 ft (not near airport)
+2026-06-10 07:40:32,049 [INFO] 🔵 LOW ALERT: MAS797 (75020b) | Score: 30% | Very low altitude: 906 ft (not near airport)
+2026-06-10 07:40:32,169 [INFO] 🔵 LOW ALERT: TNU633 (8a0947) | Score: 30% | Very low altitude: 937 ft (not near airport)
+2026-06-10 07:41:04,876 [INFO] 🔵 LOW ALERT: LNI241 (8a0295) | Score: 30% | Very low altitude: 944 ft (not near airport)
+2026-06-10 07:41:05,113 [WARNING] 🟡 MEDIUM ALERT: 9MITJ (750497) | Score: 50% | Very low altitude: 83 ft (not near airport), Unusually slow: 91 knots
+2026-06-10 07:41:05,245 [CRITICAL] 🔴 HIGH ALERT: 9MMFA (7504d5) | Score: 70% | Very low altitude: 320 ft (not near airport), Unusually slow: 96 knots, Sudden course change: 142°
+2026-06-10 07:47:01,790 [INFO] 🔵 LOW ALERT: SJV919 (8a09c4) | Score: 30% | Very low altitude: 960 ft (not near airport)
+2026-06-10 07:47:02,073 [INFO] 🔵 LOW ALERT: GIA401 (8a028f) | Score: 30% | Very low altitude: 693 ft (not near airport)
+2026-06-10 07:47:02,191 [INFO] 🔵 LOW ALERT: AXM5108 (750451) | Score: 30% | Very low altitude: 480 ft (not near airport)
+2026-06-10 07:47:02,236 [INFO] 🔵 LOW ALERT: 9MITJ (750497) | Score: 30% | Very low altitude: 868 ft (not near airport)
+2026-06-10 07:47:02,250 [WARNING] 🟡 MEDIUM ALERT: 9MITN (75049b) | Score: 50% | Very low altitude: 320 ft (not near airport), Unusually slow: 84 knots
+2026-06-10 07:47:02,299 [INFO] 🔵 LOW ALERT: AXM700 (750562) | Score: 30% | Very low altitude: 716 ft (not near airport)
+2026-06-10 07:47:02,327 [INFO] 🔵 LOW ALERT: AXM6123 (7504eb) | Score: 30% | Very low altitude: 777 ft (not near airport)
+2026-06-10 07:47:02,339 [WARNING] 🟡 MEDIUM ALERT: 9MITW (7504c1) | Score: 50% | Very low altitude: 731 ft (not near airport), Unusually slow: 98 knots
+2026-06-10 07:47:02,360 [WARNING] 🟡 MEDIUM ALERT: 9MSKE (7504d6) | Score: 50% | Very low altitude: 60 ft (not near airport), Unusually slow: 89 knots
+2026-06-10 07:47:02,371 [WARNING] 🟡 MEDIUM ALERT: 9MMFA (7504d5) | Score: 50% | Very low altitude: 30 ft (not near airport), Unusually slow: 74 knots
+2026-06-10 07:48:12,869 [WARNING] 🟡 MEDIUM ALERT: RMY3091 (7503f3) | Score: 50% | Very low altitude: 868 ft (not near airport), Sudden course change: 136°
+2026-06-10 07:48:24,155 [INFO] 🔵 LOW ALERT: RMY3091 (7503f3) | Score: 30% | Very low altitude: 868 ft (not near airport)
+2026-06-10 07:48:35,446 [INFO] 🔵 LOW ALERT: 9MSKE (7504d6) | Score: 30% | Very low altitude: 312 ft (not near airport)
+2026-06-10 07:48:46,199 [INFO] 🔵 LOW ALERT: BTK6375 (8a09a2) | Score: 30% | Very low altitude: 929 ft (not near airport)
+2026-06-10 07:49:31,013 [INFO] 🔵 LOW ALERT: GIA073 (8a04f4) | Score: 30% | Very low altitude: 982 ft (not near airport)
+2026-06-10 07:49:42,141 [INFO] 🔵 LOW ALERT:  (8a0428) | Score: 30% | Very low altitude: 411 ft (not near airport)
+2026-06-10 07:49:53,833 [WARNING] 🟡 MEDIUM ALERT:  (76cd15) | Score: 55% | Very low altitude: 845 ft (not near airport), Rapid climb: 2175 ft/min
+2026-06-10 07:50:04,765 [WARNING] 🟡 MEDIUM ALERT:  (8a0428) | Score: 50% | Very low altitude: 411 ft (not near airport), Unusually slow: 90 knots
+2026-06-10 07:51:18,118 [INFO] 🔵 LOW ALERT:  (76cc65) | Score: 30% | Very low altitude: 929 ft (not near airport)
+2026-06-10 07:51:55,128 [WARNING] 🟡 MEDIUM ALERT: J935G (8a055d) | Score: 50% | Very low altitude: 365 ft (not near airport), Unusually slow: 90 knots
+2026-06-10 07:51:56,140 [INFO] 🔵 LOW ALERT: UPS167 (a3c2d5) | Score: 30% | Very low altitude: 845 ft (not near airport)
+2026-06-10 07:52:09,249 [INFO] 🔵 LOW ALERT: AWQ807 (8a017c) | Score: 30% | Very low altitude: 998 ft (not near airport)
+2026-06-10 07:52:09,551 [INFO] 🔵 LOW ALERT: 9MITN (75049b) | Score: 30% | Very low altitude: 297 ft (not near airport)
+2026-06-10 07:52:22,181 [CRITICAL] 🔴 HIGH ALERT: 9MMFA (7504d5) | Score: 70% | Very low altitude: 320 ft (not near airport), Unusually slow: 94 knots, Sudden course change: 156°
+2026-06-10 07:52:45,509 [INFO] 🔵 LOW ALERT: PKCAA (8a09f9) | Score: 30% | Very low altitude: 449 ft (not near airport)
+2026-06-10 07:53:35,085 [INFO] 🔵 LOW ALERT:  (75027f) | Score: 30% | Very low altitude: 899 ft (not near airport)
+2026-06-10 07:53:36,193 [INFO] 🔵 LOW ALERT: 9MSBV (750547) | Score: 30% | Very low altitude: 609 ft (not near airport)
+2026-06-10 07:53:49,205 [INFO] 🔵 LOW ALERT: MAS197 (750551) | Score: 30% | Very low altitude: 960 ft (not near airport)
+2026-06-10 07:54:36,501 [INFO] 🔵 LOW ALERT:  (c81d80) | Score: 30% | Very low altitude: 982 ft (not near airport)
+2026-06-10 07:54:50,729 [INFO] 🔵 LOW ALERT: MYU6011 (8a0a64) | Score: 30% | Very low altitude: 967 ft (not near airport)
+2026-06-10 07:55:01,742 [INFO] 🔵 LOW ALERT: BTK7369 (8a051f) | Score: 30% | Very low altitude: 937 ft (not near airport)
+2026-06-10 07:55:03,224 [INFO] 🔵 LOW ALERT:  (75043f) | Score: 30% | Very low altitude: 22 ft (not near airport)
+2026-06-10 07:55:15,472 [WARNING] 🟡 MEDIUM ALERT:  (75043f) | Score: 55% | Very low altitude: 53 ft (not near airport), Rapid climb: 2879 ft/min
