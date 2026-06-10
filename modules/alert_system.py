@@ -1,8 +1,4 @@
-"""
-Alert System untuk Flight Monitoring
-Process dan dispatch alerts untuk suspicious flights.
-"""
-
+# alert system
 import logging
 import json
 from datetime import datetime, timedelta
@@ -12,14 +8,12 @@ logger = logging.getLogger("skyguard")
 
 
 class AlertSystem:
-    """Manage flight alerts."""
-    
     def __init__(self, database, socketio=None):
         self.db = database
         self.socketio = socketio
-        self.recent_alerts = {}  # Track recent alerts untuk cooldown
+        self.recent_alerts = {}  # track alerts buat cooldown
         
-        # Setup alert logger
+        # setup alert logger
         self.alert_logger = logging.getLogger("alerts")
         handler = logging.FileHandler(ALERT_LOG_FILE, encoding="utf-8")
         handler.setFormatter(logging.Formatter(
@@ -29,23 +23,23 @@ class AlertSystem:
         self.alert_logger.setLevel(logging.INFO)
     
     def process_alert(self, analysis):
-        """Process analysis result dan create alert jika perlu."""
+        # process hasil analysis
         alert_level = analysis["alert_level"]
         
-        # Only alert for LOW, MEDIUM, HIGH (not NORMAL)
+        # skip kalo normal
         if alert_level == "NORMAL":
             return
         
         icao24 = analysis["icao24"]
         
-        # Check cooldown
+        # cek cooldown dulu
         if self._is_in_cooldown(icao24, alert_level):
             return
         
-        # Log alert
+        # log alert
         self._log_alert(analysis)
         
-        # Save to database
+        # save ke db
         alert_data = {
             "icao24": icao24,
             "callsign": analysis["callsign"],
@@ -64,10 +58,10 @@ class AlertSystem:
         alert_id = self.db.insert_alert(alert_data)
         
         if alert_id:
-            # Update cooldown
+            # update cooldown
             self._update_cooldown(icao24, alert_level)
             
-            # Broadcast via SocketIO
+            # kirim ke dashboard via socketio
             if self.socketio:
                 try:
                     self.socketio.emit("new_alert", alert_data)
@@ -75,7 +69,7 @@ class AlertSystem:
                     logger.debug(f"SocketIO emit error: {e}")
     
     def _is_in_cooldown(self, icao24, alert_level):
-        """Check if flight is in cooldown period."""
+        # cek cooldown period
         key = f"{icao24}_{alert_level}"
         
         if key in self.recent_alerts:

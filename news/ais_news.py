@@ -14,28 +14,28 @@ import re
 from dateutil import parser as date_parser  # For date filtering
 
 # =====================================================================
-# 1. MESSAGE BROKER GATEWAY (REDIS CONNECTION - OPTIONAL)
+# 1. REDIS CONNECTION (OPTIONAL)
 # =====================================================================
-USE_REDIS = False  # Set True if you have Redis running
+USE_REDIS = False
 
 if USE_REDIS:
-    print("[-] Dark Flight Detection: Connecting to Redis Message Broker...")
+    print("[-] Dark Flight: Connecting to Redis...")
     try:
         r = redis.Redis(host='localhost', port=6379, decode_responses=True)
         r.ping()
-        print("[-] Redis Connection: ONLINE (Aviation Intelligence Network Active)")
+        print("[-] Redis: ONLINE")
     except Exception as e:
-        print(f"[!] Redis Connection Failed: {e}")
-        print("[-] Continuing without Redis (CSV-only mode)")
+        print(f"[!] Redis fail: {e}")
+        print("[-] CSV-only mode")
         USE_REDIS = False
 else:
-    print("[-] Running in CSV-only mode (Redis disabled)")
+    print("[-] CSV-only mode")
     r = None
 
 # =====================================================================
-# 2. SYSTEM INITIALIZATION: PREPARING AI MODEL & CSV
+# 2. SETUP AI MODEL & CSV
 # =====================================================================
-print("[-] SkyGuard Aviation Intelligence: Compiling Analysis Model...")
+print("[-] Loading NLP model...")
 sentiment_pipeline = pipeline(
     "sentiment-analysis", 
     model="cardiffnlp/twitter-roberta-base-sentiment-latest"
@@ -143,7 +143,7 @@ INDONESIA_AIR_COORDINATES = {
 # 5. HELPER FUNCTIONS - INTELLIGENCE GATHERING
 # =====================================================================
 def extract_location_and_coordinates(text):
-    """Extract location mentions from text and return coordinates"""
+    # extract lokasi dari text
     text_lower = text.lower()
     detected_locations = []
     coordinates = "N/A"
@@ -167,7 +167,7 @@ def extract_location_and_coordinates(text):
     return location_str, coordinates
 
 def extract_flight_info(text):
-    """Extract flight-related information"""
+    # extract info penerbangan
     flight_terms = []
     text_lower = text.lower()
     
@@ -185,7 +185,7 @@ def extract_flight_info(text):
     return ", ".join(flight_terms) if flight_terms else "Unspecified Aircraft"
 
 def calculate_threat_level(sentiment, keywords_found):
-    """Calculate threat level based on sentiment and keywords (AVIATION)"""
+    # hitung threat level
     high_risk_keywords = ["airspace violation", "hijack", "smuggling", "unauthorized", "7500", "intercept"]
     medium_risk_keywords = ["suspicious", "unidentified", "patrol", "transponder off", "emergency"]
     
@@ -204,7 +204,7 @@ def calculate_threat_level(sentiment, keywords_found):
 # =====================================================================
 
 async def scrape_google_news_rss():
-    """Scrape Indonesian maritime news from Google News RSS (FREE)"""
+    # scrape google news
     articles_data = []
     
     try:
@@ -593,15 +593,14 @@ async def main():
     REDIS_STREAM_NAME = 'dark_flight:intelligence'
 
     print("\n" + "="*70)
-    print("✈️  DARK FLIGHT DETECTION SYSTEM - MULTI-SOURCE INTELLIGENCE")
+    print("✈️  DARK FLIGHT DETECTION - MULTI-SOURCE INTEL")
     print("="*70)
-    print(f"[-] Streaming to Redis: '{REDIS_STREAM_NAME}'")
-    print(f"[-] CSV Output: '{CSV_FILE}'")
-    print(f"[-] REAL-TIME Mode: Base interval = 60 seconds")
-    print(f"[-] Smart Scheduling: NewsAPI=15min, GoogleNews=3min")
+    print(f"[-] Redis stream: '{REDIS_STREAM_NAME}'")
+    print(f"[-] CSV output: '{CSV_FILE}'")
+    print(f"[-] Update: 60 seconds")
     print("="*70 + "\n")
 
-    # Counters untuk scheduling (berbasis 30 detik)
+    # counter buat scheduling
     cycle_counter = 0
 
     while True:

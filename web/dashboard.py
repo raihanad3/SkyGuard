@@ -1,8 +1,4 @@
-"""
-Dashboard - Flask web server dengan SocketIO
-untuk monitoring penerbangan secara real-time.
-"""
-
+# flask dashboard - web server
 import logging
 import os
 from flask import Flask, render_template, jsonify
@@ -14,12 +10,7 @@ logger = logging.getLogger("skyguard")
 
 
 def create_dashboard(db_manager):
-    """
-    Membuat Flask dashboard app.
-
-    Returns:
-        tuple: (app, socketio)
-    """
+    # setup flask app
     base_dir = os.path.dirname(os.path.abspath(__file__))
     template_folder = os.path.join(base_dir, 'templates')
     static_folder = os.path.join(base_dir, 'static')
@@ -33,30 +24,30 @@ def create_dashboard(db_manager):
 
     @app.route("/")
     def index():
-        """Halaman utama dashboard."""
+        # halaman utama
         return render_template("index.html")
 
     @app.route("/api/stats")
     def api_stats():
-        """API endpoint untuk statistik."""
+        # api stats
         stats = db_manager.get_stats()
         return jsonify(stats)
 
     @app.route("/api/flights")
     def api_flights():
-        """API endpoint untuk flights aktif (last 30 min)."""
+        # api flights aktif
         flights = db_manager.get_active_flights(minutes=30)
         return jsonify(flights)
 
     @app.route("/api/alerts")
     def api_alerts():
-        """API endpoint untuk alert terbaru."""
+        # api alerts
         alerts = db_manager.get_recent_alerts(limit=50)
         return jsonify(alerts)
 
     @app.route("/api/alerts/count")
     def api_alert_count():
-        """API endpoint untuk jumlah alert per level."""
+        # jumlah alert per level
         counts = db_manager.get_alert_count_by_level()
         return jsonify(counts)
 

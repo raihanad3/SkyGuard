@@ -1,8 +1,4 @@
-"""
-Database Manager untuk SkyGuard
-Menyimpan data penerbangan dan alert ke SQLite.
-"""
-
+# database manager - sqlite
 import sqlite3
 import os
 import logging
@@ -13,27 +9,25 @@ logger = logging.getLogger("skyguard")
 
 
 class DatabaseManager:
-    """Manages SQLite database untuk flight data dan alerts."""
-    
     def __init__(self):
-        # Ensure data directory exists
+        # bikin folder kalo belum ada
         os.makedirs(os.path.dirname(DATABASE_PATH), exist_ok=True)
         
         self.db_path = DATABASE_PATH
         self._create_tables()
     
     def _get_connection(self):
-        """Get database connection."""
+        # get db connection
         conn = sqlite3.connect(self.db_path)
         conn.row_factory = sqlite3.Row
         return conn
     
     def _create_tables(self):
-        """Create database tables if not exist."""
+        # bikin tables kalo belum ada
         conn = self._get_connection()
         cursor = conn.cursor()
         
-        # Flights table
+        # table flights
         cursor.execute("""
             CREATE TABLE IF NOT EXISTS flights (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -59,7 +53,7 @@ class DatabaseManager:
             )
         """)
         
-        # Flight info table (metadata)
+        # table flight info (metadata)
         cursor.execute("""
             CREATE TABLE IF NOT EXISTS flight_info (
                 icao24 TEXT PRIMARY KEY,
@@ -71,7 +65,7 @@ class DatabaseManager:
             )
         """)
         
-        # Alerts table
+        # table alerts
         cursor.execute("""
             CREATE TABLE IF NOT EXISTS alerts (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -91,7 +85,7 @@ class DatabaseManager:
             )
         """)
         
-        # Create indices
+        # bikin index buat query cepet
         cursor.execute("CREATE INDEX IF NOT EXISTS idx_flights_icao24 ON flights(icao24)")
         cursor.execute("CREATE INDEX IF NOT EXISTS idx_flights_timestamp ON flights(timestamp)")
         cursor.execute("CREATE INDEX IF NOT EXISTS idx_alerts_icao24 ON alerts(icao24)")

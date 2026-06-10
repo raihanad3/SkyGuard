@@ -1,13 +1,4 @@
-"""
-OpenSky Network Data Collector
-================================
-Fetch REAL flight data dari OpenSky Network API (FREE).
-
-API: https://opensky-network.org/api/
-Data: Real-time ADS-B data dari pesawat globally
-Update: Every 10 seconds
-"""
-
+# opensky collector - fetch real flight data
 import asyncio
 import aiohttp
 import logging
@@ -22,8 +13,6 @@ logger = logging.getLogger("skyguard")
 
 
 class OpenSkyCollector:
-    """Collect real-time flight data from OpenSky Network."""
-    
     def __init__(self, database, anomaly_detector, alert_system, socketio=None):
         self.db = database
         self.detector = anomaly_detector
@@ -34,7 +23,7 @@ class OpenSkyCollector:
         self.session = None
     
     async def start_streaming(self):
-        """Start streaming flight data from OpenSky."""
+        # mulai streaming dari opensky
         self.running = True
         
         logger.info("🚀 Starting OpenSky Network collector...")
@@ -51,7 +40,7 @@ class OpenSkyCollector:
         try:
             while self.running:
                 try:
-                    # Fetch flights from OpenSky
+                    # fetch flights
                     flights = await self._fetch_flights()
                     
                     fetch_count += 1
@@ -59,9 +48,9 @@ class OpenSkyCollector:
                     if flights:
                         logger.info(f"✈️  Received {len(flights)} flights (fetch #{fetch_count})")
                         
-                        # Process each flight
+                        # process tiap flight
                         for flight_data in flights:
-                            # Save to database
+                            # save ke db
                             self.db.insert_flight_position(flight_data)
                             self.db.upsert_flight_info({
                                 "icao24": flight_data["icao24"],
@@ -69,13 +58,13 @@ class OpenSkyCollector:
                                 "origin_country": flight_data.get("origin_country")
                             })
                             
-                            # Anomaly detection
+                            # anomaly detection
                             analysis = self.detector.analyze(flight_data)
                             
-                            # Process alert
+                            # process alert
                             self.alert_system.process_alert(analysis)
                             
-                            # Push to dashboard (SocketIO)
+                            # push ke dashboard
                             if self.socketio:
                                 try:
                                     self.socketio.emit("flight_update", {
@@ -95,7 +84,7 @@ class OpenSkyCollector:
                     else:
                         logger.warning(f"⚠️  No flights in Indonesian airspace (fetch #{fetch_count})")
                     
-                    # Wait for next update
+                    # tunggu next update
                     await asyncio.sleep(OPENSKY_UPDATE_INTERVAL)
                 
                 except Exception as e:
