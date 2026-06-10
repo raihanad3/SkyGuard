@@ -1,8 +1,4 @@
-"""
-Feature Engineering untuk Flight Anomaly Detection
-Ekstrak features dari raw ADS-B data.
-"""
-
+# feature engineering dari raw ADS-B data
 import logging
 from datetime import datetime, timedelta
 from core.config import (
@@ -16,37 +12,35 @@ logger = logging.getLogger("skyguard")
 
 
 class FeatureEngine:
-    """Extract features dari flight data untuk anomaly detection."""
-    
     def __init__(self, database):
         self.db = database
-        self.flight_history = {}  # Track flight history untuk pattern detection
+        self.flight_history = {}  # simpan history flight buat pattern detection
     
     def extract_features(self, flight_data):
-        """Extract features dari raw ADS-B data."""
+        # extract features dari raw data
         icao24 = flight_data.get("icao24")
         
         features = {
-            # Basic data
+            # data dasar
             "icao24": icao24,
             "callsign": flight_data.get("callsign", "N/A"),
             "origin_country": flight_data.get("origin_country", "Unknown"),
             "latitude": flight_data.get("latitude", 0),
             "longitude": flight_data.get("longitude", 0),
-            "altitude": flight_data.get("baro_altitude", 0),  # feet
-            "speed": flight_data.get("velocity", 0),  # m/s -> convert to knots
+            "altitude": flight_data.get("baro_altitude", 0),
+            "speed": flight_data.get("velocity", 0),
             "heading": flight_data.get("true_track", 0),
-            "vertical_rate": flight_data.get("vertical_rate", 0),  # m/s
+            "vertical_rate": flight_data.get("vertical_rate", 0),
             "on_ground": flight_data.get("on_ground", False),
             "timestamp": flight_data.get("timestamp"),
             
-            # Derived features
+            # converted features
             "speed_knots": flight_data.get("velocity", 0) * 1.94384 if flight_data.get("velocity") else 0,
             "altitude_feet": flight_data.get("baro_altitude", 0),
             "climb_rate_fpm": flight_data.get("vertical_rate", 0) * 196.85 if flight_data.get("vertical_rate") else 0,
         }
         
-        # Check if near airport
+        # cek deket bandara ga
         near_airport, airport_code, airport_name = is_near_airport(
             features["latitude"],
             features["longitude"]
@@ -55,7 +49,7 @@ class FeatureEngine:
         features["airport_code"] = airport_code
         features["airport_name"] = airport_name
         
-        # Check if in restricted zone
+        # cek di restricted zone ga
         in_zone, zone_id, zone_name, risk_mult = is_in_restricted_zone(
             features["latitude"],
             features["longitude"]
@@ -65,7 +59,7 @@ class FeatureEngine:
         features["restricted_zone_name"] = zone_name
         features["zone_risk_multiplier"] = risk_mult
         
-        # Track history untuk pattern detection
+        # track history
         if icao24 not in self.flight_history:
             self.flight_history[icao24] = []
         

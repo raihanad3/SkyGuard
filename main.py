@@ -1,16 +1,6 @@
 """
-SKYGUARD — Main Orchestrator
-Sistem Monitoring Penerbangan Real-time untuk Wilayah Udara Indonesia.
-
-Menjalankan semua komponen secara concurrent:
-1. OpenSky Data Collector (REST API polling)
-2. Anomaly Detection (Rule-based)
-3. Alert System (Console + Log + Dashboard)
-4. Web Dashboard (Flask + SocketIO)
-5. Model Trainer (Placeholder)
-
-Usage:
-    python main.py
+SkyGuard - Flight Monitoring System
+Main entry point
 """
 
 import os
@@ -32,7 +22,7 @@ from core.config import LOG_DIR, LOG_FILE
 
 
 def setup_logging():
-    """Konfigurasi logging sistem."""
+    # setup logging
     os.makedirs(LOG_DIR, exist_ok=True)
 
     root_logger = logging.getLogger("skyguard")
@@ -62,7 +52,7 @@ def setup_logging():
 
 
 def print_banner():
-    """Tampilkan banner startup."""
+    # banner startup
     banner = """
 ╔══════════════════════════════════════════════════════════════╗
 ║                                                              ║
