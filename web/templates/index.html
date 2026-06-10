@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🚢 Vessel Guard — Indonesian Waters Monitor</title>
-    <meta name="description" content="Real-time monitoring system for detecting anomalous vessels in Indonesian territorial waters.">
+    <title>✈️ SkyGuard — Indonesian Airspace Monitor</title>
+    <meta name="description" content="Real-time monitoring system for detecting anomalous flights in Indonesian airspace.">
 
     <!-- Leaflet CSS -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
@@ -22,10 +22,10 @@
     <header class="header" id="main-header">
         <div class="header-left">
             <div class="logo">
-                <span class="logo-icon">🛡️</span>
+                <span class="logo-icon">✈️</span>
                 <div class="logo-text">
-                    <h1>VESSEL GUARD</h1>
-                    <span class="logo-subtitle">Indonesian Waters Anomaly Detection</span>
+                    <h1>SKYGUARD</h1>
+                    <span class="logo-subtitle">Indonesian Airspace Anomaly Detection</span>
                 </div>
             </div>
         </div>
@@ -45,10 +45,10 @@
         <!-- Stats Bar -->
         <section class="stats-bar" id="stats-section">
             <div class="stat-card" id="stat-vessels">
-                <div class="stat-icon">🚢</div>
+                <div class="stat-icon">✈️</div>
                 <div class="stat-info">
                     <span class="stat-value" id="total-vessels">0</span>
-                    <span class="stat-label">Kapal Terpantau</span>
+                    <span class="stat-label">Penerbangan Aktif</span>
                 </div>
             </div>
             <div class="stat-card" id="stat-positions">
@@ -86,7 +86,7 @@
             <!-- Map -->
             <div class="map-container" id="map-section">
                 <div class="panel-header">
-                    <span class="panel-title">🗺️ Live Vessel Map</span>
+                    <span class="panel-title">🗺️ Live Flight Map</span>
                     <div class="map-legend">
                         <span class="legend-item"><span class="legend-dot normal"></span>Normal</span>
                         <span class="legend-item"><span class="legend-dot low"></span>Low</span>
@@ -106,17 +106,17 @@
                 <div class="alert-list" id="alert-list">
                     <div class="alert-placeholder">
                         <span class="placeholder-icon">📡</span>
-                        <p>Waiting for incoming vessel data...</p>
+                        <p>Waiting for incoming flight data...</p>
                         <p class="placeholder-sub">Alerts will appear here in real-time</p>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- Vessel Info Panel (appears on click) -->
+        <!-- Flight Info Panel (appears on click) -->
         <div class="vessel-detail-panel" id="vessel-detail" style="display:none;">
             <div class="panel-header">
-                <span class="panel-title" id="vessel-detail-title">Vessel Detail</span>
+                <span class="panel-title" id="vessel-detail-title">Flight Detail</span>
                 <button class="btn-close" onclick="closeVesselDetail()">✕</button>
             </div>
             <div class="vessel-detail-content" id="vessel-detail-content"></div>

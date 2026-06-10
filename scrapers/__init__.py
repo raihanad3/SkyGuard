@@ -1,3 +1,1 @@
-"""
-Scrapers - Data collectors from various sources
-"""
+"""Scrapers module for SkyGuard."""

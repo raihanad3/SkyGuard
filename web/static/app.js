@@ -1,6 +1,6 @@
 /**
- * VESSEL GUARD — Dashboard JavaScript
- * Real-time vessel tracking and anomaly detection visualization.
+ * SKYGUARD — Dashboard JavaScript
+ * Real-time flight tracking and anomaly detection visualization.
  */
 
 // ============================================================
@@ -8,10 +8,10 @@
 // ============================================================
 const state = {
     map: null,
-    markers: {},          // mmsi -> L.marker
+    markers: {},          // icao24 -> L.marker
     socket: null,
     alerts: [],
-    vesselCount: 0,
+    flightCount: 0,
     connected: false,
 };
 
@@ -120,7 +120,7 @@ function initSocket() {
         console.log('❌ Disconnected from server');
     });
 
-    // Real-time vessel updates
+    // Real-time flight updates
     state.socket.on('vessel_update', (data) => {
         updateVesselMarker(data);
     });
@@ -128,7 +128,7 @@ function initSocket() {
     // Real-time alerts
     state.socket.on('new_alert', (data) => {
         addAlertToFeed(data);
-        highlightVessel(data.mmsi, data.alert_level);
+        highlightVessel(data.icao24 || data.mmsi, data.alert_level);
     });
 
     // Stats updates
@@ -136,8 +136,8 @@ function initSocket() {
         updateStats(data);
     });
 
-    // Vessels update
-    state.socket.on('vessels_update', (data) => {
+    // Flights update
+    state.socket.on('flights_update', (data) => {
         data.forEach(v => updateVesselMarker(v));
     });
 }
@@ -168,13 +168,13 @@ function loadInitialData() {
         .then(data => updateStats(data))
         .catch(e => console.error('Stats load error:', e));
 
-    // Load active vessels
-    fetch('/api/vessels')
+    // Load active flights
+    fetch('/api/flights')
         .then(r => r.json())
         .then(data => {
             data.forEach(v => updateVesselMarker(v));
         })
-        .catch(e => console.error('Vessels load error:', e));
+        .catch(e => console.error('Flights load error:', e));
 
     // Load recent alerts
     fetch('/api/alerts')
@@ -200,7 +200,7 @@ function loadInitialData() {
 // Map Markers
 // ============================================================
 function updateVesselMarker(data) {
-    const mmsi = data.mmsi;
+    const mmsi = data.icao24 || data.mmsi;  // Support both flight (icao24) and vessel (mmsi)
     const lat = data.latitude;
     const lon = data.longitude;
     const alertLevel = data.alert_level || 'NORMAL';
@@ -211,47 +211,49 @@ function updateVesselMarker(data) {
     const color = getAlertColor(alertLevel);
     const iconSize = alertLevel === 'HIGH' ? 14 : alertLevel === 'MEDIUM' ? 12 : 10;
 
-    // Create custom icon
+    // Create custom icon (airplane)
     const icon = L.divIcon({
         className: 'vessel-marker',
         html: `<div style="
-            width: ${iconSize}px;
-            height: ${iconSize}px;
-            background: ${color};
-            border-radius: 50%;
-            border: 2px solid rgba(255,255,255,0.8);
-            box-shadow: 0 0 ${alertLevel === 'HIGH' ? '12' : '6'}px ${color};
+            font-size: ${iconSize + 4}px;
+            line-height: 1;
+            filter: drop-shadow(0 0 ${alertLevel === 'HIGH' ? '8' : '4'}px ${color});
             ${alertLevel === 'HIGH' ? 'animation: pulse 1.5s infinite;' : ''}
-        "></div>`,
-        iconSize: [iconSize + 4, iconSize + 4],
-        iconAnchor: [(iconSize + 4) / 2, (iconSize + 4) / 2]
+        ">✈️</div>`,
+        iconSize: [iconSize + 8, iconSize + 8],
+        iconAnchor: [(iconSize + 8) / 2, (iconSize + 8) / 2]
     });
 
     // Build popup content
-    const flag = FLAG_EMOJI[data.flag_country] || '🏳️';
-    const shipName = data.ship_name || 'Unknown Vessel';
-    const shipType = data.ship_type || data.ship_type_name || 'Unknown';
+    const flag = FLAG_EMOJI[data.flag_country || data.origin_country] || '🏳️';
+    const flightName = data.callsign || data.ship_name || 'Unknown Flight';
+    const flightType = data.ship_type || data.ship_type_name || 'Aircraft';
     const speed = data.speed != null ? `${Number(data.speed).toFixed(1)} kn` : 'N/A';
+    const altitude = data.altitude != null ? `${Number(data.altitude).toFixed(0)} ft` : 'N/A';
     const score = data.anomaly_score != null ?
         `${(Number(data.anomaly_score) * 100).toFixed(0)}%` : 'N/A';
 
     const popupContent = `
-        <div class="vessel-popup-title">${flag} ${shipName}</div>
+        <div class="vessel-popup-title">${flag} ${flightName}</div>
         <div class="vessel-popup-row">
-            <span class="vessel-popup-label">MMSI</span>
-            <span class="vessel-popup-value">${mmsi}</span>
+            <span class="vessel-popup-label">ICAO24 / MMSI</span>
+            <span class="vessel-popup-value">${data.icao24 || mmsi}</span>
         </div>
         <div class="vessel-popup-row">
-            <span class="vessel-popup-label">Flag</span>
-            <span class="vessel-popup-value">${data.flag_country || 'Unknown'}</span>
+            <span class="vessel-popup-label">Country</span>
+            <span class="vessel-popup-value">${data.origin_country || data.flag_country || 'Unknown'}</span>
         </div>
         <div class="vessel-popup-row">
             <span class="vessel-popup-label">Type</span>
-            <span class="vessel-popup-value">${shipType}</span>
+            <span class="vessel-popup-value">${flightType}</span>
         </div>
         <div class="vessel-popup-row">
             <span class="vessel-popup-label">Speed</span>
             <span class="vessel-popup-value">${speed}</span>
+        </div>
+        <div class="vessel-popup-row">
+            <span class="vessel-popup-label">Altitude</span>
+            <span class="vessel-popup-value">${altitude}</span>
         </div>
         <div class="vessel-popup-row">
             <span class="vessel-popup-label">Position</span>
@@ -310,8 +312,8 @@ function addAlertToFeed(data, isNew = true) {
     }
 
     const level = (data.alert_level || 'LOW').toLowerCase();
-    const flag = FLAG_EMOJI[data.flag_country] || '🏳️';
-    const shipName = data.ship_name || 'Unknown Vessel';
+    const flag = FLAG_EMOJI[data.origin_country || data.flag_country] || '🏳️';
+    const flightName = data.callsign || data.ship_name || 'Unknown Flight';
     const time = data.timestamp || data.created_at || new Date().toLocaleTimeString();
     const score = data.anomaly_score != null ?
         (Number(data.anomaly_score) * 100).toFixed(0) : 'N/A';
@@ -341,9 +343,9 @@ function addAlertToFeed(data, isNew = true) {
             <span class="alert-score" style="color: ${getAlertColor(data.alert_level)}">${score}%</span>
             <span class="alert-time">${displayTime}</span>
         </div>
-        <div class="alert-vessel">${flag} ${shipName}</div>
+        <div class="alert-vessel">${flag} ${flightName}</div>
         <div class="alert-detail">
-            MMSI: ${data.mmsi || 'N/A'} · ${data.flag_country || '??'}
+            ICAO24/MMSI: ${data.icao24 || data.mmsi || 'N/A'} · ${data.origin_country || data.flag_country || '??'}
             ${data.zone_name ? ` · ${data.zone_name}` : ''}
         </div>
         ${reasonsList.length > 0 ? `
@@ -373,7 +375,7 @@ function clearAlerts() {
         <div class="alert-placeholder">
             <span class="placeholder-icon">📡</span>
             <p>Alerts cleared</p>
-            <p class="placeholder-sub">New alerts will appear here</p>
+            <p class="placeholder-sub">New flight alerts will appear here</p>
         </div>
     `;
 }
@@ -387,6 +389,9 @@ function updateStats(data) {
     }
     if (data.total_positions != null) {
         animateNumber('total-positions', data.total_positions);
+    }
+    if (data.total_flights != null) {
+        animateNumber('total-vessels', data.total_flights);
     }
     if (data.alerts_by_level) {
         animateNumber('alert-high-count', data.alerts_by_level.HIGH || 0);

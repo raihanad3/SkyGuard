@@ -1,137 +1,122 @@
 """
-Konfigurasi sistem deteksi kapal anomali.
-Semua parameter konfigurasi terpusat di sini.
+SkyGuard Configuration
+======================
+Konfigurasi sistem monitoring penerbangan Indonesia.
 """
 
 import os
 
 # ============================================================
-# AISstream.io API Configuration
+# OpenSky Network API Configuration
 # ============================================================
-# Daftar gratis di https://aisstream.io untuk mendapatkan API key
-AISSTREAM_API_KEY = os.environ.get("AISSTREAM_API_KEY", "a6ee4b08fab1ea836ba530d140c35dd6d1139b4a")
-AISSTREAM_WS_URL = "wss://stream.aisstream.io/v0/stream"
+OPENSKY_API_URL = "https://opensky-network.org/api/states/all"
+OPENSKY_UPDATE_INTERVAL = 10  # seconds (API updates every 10s)
 
 # ============================================================
-# Indonesia Maritime Boundaries (Bounding Boxes)
+# Indonesian Airspace Boundaries
 # ============================================================
-# Full Indonesian EEZ (Exclusive Economic Zone)
-INDONESIA_EEZ_BBOX = [
-    [[-14.0, 92.0], [8.0, 141.5]]  # Full Indonesian waters
-]
+# Indonesia FIR (Flight Information Region) bounding box
+INDONESIA_AIRSPACE_BBOX = {
+    "lat_min": -11.0,
+    "lat_max": 6.0,
+    "lon_min": 95.0,
+    "lon_max": 141.0
+}
 
-# Focus areas (uncomment untuk focus ke area tertentu):
-# INDONESIA_EEZ_BBOX = [
-#     [[1.0, 105.0], [7.0, 112.0]]  # Natuna Sea (high risk area)
-# ]
-# INDONESIA_EEZ_BBOX = [
-#     [[0.5, 98.0], [4.0, 104.0]]  # Malacca Strait
-# ]
-# INDONESIA_EEZ_BBOX = [
-#     [[-8.0, 106.0], [-4.0, 117.0]]  # Java Sea
-# ]
-
-# Zona Kritis - area yang sering terjadi pelanggaran
-CRITICAL_ZONES = {
-    "natuna_sea": {
-        "name": "Laut Natuna Utara",
-        "bbox": [[1.0, 105.0], [7.0, 112.0]],
+# ============================================================
+# Restricted/Sensitive Zones
+# ============================================================
+RESTRICTED_ZONES = {
+    "jakarta_presidential": {
+        "name": "Jakarta Presidential Palace Area",
+        "center": [-6.1701, 106.8229],
+        "radius_km": 5,
+        "risk_multiplier": 2.0
+    },
+    "halim_military": {
+        "name": "Halim Perdanakusuma Military Base",
+        "center": [-6.2667, 106.8911],
+        "radius_km": 3,
+        "risk_multiplier": 1.8
+    },
+    "bali_ngurah_rai": {
+        "name": "Ngurah Rai Restricted Area",
+        "center": [-8.7467, 115.1671],
+        "radius_km": 2,
         "risk_multiplier": 1.5
     },
-    "malacca_strait": {
-        "name": "Selat Malaka",
-        "bbox": [[0.5, 98.0], [4.0, 104.0]],
-        "risk_multiplier": 1.3
+    "surabaya_juanda": {
+        "name": "Juanda Military Zone",
+        "center": [-7.3798, 112.7868],
+        "radius_km": 3,
+        "risk_multiplier": 1.6
     },
-    "arafura_sea": {
-        "name": "Laut Arafura",
-        "bbox": [[-10.0, 131.0], [-4.0, 141.0]],
+    "natuna_border": {
+        "name": "Natuna Border Area",
+        "center": [3.9731, 108.2426],
+        "radius_km": 50,
         "risk_multiplier": 1.4
-    },
-    "sulawesi_sea": {
-        "name": "Laut Sulawesi",
-        "bbox": [[-1.0, 117.0], [5.0, 127.0]],
-        "risk_multiplier": 1.2
-    },
-    "java_sea": {
-        "name": "Laut Jawa",
-        "bbox": [[-8.0, 106.0], [-4.0, 117.0]],
-        "risk_multiplier": 1.1
     }
 }
-
-# ============================================================
-# Negara dengan Risiko IUU (Illegal, Unreported, Unregulated) Tinggi
-# Berdasarkan data historis pelanggaran di perairan Indonesia
-# ============================================================
-HIGH_RISK_FLAGS = {
-    "CN": {"name": "China", "risk": 0.9},
-    "VN": {"name": "Vietnam", "risk": 0.85},
-    "PH": {"name": "Philippines", "risk": 0.6},
-    "TH": {"name": "Thailand", "risk": 0.7},
-    "MY": {"name": "Malaysia", "risk": 0.5},
-    "TW": {"name": "Taiwan", "risk": 0.65},
-    "KR": {"name": "South Korea", "risk": 0.4},
-    "UNKNOWN": {"name": "Unknown Flag", "risk": 0.95},
-}
-
-# Negara bendera Indonesia (tidak di-flag)
-INDONESIA_FLAG_CODES = ["ID", "IDN", "360"]
 
 # ============================================================
 # Anomaly Detection Parameters
 # ============================================================
 ANOMALY_CONFIG = {
-    # Isolation Forest
-    "contamination": 0.1,          # Estimasi 10% data adalah anomali
-    "n_estimators": 100,           # Jumlah trees
-    "min_samples_for_training": 50, # Minimum data sebelum training
-    "retrain_interval_hours": 6,   # Retrain setiap 6 jam
-
+    # Altitude thresholds (feet)
+    "min_safe_altitude": 1000,      # Below this = suspicious (unless near airport)
+    "max_normal_altitude": 45000,   # Above this = unusual
+    "rapid_climb_rate": 2000,       # ft/min - rapid altitude change
+    
     # Speed thresholds (knots)
-    "max_speed_fishing": 8,        # Maks kecepatan kapal fishing normal
-    "max_speed_cargo": 25,         # Maks kecepatan kapal cargo
-    "min_speed_loitering": 0.5,    # Di bawah ini = loitering
-    "max_speed_territorial": 15,   # Maks kecepatan di territorial
-
-    # AIS Gap
-    "ais_gap_minutes": 30,         # Gap AIS > 30 menit = suspicious
-
-    # Loitering
-    "loitering_radius_nm": 2.0,    # Radius loitering (nautical miles)
-    "loitering_duration_min": 60,  # Durasi loitering minimum (menit)
-
+    "min_cruise_speed": 100,        # Below this at cruise = suspicious
+    "max_normal_speed": 600,        # Above this = unusual (commercial)
+    "max_military_speed": 1200,     # Military jets can go faster
+    
     # Course change
-    "course_change_threshold": 45, # Perubahan arah > 45° = significant
+    "erratic_course_change": 90,    # Degrees - sudden turn
+    
+    # Transponder off
+    "transponder_timeout": 300,     # Seconds (5 min) - no update = off
+    
+    # Ground proximity
+    "airport_buffer_km": 20,        # Within 20km of airport = OK to be low
+}
 
-    # Night activity
-    "night_start_hour": 22,        # Jam mulai "malam" (WIB)
-    "night_end_hour": 5,           # Jam akhir "malam" (WIB)
+# ============================================================
+# Major Indonesian Airports (for altitude exception)
+# ============================================================
+MAJOR_AIRPORTS = {
+    "CGK": {"name": "Soekarno-Hatta", "lat": -6.1256, "lon": 106.6560},
+    "DPS": {"name": "Ngurah Rai", "lat": -8.7467, "lon": 115.1671},
+    "SUB": {"name": "Juanda", "lat": -7.3798, "lon": 112.7868},
+    "BTH": {"name": "Hang Nadim", "lat": 1.1210, "lon": 104.1196},
+    "UPG": {"name": "Hasanuddin", "lat": -5.0616, "lon": 119.5540},
+    "KNO": {"name": "Kualanamu", "lat": 3.6422, "lon": 98.8853},
 }
 
 # ============================================================
 # Alert Thresholds
 # ============================================================
 ALERT_THRESHOLDS = {
-    "HIGH": 0.7,       # Score >= 0.7 → HIGH ALERT (merah)
-    "MEDIUM": 0.5,     # Score >= 0.5 → MEDIUM (kuning)
-    "LOW": 0.3,        # Score >= 0.3 → LOW (biru)
+    "HIGH": 0.7,       # Score >= 0.7 → HIGH ALERT
+    "MEDIUM": 0.5,     # Score >= 0.5 → MEDIUM
+    "LOW": 0.3,        # Score >= 0.3 → LOW
 }
 
-# Cooldown alert per kapal (menit) - hindari spam
-ALERT_COOLDOWN_MINUTES = 15
+ALERT_COOLDOWN_MINUTES = 10  # Prevent alert spam
 
 # ============================================================
 # Database Configuration
 # ============================================================
-DATABASE_PATH = os.path.join(os.path.dirname(__file__), "data", "vessel_tracker.db")
+DATABASE_PATH = os.path.join(os.path.dirname(__file__), "data", "skyguard.db")
 
 # ============================================================
 # Logging Configuration
 # ============================================================
 LOG_DIR = os.path.join(os.path.dirname(__file__), "logs")
-LOG_FILE = os.path.join(LOG_DIR, "alerts.log")
-SYSTEM_LOG_FILE = os.path.join(LOG_DIR, "system.log")
+LOG_FILE = os.path.join(LOG_DIR, "skyguard.log")
+ALERT_LOG_FILE = os.path.join(LOG_DIR, "alerts.log")
 
 # ============================================================
 # Dashboard Configuration
@@ -143,39 +128,39 @@ DASHBOARD_PORT = 5000
 # Model Save Path
 # ============================================================
 MODEL_DIR = os.path.join(os.path.dirname(__file__), "models")
-MODEL_PATH = os.path.join(MODEL_DIR, "isolation_forest.pkl")
+MODEL_PATH = os.path.join(MODEL_DIR, "flight_anomaly.pkl")
 
 # ============================================================
-# Ship Type Mapping (AIS Ship Type codes)
+# Helper Functions
 # ============================================================
-SHIP_TYPE_MAP = {
-    range(20, 30): "Wing in Ground",
-    range(30, 40): "Fishing",
-    range(40, 50): "High Speed Craft",
-    range(50, 60): "Special Craft",
-    range(60, 70): "Passenger",
-    range(70, 80): "Cargo",
-    range(80, 90): "Tanker",
-    range(90, 100): "Other",
-}
+def calculate_distance_km(lat1, lon1, lat2, lon2):
+    """Calculate distance between two coordinates in km."""
+    from math import radians, sin, cos, sqrt, atan2
+    
+    R = 6371  # Earth radius in km
+    
+    lat1, lon1, lat2, lon2 = map(radians, [lat1, lon1, lat2, lon2])
+    dlat = lat2 - lat1
+    dlon = lon2 - lon1
+    
+    a = sin(dlat/2)**2 + cos(lat1) * cos(lat2) * sin(dlon/2)**2
+    c = 2 * atan2(sqrt(a), sqrt(1-a))
+    
+    return R * c
 
-def get_ship_type_name(type_code):
-    """Konversi kode tipe kapal AIS ke nama yang readable."""
-    if type_code is None:
-        return "Unknown"
-    for code_range, name in SHIP_TYPE_MAP.items():
-        if type_code in code_range:
-            return name
-    return "Unknown"
+def is_near_airport(lat, lon, threshold_km=20):
+    """Check if coordinate is near major airport."""
+    for code, airport in MAJOR_AIRPORTS.items():
+        distance = calculate_distance_km(lat, lon, airport["lat"], airport["lon"])
+        if distance <= threshold_km:
+            return True, code, airport["name"]
+    return False, None, None
 
-# Flag emoji mapping
-FLAG_EMOJI = {
-    "CN": "🇨🇳", "VN": "🇻🇳", "PH": "🇵🇭", "TH": "🇹🇭",
-    "MY": "🇲🇾", "TW": "🇹🇼", "KR": "🇰🇷", "ID": "🇮🇩",
-    "JP": "🇯🇵", "SG": "🇸🇬", "US": "🇺🇸", "PA": "🇵🇦",
-    "LR": "🇱🇷", "MH": "🇲🇭", "HK": "🇭🇰", "UNKNOWN": "🏴",
-}
-
-def get_flag_emoji(country_code):
-    """Mendapatkan emoji bendera dari kode negara."""
-    return FLAG_EMOJI.get(country_code, "🏳️")
+def is_in_restricted_zone(lat, lon):
+    """Check if coordinate is in restricted zone."""
+    for zone_id, zone in RESTRICTED_ZONES.items():
+        center_lat, center_lon = zone["center"]
+        distance = calculate_distance_km(lat, lon, center_lat, center_lon)
+        if distance <= zone["radius_km"]:
+            return True, zone_id, zone["name"], zone["risk_multiplier"]
+    return False, None, None, 1.0

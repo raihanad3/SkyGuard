@@ -1,3 +1,1 @@
-"""
-Core module - Configuration and database
-"""
+"""Core module for SkyGuard."""

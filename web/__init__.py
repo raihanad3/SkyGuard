@@ -1,3 +1,1 @@
-"""
-Web - Dashboard and web interface
-"""
+"""Web dashboard module for SkyGuard."""
