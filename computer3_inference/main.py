@@ -101,8 +101,14 @@ def main():
             inference_batch = []
             batch_alerts = 0
 
+            # STCA: Detect conflicts in the current batch
+            conflicts = detector.detect_conflicts(messages)
+
             for features in messages:
                 total_processed += 1
+
+                # Inject STCA conflicts if any
+                features['stca_conflicts'] = conflicts.get(features.get('icao24'), [])
 
                 # Run anomaly detection
                 analysis = detector.analyze(features)

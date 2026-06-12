@@ -42,14 +42,22 @@ COMPONENTS = {
         "name": "Computer 4 — React UI",
         "cmd": ["npm.cmd" if os.name == "nt" else "npm", "run", "dev", "--prefix", "computer4_dashboard/frontend"],
     },
+    6: {
+        "name": "Computer 1 — Weather Scraper",
+        "cmd": [sys.executable, "-m", "computer1_producer.weather_poller"],
+    },
+    7: {
+        "name": "Computer 1 — Route Resolver",
+        "cmd": [sys.executable, "-m", "computer1_producer.route_resolver"],
+    },
 }
 
 
 def main():
     parser = argparse.ArgumentParser(description="SkyGuard — Start Components")
     parser.add_argument(
-        "--component", "-c", type=int, choices=[1, 2, 3, 4, 5],
-        help="Start only a specific computer (1-5). Default: start all."
+        "--component", "-c", type=int, choices=[1, 2, 3, 4, 5, 6, 7],
+        help="Start only a specific computer (1-7). Default: start all."
     )
     args = parser.parse_args()
 

@@ -49,6 +49,7 @@ export default function ThreatLog() {
               <tr>
                 <th>TIME (UTC)</th>
                 <th>CALLSIGN</th>
+                <th>ROUTE</th>
                 <th>ICAO</th>
                 <th>LVL</th>
                 <th>ACTION</th>
@@ -60,6 +61,11 @@ export default function ThreatLog() {
                 <tr key={alert.id}>
                   <td>{new Date(alert.created_at).toLocaleTimeString()}</td>
                   <td>{alert.callsign || 'N/A'}</td>
+                  <td style={{ fontFamily: 'monospace' }}>
+                    {alert.origin_airport_icao && alert.destination_airport_icao 
+                      ? `${alert.origin_airport_icao} ➔ ${alert.destination_airport_icao}` 
+                      : 'UNKNOWN'}
+                  </td>
                   <td>{alert.icao24}</td>
                   <td className={
                     alert.alert_level === 'HIGH' ? 'text-danger' :

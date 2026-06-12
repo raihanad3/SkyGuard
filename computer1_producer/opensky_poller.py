@@ -12,6 +12,7 @@ no processing or storage.
 import asyncio
 import aiohttp
 import logging
+import os
 from datetime import datetime
 
 from computer1_producer.config.settings import OPENSKY_API_URL, OPENSKY_UPDATE_INTERVAL, KAFKA_TOPIC_RAW_FLIGHT
@@ -31,9 +32,20 @@ class OpenSkyPoller:
     async def start(self):
         """Start the polling loop."""
         self.running = True
-        self.session = aiohttp.ClientSession()
+        
+        # Check for OpenSky authentication
+        username = os.getenv("OPENSKY_USERNAME", "").strip()
+        password = os.getenv("OPENSKY_PASSWORD", "").strip()
+        auth = aiohttp.BasicAuth(username, password) if username and password else None
+        
+        self.session = aiohttp.ClientSession(auth=auth)
 
         logger.info("🚀 OpenSky poller started")
+        if auth:
+            logger.info("🔒 Authenticated with OpenSky as '%s'", username)
+        else:
+            logger.warning("🔓 Unauthenticated OpenSky polling. Subject to strict rate limits (400 req/day).")
+            
         logger.info("📡 Interval: %ds | Bbox: lat[%.1f, %.1f] lon[%.1f, %.1f]",
                      OPENSKY_UPDATE_INTERVAL,
                      ASIA_AIRSPACE_BBOX["lat_min"],
@@ -62,7 +74,7 @@ class OpenSkyPoller:
                             KAFKA_TOPIC_RAW_FLIGHT, messages
                         )
                     else:
-                        logger.warning("⚠️  Fetch #%d — No flights detected", fetch_count)
+                        logger.warning("⚠️  Fetch #%d — No flights detected or rate limited (429)", fetch_count)
 
                     await asyncio.sleep(OPENSKY_UPDATE_INTERVAL)
 
@@ -97,34 +109,32 @@ class OpenSkyPoller:
                     return []
 
                 flights = []
-                for state in data["states"]:
+                for s in data["states"]:
                     try:
                         # Skip records without position
-                        if state[5] is None or state[6] is None:
+                        if s[5] is None or s[6] is None:
                             continue
 
-                        flight = {
-                            "icao24": state[0],
-                            "callsign": (state[1] or "").strip(),
-                            "origin_country": state[2],
-                            "time_position": state[3],
-                            "last_contact": state[4],
-                            "longitude": state[5],
-                            "latitude": state[6],
-                            "baro_altitude": state[7],
-                            "on_ground": state[8],
-                            "velocity": state[9],
-                            "true_track": state[10],
-                            "vertical_rate": state[11],
-                            "sensors": str(state[12]) if state[12] else None,
-                            "geo_altitude": state[13],
-                            "squawk": state[14],
-                            "spi": state[15],
-                            "position_source": state[16],
+                        flights.append({
+                            "icao24": s[0],
+                            "callsign": s[1].strip() if s[1] else "",
+                            "origin_country": s[2],
+                            "time_position": s[3],
+                            "last_contact": s[4],
+                            "longitude": s[5],
+                            "latitude": s[6],
+                            "baro_altitude": s[7],
+                            "on_ground": s[8],
+                            "velocity": s[9],
+                            "true_track": s[10],
+                            "vertical_rate": s[11],
+                            "sensors": ",".join(map(str, s[12])) if s[12] else "",
+                            "geo_altitude": s[13],
+                            "squawk": s[14],
+                            "spi": s[15],
+                            "position_source": s[16],
                             "timestamp": datetime.utcnow().isoformat(),
-                        }
-                        flights.append(flight)
-
+                        })
                     except (IndexError, TypeError) as e:
                         logger.debug("Parse error: %s", e)
                         continue

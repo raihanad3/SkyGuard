@@ -133,8 +133,8 @@ def start_streaming():
         .select(
             "icao24", "callsign", "origin_country",
             "latitude", "longitude",
-            "altitude_feet", "speed_knots", "heading", "climb_rate_fpm",
-            "on_ground", "squawk", "timestamp", "processed_at"
+            "altitude_feet", "speed_knots", "heading", "climb_rate_fpm", "vertical_rate",
+            "on_ground", "squawk", "last_contact", "timestamp", "processed_at"
         )
     )
 

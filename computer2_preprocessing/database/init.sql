@@ -51,6 +51,7 @@ CREATE TABLE IF NOT EXISTS preprocessed_flights (
     speed_knots          DOUBLE PRECISION,
     heading              DOUBLE PRECISION,
     climb_rate_fpm       DOUBLE PRECISION,
+    vertical_rate        DOUBLE PRECISION,
     on_ground            BOOLEAN DEFAULT FALSE,
 
     -- behavioral features
@@ -69,6 +70,7 @@ CREATE TABLE IF NOT EXISTS preprocessed_flights (
 
     -- metadata
     squawk               VARCHAR(10),
+    last_contact         BIGINT,
     raw_timestamp        TEXT,
     processed_at         TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
@@ -90,10 +92,13 @@ CREATE TABLE IF NOT EXISTS inference_results (
     altitude        DOUBLE PRECISION,
     speed           DOUBLE PRECISION,
     heading         DOUBLE PRECISION,
+    vertical_rate   DOUBLE PRECISION,
     anomaly_score   DOUBLE PRECISION,
     alert_level     VARCHAR(10)  NOT NULL DEFAULT 'NORMAL',
     reasons         JSONB        DEFAULT '[]'::jsonb,
     zone_name       VARCHAR(100),
+    squawk          VARCHAR(10),
+    last_contact    BIGINT,
     inferred_at     TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
 
@@ -162,8 +167,34 @@ CREATE INDEX IF NOT EXISTS idx_news_threat   ON news_intelligence (threat_level)
 
 
 -- ============================================================
+-- 7. Weather Zones (Computer 1 weather poller output)
+-- ============================================================
+CREATE TABLE IF NOT EXISTS weather_zones (
+    id SERIAL PRIMARY KEY,
+    firId VARCHAR(50),
+    hazard VARCHAR(50),
+    severity VARCHAR(50),
+    validTimeFrom TIMESTAMP WITH TIME ZONE,
+    validTimeTo TIMESTAMP WITH TIME ZONE,
+    geometry JSONB,
+    collected_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
+
+-- ============================================================
 -- Publication for Debezium CDC
 -- ============================================================
 -- Debezium uses the PostgreSQL logical replication slot.
 -- The publication tells PostgreSQL which tables to track.
 CREATE PUBLICATION skyguard_publication FOR TABLE preprocessed_flights;
+
+-- ============================================================
+-- 8. Flight Routes (Origin/Destination Caching)
+-- ============================================================
+CREATE TABLE IF NOT EXISTS flight_routes (
+    callsign VARCHAR(20) PRIMARY KEY,
+    origin_airport_icao VARCHAR(10),
+    destination_airport_icao VARCHAR(10),
+    operator_icao VARCHAR(10),
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);

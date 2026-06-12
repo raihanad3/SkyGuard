@@ -1,5 +1,5 @@
-import { useState, useEffect } from 'react';
-import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
+import { useState, useEffect, useRef } from 'react';
+import { MapContainer, TileLayer, Marker, Popup, Polyline, Tooltip as LeafletTooltip, GeoJSON } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
 import axios from 'axios';
@@ -31,14 +31,39 @@ const createCustomIcon = (level) => {
   });
 };
 
+import FlightPanel from './FlightPanel';
+
 export default function MapView() {
   const [flights, setFlights] = useState([]);
+  const [trails, setTrails] = useState({});
+  const [weather, setWeather] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [selectedFlight, setSelectedFlight] = useState(null);
 
   const fetchFlights = async () => {
     try {
       const response = await axios.get('http://localhost:8000/api/flights/live');
-      setFlights(response.data);
+      const newFlights = response.data;
+      setFlights(newFlights);
+      
+      // Update trails
+      setTrails(prev => {
+        const next = { ...prev };
+        newFlights.forEach(f => {
+          if (!next[f.icao24]) next[f.icao24] = [];
+          // Add new point, keep last 20 points
+          next[f.icao24] = [...next[f.icao24], [f.latitude, f.longitude]].slice(-20);
+        });
+        return next;
+      });
+
+      // Update selected flight data if it's currently selected
+      setSelectedFlight(prev => {
+        if (!prev) return null;
+        const updated = newFlights.find(f => f.icao24 === prev.icao24);
+        return updated || prev;
+      });
+
       setLoading(false);
     } catch (error) {
       console.error('Error fetching flights:', error);
@@ -46,10 +71,24 @@ export default function MapView() {
     }
   };
 
+  const fetchWeather = async () => {
+    try {
+      const response = await axios.get('http://localhost:8000/api/weather/live');
+      setWeather(response.data);
+    } catch (error) {
+      console.error('Error fetching weather:', error);
+    }
+  };
+
   useEffect(() => {
     fetchFlights();
+    fetchWeather();
     const interval = setInterval(fetchFlights, 10000);
-    return () => clearInterval(interval);
+    const weatherInterval = setInterval(fetchWeather, 60000); // 1 min
+    return () => {
+      clearInterval(interval);
+      clearInterval(weatherInterval);
+    };
   }, []);
 
   return (
@@ -82,34 +121,70 @@ export default function MapView() {
         <div style={{ textAlign: 'center', padding: '2rem' }}>INITIALIZING RADAR...</div>
       ) : (
         <div style={{ position: 'relative', zIndex: 1 }}>
-          <MapContainer center={[5.0, 110.0]} zoom={4} scrollWheelZoom={true}>
+          <MapContainer center={[5.0, 110.0]} zoom={4} scrollWheelZoom={true} style={{ cursor: 'crosshair' }}>
             <TileLayer
               attribution='&copy; <a href="https://carto.com/">CartoDB</a>'
               url="https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png"
             />
+            
+            {/* Weather Overlay */}
+            {weather.map((w, idx) => (
+              <GeoJSON 
+                key={`weather-${idx}`} 
+                data={w.geometry} 
+                style={() => ({ 
+                  color: w.hazard === 'TS' || w.hazard === 'CONVECTIVE' ? '#ef4444' : 
+                         w.hazard === 'TURB' ? '#f59e0b' : '#3b82f6',
+                  weight: 2,
+                  opacity: 0.5,
+                  fillOpacity: 0.1 
+                })}
+              >
+                <LeafletTooltip>
+                  {w.hazard} - {w.severity}
+                </LeafletTooltip>
+              </GeoJSON>
+            ))}
+
+            {/* Flight Trails */}
+            {Object.entries(trails).map(([icao, coords]) => {
+              if (coords.length < 2) return null;
+              const flight = flights.find(f => f.icao24 === icao);
+              const color = flight ? getAlertColor(flight.alert_level) : '#333';
+              return (
+                <Polyline 
+                  key={`trail-${icao}`} 
+                  positions={coords} 
+                  color={color} 
+                  weight={2} 
+                  opacity={0.4} 
+                  dashArray="4"
+                />
+              );
+            })}
+
+            {/* Flight Markers */}
             {flights.map((flight) => (
               <Marker 
                 key={flight.icao24} 
                 position={[flight.latitude, flight.longitude]}
                 icon={createCustomIcon(flight.alert_level)}
+                eventHandlers={{
+                  click: () => setSelectedFlight(flight),
+                }}
               >
-                <Popup>
-                  <div>
-                    <h3 style={{ color: '#000', borderBottom: '1px solid #333', paddingBottom: '4px', marginBottom: '8px' }}>
-                      FLT: {flight.callsign || 'N/A'} ({flight.icao24})
-                    </h3>
-                    <div><strong>ORG:</strong> {flight.origin_country}</div>
-                    <div><strong>ALT:</strong> {Math.round(flight.altitude)} FL</div>
-                    <div><strong>SPD:</strong> {Math.round(flight.speed)} KTS</div>
-                    <div><strong>HDG:</strong> {Math.round(flight.heading)}°</div>
-                    <hr style={{ margin: '8px 0', borderColor: '#ccc' }} />
-                    <div><strong>STATUS:</strong> <span style={{ color: getAlertColor(flight.alert_level), fontWeight: 'bold' }}>{flight.alert_level}</span></div>
-                    <div><strong>SCORE:</strong> {(flight.anomaly_score * 100).toFixed(1)}%</div>
+                <LeafletTooltip direction="right" offset={[10, 0]} opacity={1} permanent={flight.alert_level !== 'NORMAL'}>
+                  <div style={{ fontFamily: 'monospace', fontWeight: 'bold', fontSize: '0.8rem' }}>
+                    {flight.callsign || flight.icao24}<br/>
+                    {flight.origin_airport_icao && flight.destination_airport_icao ? `${flight.origin_airport_icao} ➔ ${flight.destination_airport_icao}` : 'ROUTE UNKNOWN'}<br/>
+                    {Math.round(flight.altitude/100)} FL | {Math.round(flight.speed)} KTS
                   </div>
-                </Popup>
+                </LeafletTooltip>
               </Marker>
             ))}
           </MapContainer>
+          
+          <FlightPanel flight={selectedFlight} onClose={() => setSelectedFlight(null)} />
         </div>
       )}
     </div>

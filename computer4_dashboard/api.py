@@ -38,20 +38,60 @@ def get_live_flights():
         conn = get_db_connection()
         cur = conn.cursor()
         cur.execute("""
-            SELECT DISTINCT ON (icao24)
-                icao24, callsign, origin_country,
-                latitude, longitude, altitude, speed, heading,
-                anomaly_score, alert_level, reasons,
-                inferred_at
-            FROM inference_results
-            WHERE inferred_at > NOW() - INTERVAL '30 minutes'
-              AND latitude IS NOT NULL
-              AND longitude IS NOT NULL
-            ORDER BY icao24, inferred_at DESC
+            SELECT DISTINCT ON (i.icao24)
+                i.icao24, i.callsign, i.origin_country,
+                i.latitude, i.longitude, i.altitude, i.speed, i.heading,
+                i.anomaly_score, i.alert_level, i.reasons,
+                i.vertical_rate, i.last_contact, i.squawk,
+                i.inferred_at,
+                r.origin_airport_icao, r.destination_airport_icao
+            FROM inference_results i
+            LEFT JOIN flight_routes r ON TRIM(i.callsign) = TRIM(r.callsign)
+            WHERE i.inferred_at > NOW() - INTERVAL '30 minutes'
+              AND i.latitude IS NOT NULL
+              AND i.longitude IS NOT NULL
+            ORDER BY i.icao24, i.inferred_at DESC
         """)
         flights = cur.fetchall()
         conn.close()
         return flights
+    except Exception as e:
+        logger.error(f"DB Error: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.get("/api/weather/live")
+def get_live_weather():
+    """Get active weather zones."""
+    try:
+        conn = get_db_connection()
+        cur = conn.cursor()
+        cur.execute("""
+            SELECT hazard, severity, validTimeFrom, validTimeTo, geometry
+            FROM weather_zones
+        """)
+        zones = cur.fetchall()
+        conn.close()
+        return zones
+    except Exception as e:
+        logger.error(f"DB Error: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.get("/api/flights/{icao24}/history")
+def get_flight_history(icao24: str):
+    """Get recent telemetry history for a specific flight."""
+    try:
+        conn = get_db_connection()
+        cur = conn.cursor()
+        cur.execute("""
+            SELECT latitude, longitude, altitude, speed, heading, vertical_rate, inferred_at
+            FROM inference_results
+            WHERE icao24 = %s
+              AND inferred_at > NOW() - INTERVAL '60 minutes'
+            ORDER BY inferred_at ASC
+        """, (icao24,))
+        history = cur.fetchall()
+        conn.close()
+        return history
     except Exception as e:
         logger.error(f"DB Error: {e}")
         raise HTTPException(status_code=500, detail=str(e))
@@ -63,12 +103,14 @@ def get_recent_alerts(limit: int = 50, hours: int = 24):
         conn = get_db_connection()
         cur = conn.cursor()
         cur.execute(f"""
-            SELECT id, icao24, callsign, alert_level, anomaly_score,
-                   latitude, longitude, altitude, speed, heading,
-                   reasons, zone_name, created_at
-            FROM alerts
-            WHERE created_at > NOW() - INTERVAL '{hours} hours'
-            ORDER BY created_at DESC
+            SELECT a.id, a.icao24, a.callsign, a.alert_level, a.anomaly_score,
+                   a.latitude, a.longitude, a.altitude, a.speed, a.heading,
+                   a.reasons, a.zone_name, a.created_at,
+                   r.origin_airport_icao, r.destination_airport_icao
+            FROM alerts a
+            LEFT JOIN flight_routes r ON TRIM(a.callsign) = TRIM(r.callsign)
+            WHERE a.created_at > NOW() - INTERVAL '{hours} hours'
+            ORDER BY a.created_at DESC
             LIMIT {limit}
         """)
         alerts = cur.fetchall()
