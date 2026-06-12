@@ -1,0 +1,35 @@
+# ============================================================
+# SkyGuard — Python Dependencies
+# ============================================================
+
+# --- Kafka ---
+kafka-python
+
+# --- Spark ---
+pyspark
+
+# --- PostgreSQL ---
+psycopg2-binary
+sqlalchemy
+
+# --- Dashboard ---
+streamlit
+streamlit-folium
+streamlit-autorefresh
+folium
+plotly
+
+# --- HTTP / Async ---
+aiohttp
+requests
+
+# --- News / NLP ---
+feedparser
+beautifulsoup4
+python-dateutil
+
+# --- Data ---
+pandas
+
+# --- Utilities ---
+python-dotenv==1.0.1
