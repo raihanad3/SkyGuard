@@ -7,11 +7,20 @@ Adapted for batch processing (Spark-compatible).
 """
 
 import logging
-from computer2_preprocessing.config.airspace import (
-    is_near_airport,
-    is_in_restricted_zone,
-    calculate_distance_km,
-)
+
+# fix import path - support running from root or inside folder
+try:
+    from computer2_preprocessing.config.airspace import (
+        is_near_airport,
+        is_in_restricted_zone,
+        calculate_distance_km,
+    )
+except ModuleNotFoundError:
+    from config.airspace import (
+        is_near_airport,
+        is_in_restricted_zone,
+        calculate_distance_km,
+    )
 
 logger = logging.getLogger("skyguard.preprocessing")
 

@@ -1,19 +1,19 @@
 """
 SkyGuard — Computer 2: Preprocessing (Main Entry Point)
 =========================================================
-Consumes raw flight data from Kafka, applies feature extraction,
-stores preprocessed data in PostgreSQL, and forwards to Kafka
-for downstream inference.
+Consumes raw flight data + news from Kafka, applies:
+- Feature extraction
+- NLP sentiment analysis
+- Regional risk scoring
+- Time-window correlation
 
-Supports two modes:
-  1. Spark Structured Streaming (preferred for production)
-  2. Fallback mode using kafka-python + psycopg2 (for development)
+Stores preprocessed data + hybrid alerts.
 
 Usage:
-    # Spark mode
-    python -m computer2_preprocessing.main --spark
+    # With Spark + News processing
+    python -m computer2_preprocessing.main --spark --enable-news
 
-    # Fallback mode (no Spark needed)
+    # Fallback mode
     python -m computer2_preprocessing.main
 """
 

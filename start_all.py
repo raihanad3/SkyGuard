@@ -30,13 +30,17 @@ COMPONENTS = {
         "name": "Computer 2 — Preprocessing",
         "cmd": [sys.executable, "-m", "computer2_preprocessing.main"],
     },
+    "2-hybrid": {
+        "name": "Computer 2 — Preprocessing (HYBRID MODE)",
+        "cmd": [sys.executable, "computer2_preprocessing/RUN_HYBRID.py"],
+    },
     3: {
         "name": "Computer 3 — Inference",
         "cmd": [sys.executable, "-m", "computer3_inference.main"],
     },
     4: {
         "name": "Computer 4 — Backend API",
-        "cmd": [sys.executable, "-m", "uvicorn", "computer4_dashboard.api:app", "--host", "0.0.0.0", "--port", "8000"],
+        "cmd": [sys.executable, "-m", "uvicorn", "computer4_dashboard.api:app", "--host", "0.0.0.0", "--port", "8001"],
     },
     5: {
         "name": "Computer 4 — React UI",
@@ -56,8 +60,12 @@ COMPONENTS = {
 def main():
     parser = argparse.ArgumentParser(description="SkyGuard — Start Components")
     parser.add_argument(
-        "--component", "-c", type=int, choices=[1, 2, 3, 4, 5, 6, 7],
-        help="Start only a specific computer (1-7). Default: start all."
+        "--component", "-c", type=str,
+        help="Start only a specific computer (1-7, or '2-hybrid'). Default: start all."
+    )
+    parser.add_argument(
+        "--hybrid", action="store_true",
+        help="Use hybrid mode for Computer 2 (NLP + time-windowing)"
     )
     args = parser.parse_args()
 
@@ -73,9 +81,22 @@ def main():
     print(banner)
 
     if args.component:
-        components_to_start = {args.component: COMPONENTS[args.component]}
+        # jika user spesifik component, jalankan itu aja
+        comp_key = args.component
+        if isinstance(args.component, str) and args.component.isdigit():
+            comp_key = int(args.component)
+        components_to_start = {comp_key: COMPONENTS[comp_key]}
     else:
-        components_to_start = COMPONENTS
+        # jalankan semua component
+        components_to_start = {}
+        for key in [1, 2, 3, 4, 5, 6, 7]:
+            components_to_start[key] = COMPONENTS[key]
+        
+        # if hybrid mode, replace Computer 2 dengan hybrid version
+        if args.hybrid:
+            components_to_start[2] = COMPONENTS["2-hybrid"]
+            print("🔬 HYBRID MODE ENABLED: Computer 2 will use NLP + Time-Windowing")
+            print()
 
     processes = {}
 
