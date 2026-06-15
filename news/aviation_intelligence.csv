@@ -1,9 +1,0 @@
-timestamp,category,source,text,location,flight_info,threat_level,confidence,coordinates
-"Sun, 14 Jun 2026 07:42:00 GMT",AIR_DEFENSE,GoogleNews_Koran Jakarta ®,Blind Spot Udara di Indonesia Timur Rawan Intersepsi Pesawat Asing - Koran Jakarta ®,"Indonesia, Jakarta",Unspecified Aircraft,LOW,0.9381,"-2.5489, 118.0149"
-"Wed, 27 May 2026 05:39:56 GMT",AIR_DEFENSE,GoogleNews_TNI AU,Komandan Brigade Parako 2 Pasgat Hadiri Sosialisasi UU Pengelolaan Ruang Udara - TNI AU,Unknown,Unspecified Aircraft,LOW,0.9153,N/A
-"Thu, 04 Jun 2026 04:49:40 GMT",AIR_DEFENSE,GoogleNews_TNI AU,"Hadapi Ancaman Udara, Kodau II Asah Pertahanan Vertikal dan Pemulihan Pangkalan dalam Sikatan Daya 2026 - TNI AU",Unknown,Unspecified Aircraft,LOW,0.9078,N/A
-"Tue, 31 Mar 2026 07:00:00 GMT",AIR_DEFENSE,GoogleNews_TIMES Surabaya,"Latihan Penanganan Pesawat Forced Down, TNI AU Dorong SOP Terpadu Antarinstansi - TIMES Surabaya",Surabaya,Unspecified Aircraft,LOW,0.8663,"-7.5360, 112.2384"
-"Sun, 14 Jun 2026 07:42:00 GMT",AIR_DEFENSE,GoogleNews_Koran Jakarta ®,Blind Spot Udara di Indonesia Timur Rawan Intersepsi Pesawat Asing - Koran Jakarta ®,"Indonesia, Jakarta",Unspecified Aircraft,LOW,0.9381,"-2.5489, 118.0149"
-"Wed, 27 May 2026 05:39:56 GMT",AIR_DEFENSE,GoogleNews_TNI AU,Komandan Brigade Parako 2 Pasgat Hadiri Sosialisasi UU Pengelolaan Ruang Udara - TNI AU,Unknown,Unspecified Aircraft,LOW,0.9153,N/A
-"Thu, 04 Jun 2026 04:49:40 GMT",AIR_DEFENSE,GoogleNews_TNI AU,"Hadapi Ancaman Udara, Kodau II Asah Pertahanan Vertikal dan Pemulihan Pangkalan dalam Sikatan Daya 2026 - TNI AU",Unknown,Unspecified Aircraft,LOW,0.9078,N/A
-"Tue, 31 Mar 2026 07:00:00 GMT",AIR_DEFENSE,GoogleNews_TIMES Surabaya,"Latihan Penanganan Pesawat Forced Down, TNI AU Dorong SOP Terpadu Antarinstansi - TIMES Surabaya",Surabaya,Unspecified Aircraft,LOW,0.8663,"-7.5360, 112.2384"
