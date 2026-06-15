@@ -8,7 +8,7 @@ Used as fallback if Spark Structured Streaming is not available.
 import json
 import logging
 from kafka import KafkaConsumer
-from computer2_preprocessing.config.settings import KAFKA_BOOTSTRAP_SERVERS, KAFKA_CONSUMER_GROUP_PREPROCESSING
+from shared.config.settings import KAFKA_BOOTSTRAP_SERVERS, KAFKA_CONSUMER_GROUP_PREPROCESSING
 
 logger = logging.getLogger("skyguard.preprocessing")
 

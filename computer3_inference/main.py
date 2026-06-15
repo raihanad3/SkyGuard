@@ -20,7 +20,7 @@ if sys.platform == "win32":
     sys.stderr.reconfigure(encoding="utf-8", errors="replace")
     os.environ.setdefault("PYTHONUTF8", "1")
 
-from computer3_inference.config.settings import LOG_DIR
+from shared.config.settings import LOG_DIR
 from computer3_inference.kafka_consumer import InferenceConsumer
 from computer3_inference.anomaly_detector import AnomalyDetector
 from computer3_inference.alert_system import AlertSystem

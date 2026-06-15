@@ -8,7 +8,7 @@ to Kafka topics.
 import json
 import logging
 from kafka import KafkaProducer
-from computer1_producer.config.settings import KAFKA_BOOTSTRAP_SERVERS
+from shared.config.settings import KAFKA_BOOTSTRAP_SERVERS
 
 logger = logging.getLogger("skyguard.producer")
 

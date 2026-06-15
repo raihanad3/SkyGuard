@@ -11,7 +11,7 @@ import json
 import logging
 from kafka import KafkaConsumer
 
-from computer3_inference.config.settings import (
+from shared.config.settings import (
     KAFKA_BOOTSTRAP_SERVERS,
     KAFKA_TOPIC_PREPROCESSED,
     KAFKA_CONSUMER_GROUP_INFERENCE,

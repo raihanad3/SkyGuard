@@ -15,7 +15,7 @@ import os
 import argparse
 import requests
 
-from computer2_preprocessing.config.settings import DEBEZIUM_CONNECT_URL
+from shared.config.settings import DEBEZIUM_CONNECT_URL
 
 CONNECTOR_CONFIG_PATH = os.path.join(os.path.dirname(__file__), "debezium_config.json")
 

@@ -69,13 +69,16 @@ try:
     # Fetch alerts
     levels_str = ", ".join([f"'{l}'" for l in level_filter])
     query = f"""
-        SELECT id, icao24, callsign, alert_level, anomaly_score,
-               latitude, longitude, altitude, speed, heading,
-               reasons, zone_name, created_at
-        FROM alerts
-        WHERE alert_level IN ({levels_str})
-          AND created_at > NOW() - INTERVAL '{interval}'
-        ORDER BY created_at DESC
+        SELECT a.id, a.icao24, a.callsign, a.alert_level, a.anomaly_score,
+               a.latitude, a.longitude, a.altitude, a.speed, a.heading,
+               a.reasons, a.zone_name, a.created_at,
+               r.origin_airport_icao, r.destination_airport_icao,
+               r.registration, r.aircraft_type, r.aircraft_desc
+        FROM alerts a
+        LEFT JOIN flight_routes r ON TRIM(a.callsign) = TRIM(r.callsign)
+        WHERE a.alert_level IN ({levels_str})
+          AND a.created_at > NOW() - INTERVAL '{interval}'
+        ORDER BY a.created_at DESC
         LIMIT {limit}
     """
 
@@ -138,6 +141,8 @@ try:
                     st.markdown("**Flight Info**")
                     st.text(f"ICAO24:  {row['icao24']}")
                     st.text(f"Callsign: {row['callsign'] or 'N/A'}")
+                    st.text(f"Reg: {row.get('registration') or 'N/A'} ({row.get('aircraft_type') or 'N/A'})")
+                    st.text(f"Route: {row.get('origin_airport_icao') or '?'} -> {row.get('destination_airport_icao') or '?'}")
 
                 with col2:
                     st.markdown("**Position**")

@@ -42,7 +42,7 @@ export default function MapView() {
 
   const fetchFlights = async () => {
     try {
-      const response = await axios.get('http://localhost:8000/api/flights/live');
+      const response = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/flights/live`);
       const newFlights = response.data;
       setFlights(newFlights);
       
@@ -73,7 +73,7 @@ export default function MapView() {
 
   const fetchWeather = async () => {
     try {
-      const response = await axios.get('http://localhost:8000/api/weather/live');
+      const response = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/weather/live`);
       setWeather(response.data);
     } catch (error) {
       console.error('Error fetching weather:', error);
@@ -176,7 +176,8 @@ export default function MapView() {
                 <LeafletTooltip direction="right" offset={[10, 0]} opacity={1} permanent={flight.alert_level !== 'NORMAL'}>
                   <div style={{ fontFamily: 'monospace', fontWeight: 'bold', fontSize: '0.8rem' }}>
                     {flight.callsign || flight.icao24}<br/>
-                    {flight.origin_airport_icao && flight.destination_airport_icao ? `${flight.origin_airport_icao} ➔ ${flight.destination_airport_icao}` : 'ROUTE UNKNOWN'}<br/>
+                    {flight.registration ? `REG: ${flight.registration}` : 'REG: N/A'} | {flight.aircraft_type || 'TYPE N/A'}<br/>
+                    {flight.origin_airport_icao && flight.destination_airport_icao && flight.origin_airport_icao !== 'UNKNOWN' ? `${flight.origin_airport_icao} ➔ ${flight.destination_airport_icao}` : 'ROUTE UNKNOWN'}<br/>
                     {Math.round(flight.altitude/100)} FL | {Math.round(flight.speed)} KTS
                   </div>
                 </LeafletTooltip>

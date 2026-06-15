@@ -6,7 +6,7 @@ Shared sidebar for the Streamlit dashboard.
 
 import streamlit as st
 import psycopg2
-from computer4_dashboard.config.settings import (
+from shared.config.settings import (
     POSTGRES_HOST, POSTGRES_PORT,
     POSTGRES_USER, POSTGRES_PASSWORD, POSTGRES_DB,
 )

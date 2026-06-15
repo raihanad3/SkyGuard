@@ -15,7 +15,7 @@ export default function Analytics() {
 
   const fetchStats = async () => {
     try {
-      const response = await axios.get('http://localhost:8000/api/analytics/stats');
+      const response = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/analytics/stats`);
       setStats(response.data);
       setLoading(false);
     } catch (error) {
