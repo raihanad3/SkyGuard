@@ -30,7 +30,7 @@ if sys.platform == "win32":
     sys.stderr.reconfigure(encoding="utf-8", errors="replace")
     os.environ.setdefault("PYTHONUTF8", "1")
 
-from computer2_preprocessing.config.settings import (
+from shared.config.settings import (
     LOG_DIR,
     KAFKA_BOOTSTRAP_SERVERS,
     KAFKA_TOPIC_RAW_FLIGHT,

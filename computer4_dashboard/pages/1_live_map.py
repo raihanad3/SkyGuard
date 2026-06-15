@@ -51,16 +51,19 @@ try:
 
     # Get latest inference results (last 30 min)
     df = pd.read_sql("""
-        SELECT DISTINCT ON (icao24)
-            icao24, callsign, origin_country,
-            latitude, longitude, altitude, speed, heading,
-            anomaly_score, alert_level, reasons,
-            inferred_at
-        FROM inference_results
-        WHERE inferred_at > NOW() - INTERVAL '30 minutes'
-          AND latitude IS NOT NULL
-          AND longitude IS NOT NULL
-        ORDER BY icao24, inferred_at DESC
+        SELECT DISTINCT ON (i.icao24)
+            i.icao24, i.callsign, i.origin_country,
+            i.latitude, i.longitude, i.altitude, i.speed, i.heading,
+            i.anomaly_score, i.alert_level, i.reasons,
+            i.inferred_at,
+            r.origin_airport_icao, r.destination_airport_icao,
+            r.registration, r.aircraft_type, r.aircraft_desc
+        FROM inference_results i
+        LEFT JOIN flight_routes r ON TRIM(i.callsign) = TRIM(r.callsign)
+        WHERE i.inferred_at > NOW() - INTERVAL '30 minutes'
+          AND i.latitude IS NOT NULL
+          AND i.longitude IS NOT NULL
+        ORDER BY i.icao24, i.inferred_at DESC
     """, conn)
 
     conn.close()
@@ -89,14 +92,15 @@ try:
             icon = ALERT_ICONS.get(level, "plane")
 
             popup_html = f"""
-            <div style="font-family: 'Courier New', Courier, monospace; min-width: 200px; color: #000; background-color: #fff; padding: 5px; border: 2px solid {color};">
+            <div style="font-family: 'Courier New', Courier, monospace; min-width: 220px; color: #000; background-color: #fff; padding: 5px; border: 2px solid {color};">
                 <b>FLT: {row['callsign'] or 'N/A'}</b> ({row['icao24']})<br>
+                REG: {row.get('registration') or 'N/A'}<br>
+                TYP: {row.get('aircraft_type') or 'N/A'}<br>
                 <hr style="margin: 4px 0; border-color: #333;">
+                RTE: {row.get('origin_airport_icao') or '?'} &rarr; {row.get('destination_airport_icao') or '?'}<br>
                 ORG: {row['origin_country']}<br>
                 POS: {row['latitude']:.4f}, {row['longitude']:.4f}<br>
-                ALT: {row['altitude']:.0f} FL<br>
-                SPD: {row['speed']:.0f} KTS<br>
-                HDG: {row['heading']:.0f}°<br>
+                ALT: {row['altitude']:.0f} FL | SPD: {row['speed']:.0f} KTS<br>
                 <hr style="margin: 4px 0; border-color: #333;">
                 ANOMALY: {row['anomaly_score']:.1%}<br>
                 STATUS: <b style="color: {color}">{level}</b>
@@ -124,14 +128,15 @@ try:
             return "CLEAR"
             
         display_df = df[[
-            "icao24", "callsign", "origin_country",
+            "icao24", "callsign", "registration", "aircraft_type",
+            "origin_airport_icao", "destination_airport_icao",
             "altitude", "speed", "heading", "anomaly_score", "alert_level"
         ]].copy()
         
         display_df["atc_action"] = display_df["alert_level"].apply(get_atc_action)
         
         display_df.columns = [
-            "ICAO", "CALLSIGN", "ORG",
+            "ICAO", "CALLSIGN", "REG", "TYPE", "ORIG", "DEST",
             "ALT", "SPD", "HDG", "ANOMALY", "LVL", "ATC ACTION"
         ]
         

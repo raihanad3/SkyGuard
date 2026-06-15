@@ -7,7 +7,7 @@ export default function ThreatLog() {
 
   const fetchAlerts = async () => {
     try {
-      const response = await axios.get('http://localhost:8000/api/alerts/recent?limit=50&hours=24');
+      const response = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/alerts/recent?limit=50&hours=24`);
       setAlerts(response.data);
       setLoading(false);
     } catch (error) {
@@ -49,7 +49,9 @@ export default function ThreatLog() {
               <tr>
                 <th>TIME (UTC)</th>
                 <th>CALLSIGN</th>
+                <th>REG / TYPE</th>
                 <th>ROUTE</th>
+                <th>AT AIRPORT</th>
                 <th>ICAO</th>
                 <th>LVL</th>
                 <th>ACTION</th>
@@ -61,10 +63,14 @@ export default function ThreatLog() {
                 <tr key={alert.id}>
                   <td>{new Date(alert.created_at).toLocaleTimeString()}</td>
                   <td>{alert.callsign || 'N/A'}</td>
+                  <td>{alert.registration || 'N/A'} <br/> <small>{alert.aircraft_type || 'N/A'}</small></td>
                   <td style={{ fontFamily: 'monospace' }}>
-                    {alert.origin_airport_icao && alert.destination_airport_icao 
+                    {alert.origin_airport_icao && alert.destination_airport_icao && alert.origin_airport_icao !== 'UNKNOWN'
                       ? `${alert.origin_airport_icao} ➔ ${alert.destination_airport_icao}` 
                       : 'UNKNOWN'}
+                  </td>
+                  <td style={{ color: alert.near_airport ? '#f59e0b' : '#8fbc8f' }}>
+                    {alert.near_airport ? `YES (${alert.airport_code || alert.airport_name})` : 'NO'}
                   </td>
                   <td>{alert.icao24}</td>
                   <td className={

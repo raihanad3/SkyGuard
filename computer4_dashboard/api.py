@@ -3,7 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 import psycopg2
 from psycopg2.extras import RealDictCursor
 import logging
-from computer4_dashboard.config.settings import (
+from shared.config.settings import (
     POSTGRES_HOST, POSTGRES_PORT,
     POSTGRES_USER, POSTGRES_PASSWORD, POSTGRES_DB,
 )
@@ -43,8 +43,9 @@ def get_live_flights():
                 i.latitude, i.longitude, i.altitude, i.speed, i.heading,
                 i.anomaly_score, i.alert_level, i.reasons,
                 i.vertical_rate, i.last_contact, i.squawk,
-                i.inferred_at,
-                r.origin_airport_icao, r.destination_airport_icao
+                i.inferred_at, i.near_airport, i.airport_code, i.airport_name,
+                r.origin_airport_icao, r.destination_airport_icao,
+                r.registration, r.aircraft_type, r.aircraft_desc
             FROM inference_results i
             LEFT JOIN flight_routes r ON TRIM(i.callsign) = TRIM(r.callsign)
             WHERE i.inferred_at > NOW() - INTERVAL '30 minutes'
@@ -105,8 +106,9 @@ def get_recent_alerts(limit: int = 50, hours: int = 24):
         cur.execute(f"""
             SELECT a.id, a.icao24, a.callsign, a.alert_level, a.anomaly_score,
                    a.latitude, a.longitude, a.altitude, a.speed, a.heading,
-                   a.reasons, a.zone_name, a.created_at,
-                   r.origin_airport_icao, r.destination_airport_icao
+                   a.reasons, a.zone_name, a.near_airport, a.airport_code, a.airport_name, a.created_at,
+                   r.origin_airport_icao, r.destination_airport_icao,
+                   r.registration, r.aircraft_type, r.aircraft_desc
             FROM alerts a
             LEFT JOIN flight_routes r ON TRIM(a.callsign) = TRIM(r.callsign)
             WHERE a.created_at > NOW() - INTERVAL '{hours} hours'

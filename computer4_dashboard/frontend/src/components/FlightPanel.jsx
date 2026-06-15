@@ -9,7 +9,7 @@ export default function FlightPanel({ flight, onClose }) {
     if (!flight) return;
     const fetchHistory = async () => {
       try {
-        const response = await axios.get(`http://localhost:8000/api/flights/${flight.icao24}/history`);
+        const response = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/flights/${flight.icao24}/history`);
         setHistory(response.data);
       } catch (error) {
         console.error('Error fetching history:', error);
@@ -62,10 +62,18 @@ export default function FlightPanel({ flight, onClose }) {
           <div>
             <div className="metric-label">ROUTE</div>
             <div style={{ color: '#00ff00', fontWeight: 'bold' }}>
-              {flight.origin_airport_icao && flight.destination_airport_icao 
+              {flight.origin_airport_icao && flight.destination_airport_icao && flight.origin_airport_icao !== 'UNKNOWN'
                 ? `${flight.origin_airport_icao} ➔ ${flight.destination_airport_icao}` 
                 : 'UNKNOWN'}
             </div>
+          </div>
+          <div>
+            <div className="metric-label">REGISTRATION</div>
+            <div style={{ color: '#fff' }}>{flight.registration || 'N/A'}</div>
+          </div>
+          <div>
+            <div className="metric-label">AIRCRAFT TYPE</div>
+            <div style={{ color: '#fff' }}>{flight.aircraft_type || 'N/A'}</div>
           </div>
           <div>
             <div className="metric-label">COMMS STATUS</div>
@@ -75,6 +83,12 @@ export default function FlightPanel({ flight, onClose }) {
             <div className="metric-label">ALERT LVL</div>
             <div style={{ color: flight.alert_level === 'HIGH' ? '#ef4444' : flight.alert_level === 'MEDIUM' ? '#f59e0b' : '#3b82f6' }}>
               {flight.alert_level}
+            </div>
+          </div>
+          <div>
+            <div className="metric-label">AT AIRPORT</div>
+            <div style={{ color: flight.near_airport ? '#f59e0b' : '#fff' }}>
+              {flight.near_airport ? `YES (${flight.airport_code || flight.airport_name})` : 'NO'}
             </div>
           </div>
         </div>

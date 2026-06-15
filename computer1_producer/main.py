@@ -20,7 +20,7 @@ if sys.platform == "win32":
     sys.stderr.reconfigure(encoding="utf-8", errors="replace")
     os.environ.setdefault("PYTHONUTF8", "1")
 
-from computer1_producer.config.settings import LOG_DIR
+from shared.config.settings import LOG_DIR
 from computer1_producer.kafka_producer import SkyGuardProducer
 from computer1_producer.opensky_poller import OpenSkyPoller
 from computer1_producer.news_poller import NewsPoller

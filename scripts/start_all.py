@@ -40,7 +40,7 @@ COMPONENTS = {
     },
     5: {
         "name": "Computer 4 — React UI",
-        "cmd": ["npm.cmd" if os.name == "nt" else "npm", "run", "dev", "--prefix", "computer4_dashboard/frontend"],
+        "cmd": ["npm.cmd" if os.name == "nt" else "npm", "run", "dev", "--prefix", "computer4_dashboard/frontend", "--", "--host"],
     },
     6: {
         "name": "Computer 1 — Weather Scraper",
@@ -61,9 +61,40 @@ def main():
     )
     args = parser.parse_args()
 
-    # Project root is the current directory of this script
-    project_root = os.path.dirname(os.path.abspath(__file__))
+    # Project root is the parent directory of the scripts folder
+    project_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
     os.chdir(project_root)
+
+    # -------------------------------------------------------------------------
+    # TAILSCALE / DISTRIBUTED SETUP
+    # -------------------------------------------------------------------------
+    # Parse a root .env file to find CENTRAL_NODE_IP and auto-configure everything
+    env_path = os.path.join(project_root, ".env")
+    central_ip = "localhost"
+    if os.path.exists(env_path):
+        with open(env_path, "r") as f:
+            for line in f:
+                line = line.strip()
+                if line.startswith("CENTRAL_NODE_IP="):
+                    central_ip = line.split("=", 1)[1].strip()
+                    break
+    
+    if central_ip != "localhost":
+        print(f"🌐 [Tailscale Mode] Central Node IP detected: {central_ip}")
+        os.environ["KAFKA_BOOTSTRAP_SERVERS"] = f"{central_ip}:9093" # or 9092 depending on setup
+        os.environ["POSTGRES_HOST"] = central_ip
+        os.environ["DEBEZIUM_CONNECT_URL"] = f"http://{central_ip}:8083"
+        
+        # Auto-update React Frontend .env
+        frontend_env_path = os.path.join(project_root, "computer4_dashboard", "frontend", ".env")
+        try:
+            with open(frontend_env_path, "w") as f:
+                f.write(f"VITE_API_BASE_URL=http://{central_ip}:8000\n")
+        except Exception as e:
+            print(f"⚠️ Could not update frontend .env: {e}")
+    else:
+        print("🏠 [Local Mode] Running all components locally.")
+    # -------------------------------------------------------------------------
 
     banner = """
 ╔══════════════════════════════════════════════════════════════╗

@@ -7,7 +7,7 @@ Adapted for batch processing (Spark-compatible).
 """
 
 import logging
-from computer2_preprocessing.config.airspace import (
+from shared.config.airspace import (
     is_near_airport,
     is_in_restricted_zone,
     calculate_distance_km,
@@ -43,6 +43,9 @@ class FeatureEngine:
             "longitude": flight_data.get("longitude", 0),
             "on_ground": flight_data.get("on_ground", False),
             "squawk": flight_data.get("squawk"),
+            "registration": flight_data.get("registration", ""),
+            "aircraft_type": flight_data.get("aircraft_type", ""),
+            "aircraft_desc": flight_data.get("aircraft_desc", ""),
             "raw_timestamp": flight_data.get("timestamp"),
 
             # converted features

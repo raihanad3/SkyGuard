@@ -10,7 +10,7 @@ import psycopg2
 from psycopg2.extras import execute_values, Json
 from datetime import datetime
 
-from computer3_inference.config.settings import (
+from shared.config.settings import (
     POSTGRES_HOST, POSTGRES_PORT,
     POSTGRES_USER, POSTGRES_PASSWORD, POSTGRES_DB,
 )
@@ -52,11 +52,13 @@ class ResultStore:
             INSERT INTO inference_results (
                 icao24, callsign, origin_country,
                 latitude, longitude, altitude, speed, heading,
-                anomaly_score, alert_level, reasons, zone_name
+                anomaly_score, alert_level, reasons, zone_name,
+                near_airport, airport_code, airport_name
             ) VALUES (
                 %(icao24)s, %(callsign)s, %(origin_country)s,
                 %(latitude)s, %(longitude)s, %(altitude)s, %(speed)s, %(heading)s,
-                %(anomaly_score)s, %(alert_level)s, %(reasons)s, %(zone_name)s
+                %(anomaly_score)s, %(alert_level)s, %(reasons)s, %(zone_name)s,
+                %(near_airport)s, %(airport_code)s, %(airport_name)s
             )
         """
         try:
@@ -79,6 +81,7 @@ class ResultStore:
                 r.get("altitude"), r.get("speed"), r.get("heading"),
                 r.get("anomaly_score"), r.get("alert_level"),
                 Json(r.get("reasons", [])), r.get("zone_name", ""),
+                r.get("near_airport", False), r.get("airport_code"), r.get("airport_name")
             )
             for r in results
         ]
@@ -87,7 +90,8 @@ class ResultStore:
             INSERT INTO inference_results (
                 icao24, callsign, origin_country,
                 latitude, longitude, altitude, speed, heading,
-                anomaly_score, alert_level, reasons, zone_name
+                anomaly_score, alert_level, reasons, zone_name,
+                near_airport, airport_code, airport_name
             ) VALUES %s
         """
         try:
@@ -110,11 +114,11 @@ class ResultStore:
             INSERT INTO alerts (
                 icao24, callsign, alert_level, anomaly_score,
                 latitude, longitude, altitude, speed, heading,
-                reasons, zone_name, created_at
+                reasons, zone_name, near_airport, airport_code, airport_name, created_at
             ) VALUES (
                 %(icao24)s, %(callsign)s, %(alert_level)s, %(anomaly_score)s,
                 %(latitude)s, %(longitude)s, %(altitude)s, %(speed)s, %(heading)s,
-                %(reasons)s, %(zone_name)s, %(created_at)s
+                %(reasons)s, %(zone_name)s, %(near_airport)s, %(airport_code)s, %(airport_name)s, %(created_at)s
             )
         """
         try:

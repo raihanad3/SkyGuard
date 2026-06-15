@@ -1,45 +1,53 @@
 """
 SkyGuard — Aviation News Poller
 ================================
-Periodically scrapes aviation news from multiple sources and
+Periodically scrapes aviation news from multiple RSS sources and
 produces them to Kafka topic 'raw-news-data'.
 
-Migrated from news/ais_news.py — scraping logic preserved,
-output changed from CSV/Redis to Kafka.
+Sources:
+  - Simple Flying      (simpleflying.com/feed)
+  - AeroTime           (aerotime.aero/feed)
+  - Flightradar24 Blog (flightradar24.com/blog/feed)
+  - The Aviationist    (theaviationist.com/feed/)
 """
 
 import asyncio
 import logging
-import requests
 import feedparser
-from datetime import datetime, timedelta
+from datetime import datetime
 from dateutil import parser as date_parser
 
-from computer1_producer.config.settings import NEWS_API_KEY, KAFKA_TOPIC_RAW_NEWS
-from computer1_producer.config.airspace import ASIA_AIR_COORDINATES
+from shared.config.settings import KAFKA_TOPIC_RAW_NEWS
+from shared.config.airspace import ASIA_AIR_COORDINATES
 
 logger = logging.getLogger("skyguard.producer")
 
 
 # ============================================================
-# News Source URLs
+# RSS Feed Sources
 # ============================================================
-GOOGLE_NEWS_RSS = [
-    "https://news.google.com/rss/search?q=asian+airspace+violation&hl=en-US&gl=US&ceid=US:en",
-    "https://news.google.com/rss/search?q=foreign+aircraft+intercepted+asia&hl=en-US&gl=US&ceid=US:en",
-    "https://news.google.com/rss/search?q=air+defense+scramble+asia&hl=en-US&gl=US&ceid=US:en",
+AVIATION_RSS_FEEDS = [
+    {
+        "url": "https://simpleflying.com/feed/",
+        "name": "SimpleFlying",
+        "focus": "Insiden, berita maskapai global",
+    },
+    {
+        "url": "https://aerotime.aero/feed/",
+        "name": "AeroTime",
+        "focus": "Aviasi umum, insiden, MRO",
+    },
+    {
+        "url": "https://www.flightradar24.com/blog/feed/",
+        "name": "Flightradar24",
+        "focus": "Insiden, tracking, safety",
+    },
+    {
+        "url": "https://theaviationist.com/feed/",
+        "name": "TheAviationist",
+        "focus": "Bisnis & militer aviasi",
+    },
 ]
-
-AVIATION_NEWS_RSS = [
-    "https://www.flightglobal.com/rss/",
-    "https://www.aviationtoday.com/feed/",
-]
-
-AVIATION_KEYWORDS = (
-    "(Asian airspace OR Asia aviation) OR "
-    "(suspicious flight Asia OR unauthorized flight Asia) OR "
-    "(airspace violation Asia OR flight violation Asia)"
-)
 
 
 # ============================================================
@@ -116,170 +124,94 @@ def _categorize(text):
         return "EMERGENCY"
     if any(x in low for x in ["border", "patrol", "surveillance", "monitoring"]):
         return "BORDER_PATROL"
+    # General aviation news that doesn't match specific threat categories
+    if any(x in low for x in [
+        "aircraft", "flight", "airline", "aviation", "airplane",
+        "pilot", "airport", "air force", "crash", "incident",
+        "safety", "accident", "grounded", "turbulence", "mro",
+        "maintenance", "landing", "takeoff",
+    ]):
+        return "AVIATION_GENERAL"
     return None
 
 
 # ============================================================
 # Scraping Functions
 # ============================================================
-async def _scrape_google_news():
-    """Scrape Google News RSS for Asian aviation news."""
-    articles = []
-    for rss_url in GOOGLE_NEWS_RSS:
+async def _scrape_rss_feeds():
+    """Scrape all aviation RSS feeds."""
+    all_articles = []
+
+    for feed_info in AVIATION_RSS_FEEDS:
+        rss_url = feed_info["url"]
+        source_name = feed_info["name"]
+
         try:
             feed = await asyncio.to_thread(lambda u=rss_url: feedparser.parse(u))
-            for entry in feed.entries[:10]:
+
+            if feed.bozo and not feed.entries:
+                logger.warning("⚠️  Feed error for %s: %s", source_name, feed.bozo_exception)
+                continue
+
+            for entry in feed.entries[:15]:
                 title = entry.get("title", "")
                 if not title:
                     continue
 
-                published = entry.get("published", datetime.now().isoformat())
+                # Combine title + summary for richer analysis
+                summary = entry.get("summary", entry.get("description", ""))
+                full_text = f"{title}. {summary}" if summary else title
 
-                # Filter: only recent data
-                try:
-                    pub_date = date_parser.parse(published)
-                    if pub_date.year < 2026:
-                        continue
-                except Exception:
-                    pass
+                # Parse publication date
+                published = entry.get("published", entry.get("updated", ""))
+                if published:
+                    try:
+                        pub_date = date_parser.parse(published)
+                        published = pub_date.isoformat()
+                    except Exception:
+                        published = datetime.now().isoformat()
+                else:
+                    published = datetime.now().isoformat()
 
-                category = _categorize(title)
+                # Categorize article
+                category = _categorize(full_text)
                 if not category:
                     continue
 
-                location, coordinates = _extract_location_and_coordinates(title)
-                flight_info = _extract_flight_info(title)
-                threat_level = _calculate_threat_level(title)
-                source = entry.get("source", {}).get("title", "Google News")
+                location, coordinates = _extract_location_and_coordinates(full_text)
+                flight_info = _extract_flight_info(full_text)
+                threat_level = _calculate_threat_level(full_text)
 
-                articles.append({
+                # Extract article link
+                link = entry.get("link", "")
+
+                all_articles.append({
                     "timestamp": published,
                     "category": category,
-                    "source": f"GoogleNews_{source[:20]}",
+                    "source": source_name,
                     "title": title.strip().replace("\n", " "),
+                    "summary": summary[:300] if summary else "",
+                    "link": link,
                     "location": location,
                     "flight_info": flight_info,
                     "threat_level": threat_level,
                     "coordinates": coordinates,
                 })
+
+            logger.info("📰 %s: %d entries parsed", source_name, len(feed.entries))
+
         except Exception as e:
-            logger.warning("Google RSS error: %s", e)
+            logger.warning("RSS error [%s]: %s", source_name, e)
 
-    logger.info("📰 Google News: %d articles", len(articles))
-    return articles
-
-
-async def _scrape_aviation_rss():
-    """Scrape international aviation news RSS."""
-    articles = []
-    for rss_url in AVIATION_NEWS_RSS:
-        try:
-            feed = await asyncio.to_thread(lambda u=rss_url: feedparser.parse(u))
-            for entry in feed.entries[:10]:
-                title = entry.get("title", "")
-                if not title:
-                    continue
-
-                low = title.lower()
-                if not any(x in low for x in [
-                    "indonesia", "southeast asia", "asia",
-                    "airspace", "violation", "intercept", "emergency"
-                ]):
-                    continue
-
-                category = _categorize(title)
-                if not category:
-                    continue
-
-                location, coordinates = _extract_location_and_coordinates(title)
-                flight_info = _extract_flight_info(title)
-                threat_level = _calculate_threat_level(title)
-
-                articles.append({
-                    "timestamp": entry.get("published", datetime.now().isoformat()),
-                    "category": category,
-                    "source": "AviationNews",
-                    "title": title.strip().replace("\n", " "),
-                    "location": location,
-                    "flight_info": flight_info,
-                    "threat_level": threat_level,
-                    "coordinates": coordinates,
-                })
-        except Exception as e:
-            logger.warning("Aviation RSS error: %s", e)
-
-    logger.info("📰 Aviation RSS: %d articles", len(articles))
-    return articles
-
-
-async def _scrape_newsapi():
-    """Scrape NewsAPI for international aviation intel."""
-    if not NEWS_API_KEY:
-        return []
-
-    articles = []
-    try:
-        today = datetime.now()
-        start = (today - timedelta(days=7)).strftime("%Y-%m-%d")
-        end = today.strftime("%Y-%m-%d")
-        url = (
-            f"https://newsapi.org/v2/everything?q={AVIATION_KEYWORDS}"
-            f"&from={start}&to={end}&language=en&sortBy=publishedAt"
-            f"&pageSize=50&apiKey={NEWS_API_KEY}"
-        )
-        response = await asyncio.to_thread(
-            lambda: requests.get(url, timeout=30).json()
-        )
-
-        if response.get("status") != "ok":
-            return []
-
-        for article in response.get("articles", []):
-            title = article.get("title", "")
-            desc = article.get("description", "")
-            if not title:
-                continue
-
-            full = f"{title}. {desc}"
-            low = full.lower()
-
-            if not any(x in low for x in [
-                "aircraft", "flight", "airspace", "aviation",
-                "airplane", "pilot", "airport", "air force", "transponder"
-            ]):
-                continue
-
-            category = _categorize(full)
-            if not category:
-                continue
-
-            location, coordinates = _extract_location_and_coordinates(full)
-            flight_info = _extract_flight_info(full)
-            threat_level = _calculate_threat_level(full)
-
-            articles.append({
-                "timestamp": article.get("publishedAt"),
-                "category": category,
-                "source": article.get("source", {}).get("name", "NewsAPI"),
-                "title": title.strip().replace("\n", " "),
-                "location": location,
-                "flight_info": flight_info,
-                "threat_level": threat_level,
-                "coordinates": coordinates,
-            })
-
-        logger.info("📰 NewsAPI: %d articles", len(articles))
-    except Exception as e:
-        logger.warning("NewsAPI error: %s", e)
-
-    return articles
+    logger.info("📰 Total scraped articles: %d", len(all_articles))
+    return all_articles
 
 
 # ============================================================
 # Main Poller
 # ============================================================
 class NewsPoller:
-    """Periodically scrapes news sources and produces to Kafka."""
+    """Periodically scrapes RSS news sources and produces to Kafka."""
 
     def __init__(self, kafka_producer):
         self.kafka_producer = kafka_producer
@@ -288,37 +220,22 @@ class NewsPoller:
     async def start(self):
         """Start news polling loop (60s interval)."""
         self.running = True
-        cycle = 0
 
         logger.info("📰 News poller started (60s interval)")
+        logger.info("📰 Sources: %s", ", ".join(f["name"] for f in AVIATION_RSS_FEEDS))
 
         while self.running:
             try:
-                tasks = [_scrape_google_news()]
+                articles = await _scrape_rss_feeds()
 
-                # Every 3 cycles (3 min): aviation RSS
-                if cycle % 3 == 0:
-                    tasks.append(_scrape_aviation_rss())
-
-                # Every 15 cycles (15 min): NewsAPI
-                if cycle % 15 == 0:
-                    tasks.append(_scrape_newsapi())
-
-                results = await asyncio.gather(*tasks, return_exceptions=True)
-
-                all_articles = []
-                for result in results:
-                    if isinstance(result, list):
-                        all_articles.extend(result)
-
-                if all_articles:
+                if articles:
                     messages = [
                         (art.get("category", "UNKNOWN"), art)
-                        for art in all_articles
+                        for art in articles
                     ]
                     self.kafka_producer.send_batch(KAFKA_TOPIC_RAW_NEWS, messages)
+                    logger.info("📰 Produced %d news articles to Kafka", len(articles))
 
-                cycle += 1
                 await asyncio.sleep(60)
 
             except Exception as e:

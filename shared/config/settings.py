@@ -2,7 +2,7 @@
 SkyGuard — Global Settings
 ===========================
 Centralized configuration loaded from environment variables.
-Used by all 4 computer components.
+Single source of truth for all 4 computer components.
 """
 
 import os
@@ -15,7 +15,7 @@ load_dotenv(os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file_
 # ============================================================
 # Kafka Configuration
 # ============================================================
-KAFKA_BOOTSTRAP_SERVERS = os.getenv("KAFKA_BOOTSTRAP_SERVERS", "localhost:9092")
+KAFKA_BOOTSTRAP_SERVERS = os.getenv("KAFKA_BOOTSTRAP_SERVERS", "localhost:9093")
 KAFKA_TOPIC_RAW_FLIGHT = os.getenv("KAFKA_TOPIC_RAW_FLIGHT", "raw-flight-data")
 KAFKA_TOPIC_RAW_NEWS = os.getenv("KAFKA_TOPIC_RAW_NEWS", "raw-news-data")
 KAFKA_TOPIC_PREPROCESSED = os.getenv("KAFKA_TOPIC_PREPROCESSED", "preprocessed-flight-data")
@@ -27,7 +27,7 @@ KAFKA_CONSUMER_GROUP_INFERENCE = os.getenv("KAFKA_CONSUMER_GROUP_INFERENCE", "sk
 # PostgreSQL Configuration
 # ============================================================
 POSTGRES_HOST = os.getenv("POSTGRES_HOST", "localhost")
-POSTGRES_PORT = int(os.getenv("POSTGRES_PORT", "5432"))
+POSTGRES_PORT = int(os.getenv("POSTGRES_PORT", "5433"))
 POSTGRES_USER = os.getenv("POSTGRES_USER", "skyguard")
 POSTGRES_PASSWORD = os.getenv("POSTGRES_PASSWORD", "skyguard_pass")
 POSTGRES_DB = os.getenv("POSTGRES_DB", "skyguard_db")
@@ -51,15 +51,9 @@ OPENSKY_UPDATE_INTERVAL = int(os.getenv("OPENSKY_UPDATE_INTERVAL", "10"))
 
 
 # ============================================================
-# News API
-# ============================================================
-NEWS_API_KEY = os.getenv("NEWS_API_KEY", "")
-
-
-# ============================================================
 # Debezium
 # ============================================================
-DEBEZIUM_CONNECT_URL = os.getenv("DEBEZIUM_CONNECT_URL", "http://localhost:8083")
+DEBEZIUM_CONNECT_URL = os.getenv("DEBEZIUM_CONNECT_URL", "http://localhost:8084")
 
 
 # ============================================================

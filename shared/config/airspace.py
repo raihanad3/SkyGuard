@@ -1,9 +1,8 @@
-import os
-
-new_airspace_content = '''"""
+"""
 SkyGuard — Asian Airspace Configuration
 ==============================================
 Zones, airports, restricted areas, and coordinate helpers.
+Single source of truth — used by all components.
 """
 
 from math import radians, sin, cos, sqrt, atan2
@@ -108,10 +107,3 @@ def is_in_restricted_zone(lat, lon):
         if distance <= zone["radius_km"]:
             return True, zone_id, zone["name"], zone["risk_multiplier"]
     return False, None, None, 1.0
-'''
-
-computers = ['computer1_producer', 'computer2_preprocessing', 'computer3_inference', 'computer4_dashboard']
-for comp in computers:
-    path = os.path.join(comp, 'config', 'airspace.py')
-    with open(path, 'w', encoding='utf-8') as f:
-        f.write(new_airspace_content)

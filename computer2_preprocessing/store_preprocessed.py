@@ -11,7 +11,7 @@ import psycopg2
 from psycopg2.extras import execute_values
 from datetime import datetime
 
-from computer2_preprocessing.config.settings import (
+from shared.config.settings import (
     POSTGRES_HOST, POSTGRES_PORT,
     POSTGRES_USER, POSTGRES_PASSWORD, POSTGRES_DB,
 )
@@ -59,7 +59,8 @@ class PreprocessedStore:
                 near_airport, airport_code, airport_name,
                 in_restricted_zone, restricted_zone_id, restricted_zone_name,
                 zone_risk_multiplier,
-                squawk, raw_timestamp
+                squawk, raw_timestamp,
+                registration, aircraft_type, aircraft_desc
             ) VALUES (
                 %(icao24)s, %(callsign)s, %(origin_country)s,
                 %(latitude)s, %(longitude)s,
@@ -69,7 +70,8 @@ class PreprocessedStore:
                 %(near_airport)s, %(airport_code)s, %(airport_name)s,
                 %(in_restricted_zone)s, %(restricted_zone_id)s, %(restricted_zone_name)s,
                 %(zone_risk_multiplier)s,
-                %(squawk)s, %(raw_timestamp)s
+                %(squawk)s, %(raw_timestamp)s,
+                %(registration)s, %(aircraft_type)s, %(aircraft_desc)s
             )
         """
         try:
@@ -98,6 +100,7 @@ class PreprocessedStore:
             "in_restricted_zone", "restricted_zone_id", "restricted_zone_name",
             "zone_risk_multiplier",
             "squawk", "raw_timestamp",
+            "registration", "aircraft_type", "aircraft_desc",
         ]
 
         values = [

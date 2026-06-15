@@ -3,7 +3,7 @@ import requests
 import psycopg2
 import json
 import logging
-from computer1_producer.config.settings import (
+from shared.config.settings import (
     POSTGRES_HOST, POSTGRES_PORT,
     POSTGRES_USER, POSTGRES_PASSWORD, POSTGRES_DB
 )

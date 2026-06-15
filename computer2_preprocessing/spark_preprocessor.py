@@ -20,7 +20,7 @@ from pyspark.sql.types import (
     BooleanType, LongType, FloatType
 )
 
-from computer2_preprocessing.config.settings import (
+from shared.config.settings import (
     KAFKA_BOOTSTRAP_SERVERS,
     KAFKA_TOPIC_RAW_FLIGHT,
     KAFKA_TOPIC_PREPROCESSED,
@@ -53,6 +53,9 @@ RAW_FLIGHT_SCHEMA = StructType([
     StructField("squawk", StringType(), True),
     StructField("spi", BooleanType(), True),
     StructField("position_source", LongType(), True),
+    StructField("registration", StringType(), True),
+    StructField("aircraft_type", StringType(), True),
+    StructField("aircraft_desc", StringType(), True),
     StructField("timestamp", StringType(), True),
 ])
 
@@ -134,7 +137,8 @@ def start_streaming():
             "icao24", "callsign", "origin_country",
             "latitude", "longitude",
             "altitude_feet", "speed_knots", "heading", "climb_rate_fpm", "vertical_rate",
-            "on_ground", "squawk", "last_contact", "timestamp", "processed_at"
+            "on_ground", "squawk", "last_contact", "registration", "aircraft_type", "aircraft_desc", 
+            "timestamp", "processed_at"
         )
     )
 

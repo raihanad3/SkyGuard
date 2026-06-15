@@ -9,7 +9,7 @@ Structure is ready for ML model integration.
 import math
 import time
 import logging
-from computer3_inference.config.settings import ANOMALY_CONFIG, ALERT_THRESHOLDS
+from shared.config.settings import ANOMALY_CONFIG, ALERT_THRESHOLDS
 
 logger = logging.getLogger("skyguard.inference")
 
@@ -169,6 +169,9 @@ class AnomalyDetector:
             "alert_level": alert_level,
             "reasons": reasons,
             "zone_name": features.get("restricted_zone_name", ""),
+            "near_airport": near_airport,
+            "airport_code": features.get("airport_code"),
+            "airport_name": features.get("airport_name"),
             "squawk": squawk,
             "last_contact": last_contact,
             "vertical_rate": features.get("vertical_rate"),

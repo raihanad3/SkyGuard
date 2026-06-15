@@ -71,6 +71,9 @@ CREATE TABLE IF NOT EXISTS preprocessed_flights (
     -- metadata
     squawk               VARCHAR(10),
     last_contact         BIGINT,
+    registration         VARCHAR(20),
+    aircraft_type        VARCHAR(20),
+    aircraft_desc        VARCHAR(100),
     raw_timestamp        TEXT,
     processed_at         TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
@@ -97,6 +100,9 @@ CREATE TABLE IF NOT EXISTS inference_results (
     alert_level     VARCHAR(10)  NOT NULL DEFAULT 'NORMAL',
     reasons         JSONB        DEFAULT '[]'::jsonb,
     zone_name       VARCHAR(100),
+    near_airport    BOOLEAN DEFAULT FALSE,
+    airport_code    VARCHAR(10),
+    airport_name    VARCHAR(100),
     squawk          VARCHAR(10),
     last_contact    BIGINT,
     inferred_at     TIMESTAMP WITH TIME ZONE DEFAULT NOW()
@@ -123,6 +129,9 @@ CREATE TABLE IF NOT EXISTS alerts (
     heading         DOUBLE PRECISION,
     reasons         JSONB        DEFAULT '[]'::jsonb,
     zone_name       VARCHAR(100),
+    near_airport    BOOLEAN DEFAULT FALSE,
+    airport_code    VARCHAR(10),
+    airport_name    VARCHAR(100),
     created_at      TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
 
@@ -189,12 +198,15 @@ CREATE TABLE IF NOT EXISTS weather_zones (
 CREATE PUBLICATION skyguard_publication FOR TABLE preprocessed_flights;
 
 -- ============================================================
--- 8. Flight Routes (Origin/Destination Caching)
+-- 8. Flight Routes (Origin/Destination Caching + Airplanes.live metadata)
 -- ============================================================
 CREATE TABLE IF NOT EXISTS flight_routes (
     callsign VARCHAR(20) PRIMARY KEY,
     origin_airport_icao VARCHAR(10),
     destination_airport_icao VARCHAR(10),
     operator_icao VARCHAR(10),
+    registration VARCHAR(20),
+    aircraft_type VARCHAR(20),
+    aircraft_desc VARCHAR(100),
     updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );

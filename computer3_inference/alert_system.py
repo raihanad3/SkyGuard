@@ -11,7 +11,7 @@ import logging
 import os
 from datetime import datetime, timedelta
 
-from computer3_inference.config.settings import ALERT_COOLDOWN_MINUTES, LOG_DIR, ALERT_LOG_FILE
+from shared.config.settings import ALERT_COOLDOWN_MINUTES, LOG_DIR, ALERT_LOG_FILE
 
 logger = logging.getLogger("skyguard.inference")
 
@@ -71,6 +71,9 @@ class AlertSystem:
             "heading": analysis["heading"],
             "reasons": analysis["reasons"],
             "zone_name": analysis.get("zone_name", ""),
+            "near_airport": analysis.get("near_airport", False),
+            "airport_code": analysis.get("airport_code"),
+            "airport_name": analysis.get("airport_name"),
             "created_at": datetime.utcnow().isoformat(),
         }
 
