@@ -1,0 +1,102 @@
+services:
+  # ============================================================
+  # Zookeeper - Required by Kafka
+  # ============================================================
+  zookeeper:
+    image: confluentinc/cp-zookeeper:7.5.0
+    container_name: skyguard-zookeeper
+    ports:
+      - "2182:2181"
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+    volumes:
+      - zookeeper_data:/var/lib/zookeeper/data
+      - zookeeper_logs:/var/lib/zookeeper/log
+    networks:
+      - skyguard-net
+
+  # ============================================================
+  # Kafka Broker
+  # ============================================================
+  kafka:
+    image: confluentinc/cp-kafka:7.5.0
+    container_name: skyguard-kafka
+    depends_on:
+      - zookeeper
+    ports:
+      - "9093:9093"
+      - "29093:29093"
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:29093,PLAINTEXT_HOST://${CENTRAL_NODE_IP:-localhost}:9093
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_AUTO_CREATE_TOPICS_ENABLE: "true"
+      KAFKA_DELETE_TOPIC_ENABLE: "true"
+      KAFKA_LOG_RETENTION_HOURS: 168
+      KAFKA_LISTENERS: PLAINTEXT://0.0.0.0:29093,PLAINTEXT_HOST://0.0.0.0:9093
+    volumes:
+      - kafka_data:/var/lib/kafka/data
+    networks:
+      - skyguard-net
+
+  # ============================================================
+  # PostgreSQL Database
+  # ============================================================
+  postgres:
+    image: postgres:16-alpine
+    container_name: skyguard-postgres
+    ports:
+      - "5433:5432"
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-skyguard}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-skyguard_pass}
+      POSTGRES_DB: ${POSTGRES_DB:-skyguard_db}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./computer2_preprocessing/database/init.sql:/docker-entrypoint-initdb.d/01_init.sql
+    command:
+      - "postgres"
+      - "-c"
+      - "wal_level=logical"
+      - "-c"
+      - "max_replication_slots=4"
+      - "-c"
+      - "max_wal_senders=4"
+    networks:
+      - skyguard-net
+
+  # ============================================================
+  # Debezium Connect (CDC - Change Data Capture)
+  # ============================================================
+  debezium:
+    image: debezium/connect:2.4
+    container_name: skyguard-debezium
+    depends_on:
+      - kafka
+      - postgres
+    ports:
+      - "8084:8083"
+    environment:
+      GROUP_ID: 2
+      CONFIG_STORAGE_TOPIC: skyguard_debezium_configs
+      OFFSET_STORAGE_TOPIC: skyguard_debezium_offsets
+      STATUS_STORAGE_TOPIC: skyguard_debezium_statuses
+      BOOTSTRAP_SERVERS: kafka:29093
+      KEY_CONVERTER_SCHEMAS_ENABLE: "false"
+      VALUE_CONVERTER_SCHEMAS_ENABLE: "false"
+    networks:
+      - skyguard-net
+
+volumes:
+  zookeeper_data:
+  zookeeper_logs:
+  kafka_data:
+  postgres_data:
+
+networks:
+  skyguard-net:
+    driver: bridge

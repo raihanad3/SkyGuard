@@ -1,0 +1,193 @@
+:root {
+  --color-bg: #0b1115;
+  --color-primary: #00ff00;
+  --color-secondary: #8fbc8f;
+  --color-warning: #f59e0b;
+  --color-danger: #ef4444;
+  --color-info: #3b82f6;
+  --color-card-bg: #051608;
+  --font-mono: 'Courier New', Courier, monospace;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-color: var(--color-bg);
+  color: var(--color-primary);
+  font-family: var(--font-mono);
+  overflow-x: hidden;
+}
+
+/* Typography */
+h1, h2, h3 {
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  margin-bottom: 1rem;
+}
+
+h1 {
+  border-bottom: 1px solid var(--color-primary);
+  padding-bottom: 0.5rem;
+}
+
+p, span, div {
+  color: var(--color-secondary);
+}
+
+.text-primary { color: var(--color-primary) !important; }
+.text-warning { color: var(--color-warning) !important; }
+.text-danger { color: var(--color-danger) !important; }
+.text-info { color: var(--color-info) !important; }
+
+/* Layout */
+.app-container {
+  display: flex;
+  min-height: 100vh;
+}
+
+.sidebar {
+  width: 250px;
+  background-color: rgba(0, 255, 0, 0.05);
+  border-right: 1px solid var(--color-primary);
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.sidebar-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 2rem;
+  color: var(--color-primary);
+}
+
+.nav-link {
+  color: var(--color-secondary);
+  text-decoration: none;
+  padding: 0.75rem 1rem;
+  margin-bottom: 0.5rem;
+  border: 1px solid transparent;
+  transition: all 0.2s ease;
+  cursor: pointer;
+  display: block;
+}
+
+.nav-link:hover, .nav-link.active {
+  color: var(--color-primary);
+  border-color: var(--color-primary);
+  background-color: rgba(0, 255, 0, 0.1);
+  box-shadow: 0 0 10px rgba(0, 255, 0, 0.2);
+}
+
+.main-content {
+  flex: 1;
+  padding: 2rem;
+  overflow-y: auto;
+  height: 100vh;
+}
+
+/* Cards & Metrics */
+.card {
+  background-color: var(--color-card-bg);
+  border: 1px solid var(--color-primary);
+  border-radius: 4px;
+  padding: 1.5rem;
+  box-shadow: 0 0 10px rgba(0, 255, 0, 0.1);
+}
+
+.metric-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.metric-value {
+  font-size: 2.5rem;
+  font-weight: bold;
+  color: var(--color-primary);
+  margin-top: 0.5rem;
+}
+
+.metric-label {
+  color: #adff2f;
+  text-transform: uppercase;
+  font-size: 1.1rem;
+}
+
+/* Tables */
+.table-container {
+  overflow-x: auto;
+  margin-top: 1.5rem;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th, td {
+  padding: 0.75rem;
+  text-align: left;
+  border-bottom: 1px solid rgba(0, 255, 0, 0.2);
+}
+
+th {
+  color: var(--color-primary);
+  background-color: var(--color-card-bg);
+  text-transform: uppercase;
+  border-bottom: 2px solid var(--color-primary);
+}
+
+tr:hover {
+  background-color: rgba(0, 255, 0, 0.05);
+}
+
+/* Utilities */
+.flex-between {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.mb-4 { margin-bottom: 1rem; }
+.mb-8 { margin-bottom: 2rem; }
+.mt-4 { margin-top: 1rem; }
+.mt-8 { margin-top: 2rem; }
+
+/* Micro-animations */
+@keyframes pulse-neon {
+  0% { box-shadow: 0 0 5px rgba(0, 255, 0, 0.2); }
+  50% { box-shadow: 0 0 15px rgba(0, 255, 0, 0.5); }
+  100% { box-shadow: 0 0 5px rgba(0, 255, 0, 0.2); }
+}
+
+.pulse {
+  animation: pulse-neon 2s infinite;
+}
+
+/* Leaflet Map overrides */
+.leaflet-container {
+  height: 600px;
+  width: 100%;
+  border: 1px solid var(--color-primary);
+  border-radius: 4px;
+}
+
+/* Dark map tiles (we will use CartoDB dark matter) */
+.leaflet-popup-content-wrapper {
+  background-color: #ffffff;
+  color: #000000;
+  border-radius: 0;
+  border: 2px solid var(--color-primary);
+  font-family: var(--font-mono);
+}
+
+.leaflet-popup-tip {
+  background-color: #ffffff;
+}
