@@ -210,3 +210,16 @@ CREATE TABLE IF NOT EXISTS flight_routes (
     aircraft_desc VARCHAR(100),
     updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
+
+-- ============================================================
+-- 9. Incidents (APScheduler scrapers output)
+-- ============================================================
+CREATE TABLE IF NOT EXISTS incidents (
+    id SERIAL PRIMARY KEY,
+    source VARCHAR(50),
+    title TEXT,
+    link TEXT,
+    pub_date TIMESTAMP WITH TIME ZONE,
+    description TEXT,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);

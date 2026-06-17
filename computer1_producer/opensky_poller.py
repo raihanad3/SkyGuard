@@ -124,28 +124,33 @@ class OpenSkyPoller:
                 return []
 
             # --- Airplanes.live Enrichment ---
-            # Batch fetch up to 1000 hex codes
             hex_codes = [s.icao24.lower() for s in opensky_flights[:1000] if s.icao24]
-            hex_str = ",".join(hex_codes)
-            
             enrichment_map = {}
 
-            # Fetch al_response asynchronously
-            async with aiohttp.ClientSession() as session:
+            # Fetch al_response asynchronously (using IPv4 to avoid Tailscale timeout issues)
+            import socket
+            connector = aiohttp.TCPConnector(family=socket.AF_INET)
+            async with aiohttp.ClientSession(connector=connector) as session:
                 try:
-                    async with session.get(
-                        f"https://api.airplanes.live/v2/hex/{hex_str}",
-                        timeout=aiohttp.ClientTimeout(total=15)
-                    ) as al_response:
-                        if al_response.status == 200:
-                            al_data = await al_response.json()
-                            if "ac" in al_data:
-                                for ac in al_data["ac"]:
-                                    hex_key = ac.get("hex", "").lower()
-                                    if hex_key:
-                                        enrichment_map[hex_key] = ac
+                    # Batch hex codes into chunks of 50 to prevent URI Too Long (414)
+                    chunk_size = 50
+                    for i in range(0, len(hex_codes), chunk_size):
+                        chunk = hex_codes[i:i + chunk_size]
+                        hex_str = ",".join(chunk)
+                        
+                        async with session.get(
+                            f"https://api.airplanes.live/v2/hex/{hex_str}",
+                            timeout=aiohttp.ClientTimeout(total=10)
+                        ) as al_response:
+                            if al_response.status == 200:
+                                al_data = await al_response.json()
+                                if "ac" in al_data:
+                                    for ac in al_data["ac"]:
+                                        hex_key = ac.get("hex", "").lower()
+                                        if hex_key:
+                                            enrichment_map[hex_key] = ac
                 except Exception as e:
-                    logger.warning("Airplanes.live enrichment failed: %s", e)
+                    logger.warning("Airplanes.live enrichment failed: %s", type(e).__name__)
 
             # --- Merge Data ---
             flights = []
