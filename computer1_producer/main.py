@@ -24,6 +24,8 @@ from shared.config.settings import LOG_DIR
 from computer1_producer.kafka_producer import SkyGuardProducer
 from computer1_producer.opensky_poller import OpenSkyPoller
 from computer1_producer.news_poller import NewsPoller
+from computer1_producer.airplanes_live_consumer import AirplanesLiveConsumer
+from computer1_producer.incidents_scraper import IncidentsScraper
 
 
 def setup_logging():
@@ -59,6 +61,7 @@ def print_banner():
 ╔══════════════════════════════════════════════════════════════╗
 ║  SKYGUARD — Computer 1: Data Producer                      ║
 ║  OpenSky Polling → Kafka | News Scraping → Kafka           ║
+║  Airplanes.live → DB     | Incidents Scraper → DB          ║
 ╚══════════════════════════════════════════════════════════════╝
 """
     print(banner)
@@ -72,6 +75,8 @@ async def run(logger):
     # Initialize pollers
     opensky = OpenSkyPoller(producer)
     news = NewsPoller(producer)
+    airplanes = AirplanesLiveConsumer()
+    incidents = IncidentsScraper()
 
     # Handle shutdown
     shutdown = asyncio.Event()
@@ -80,6 +85,8 @@ async def run(logger):
         logger.info("🛑 Shutdown signal received")
         opensky.stop()
         news.stop()
+        airplanes.stop()
+        incidents.stop()
         shutdown.set()
 
     signal.signal(signal.SIGINT, _signal_handler)
@@ -87,9 +94,11 @@ async def run(logger):
     logger.info("🚀 Starting pollers...")
 
     try:
+        incidents.start()
         await asyncio.gather(
             opensky.start(),
             news.start(),
+            airplanes.start(),
             return_exceptions=True,
         )
     except Exception as e:

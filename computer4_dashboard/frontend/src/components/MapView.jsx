@@ -166,14 +166,14 @@ export default function MapView() {
             {/* Flight Markers */}
             {flights.map((flight) => (
               <Marker 
-                key={flight.icao24} 
+                key={`${flight.icao24}-v2`} 
                 position={[flight.latitude, flight.longitude]}
                 icon={createCustomIcon(flight.alert_level)}
                 eventHandlers={{
                   click: () => setSelectedFlight(flight),
                 }}
               >
-                <LeafletTooltip direction="right" offset={[10, 0]} opacity={1} permanent={flight.alert_level !== 'NORMAL'}>
+                <LeafletTooltip direction="right" offset={[10, 0]} opacity={1} permanent={false}>
                   <div style={{ fontFamily: 'monospace', fontWeight: 'bold', fontSize: '0.8rem' }}>
                     {flight.callsign || flight.icao24}<br/>
                     {flight.registration ? `REG: ${flight.registration}` : 'REG: N/A'} | {flight.aircraft_type || 'TYPE N/A'}<br/>

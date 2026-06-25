@@ -27,6 +27,7 @@ requests
 feedparser
 beautifulsoup4
 python-dateutil
+apscheduler
 
 # --- Data ---
 pandas
