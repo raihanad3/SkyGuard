@@ -24,7 +24,14 @@ def get_db_connection():
 
 
 def render_sidebar():
-    """Render the shared sidebar with system status and stats."""
+    """Render the shared sidebar with system status and stats.
+    Also triggers toast notifications and alarm audio for new alerts.
+    Returns list of new alerts so caller can handle them if needed.
+    """
+    import base64
+    import json
+    import os
+    _new_alerts = []
     
     # Inject ATC CSS on every page
     st.markdown("""
@@ -125,7 +132,29 @@ def render_sidebar():
             """)
             alert_counts = dict(cur.fetchall())
 
+            # Initialize last_seen_alert_id in session state if not present
+            if "last_seen_alert_id" not in st.session_state:
+                cur.execute("SELECT MAX(id) FROM alerts")
+                max_id = cur.fetchone()[0]
+                st.session_state.last_seen_alert_id = max_id if max_id is not None else 0
+                recent_alerts = []
+            else:
+                # Query alerts created since the last refresh
+                cur.execute("""
+                    SELECT id, alert_level, callsign, icao24, anomaly_score, reasons 
+                    FROM alerts 
+                    WHERE id > %s AND alert_level IN ('HIGH', 'MEDIUM', 'LOW')
+                    ORDER BY id ASC
+                """, (st.session_state.last_seen_alert_id,))
+                recent_alerts = cur.fetchall()
+                if recent_alerts:
+                    # Update the last seen ID to the maximum ID in this batch
+                    st.session_state.last_seen_alert_id = max(a[0] for a in recent_alerts)
+
             conn.close()
+
+            # Stash recent_alerts for processing OUTSIDE sidebar context
+            _new_alerts = list(recent_alerts)
 
             col1, col2 = st.columns(2)
             col1.metric("AIRCRAFT", f"{total_flights:,}")
@@ -145,3 +174,39 @@ def render_sidebar():
         st.divider()
         st.caption("SWEEP CYCLE: 10s")
         st.caption("ATC TERMINAL V1.0")
+
+    # ================================================================
+    # TOAST NOTIFICATIONS & AUDIO — must be OUTSIDE 'with st.sidebar:'
+    # ================================================================
+    if _new_alerts:
+        sound_paths = [
+            os.path.join(os.path.dirname(__file__), "..", "saya_akan_lawan.mp3"),
+            "computer4_dashboard/saya_akan_lawan.mp3",
+            "saya_akan_lawan.mp3"
+        ]
+        sound_file = next((p for p in sound_paths if os.path.exists(p)), None)
+
+        if sound_file:
+            try:
+                with open(sound_file, "rb") as f:
+                    b64_audio = base64.b64encode(f.read()).decode()
+                st.markdown(
+                    f'<audio autoplay style="display:none;"><source src="data:audio/mp3;base64,{b64_audio}" type="audio/mp3"></audio>',
+                    unsafe_allow_html=True
+                )
+            except Exception:
+                pass
+
+        for alert in _new_alerts:
+            _, level, callsign, icao24, score, reasons = alert
+            if isinstance(reasons, str):
+                try:
+                    reasons = json.loads(reasons)
+                except Exception:
+                    reasons = [reasons]
+            reason_str = reasons[0] if reasons else "Potensi anomali terdeteksi"
+            emoji = "🔴" if level == "HIGH" else "🟡" if level == "MEDIUM" else "🔵"
+            st.toast(
+                body=f"**{emoji} {level} THREAT**  \nFlight: {callsign or icao24}  \nScore: {score:.0%}  \n{reason_str}",
+                icon="🛡️"
+            )

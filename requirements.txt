@@ -37,3 +37,8 @@ pandas
 
 # --- Utilities ---
 python-dotenv==1.0.1
+
+# --- Machine Learning & Redis Cache ---
+redis
+scikit-learn
+numpy

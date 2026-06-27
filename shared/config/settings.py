@@ -53,7 +53,7 @@ POSTGRES_CONNECTION_STRING = (
 OPENSKY_API_URL = "https://opensky-network.org/api/states/all"
 OPENSKY_USERNAME = os.getenv("OPENSKY_USERNAME", "")
 OPENSKY_PASSWORD = os.getenv("OPENSKY_PASSWORD", "")
-OPENSKY_UPDATE_INTERVAL = 300  # seconds (5 minutes = 288 req/day, SAFE for free account)
+OPENSKY_UPDATE_INTERVAL = int(os.getenv("OPENSKY_UPDATE_INTERVAL", 20))  # seconds (Default 20s for testing, original 300s)
 
 # ============================================================
 # DEBEZIUM CDC CONFIGURATION
@@ -95,6 +95,12 @@ ALERT_THRESHOLDS = {
 # ALERT SYSTEM CONFIGURATION
 # ============================================================
 ALERT_COOLDOWN_MINUTES = 5  # Prevent alert spam for same flight
+
+# ============================================================
+# REDIS CONFIGURATION (Computer 3 & 4)
+# ============================================================
+REDIS_HOST = os.getenv("REDIS_HOST", CENTRAL_NODE_IP)
+REDIS_PORT = int(os.getenv("REDIS_PORT", 6379))
 
 # ============================================================
 # LOGGING CONFIGURATION

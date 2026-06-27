@@ -91,11 +91,25 @@ services:
     networks:
       - skyguard-net
 
+  # ============================================================
+  # Redis (Caching & Deduplication)
+  # ============================================================
+  redis:
+    image: redis:7-alpine
+    container_name: skyguard-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - skyguard-net
+
 volumes:
   zookeeper_data:
   zookeeper_logs:
   kafka_data:
   postgres_data:
+  redis_data:
 
 networks:
   skyguard-net:

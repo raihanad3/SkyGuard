@@ -9,18 +9,37 @@ Migrated from modules/alert_system.py.
 import json
 import logging
 import os
+import redis
 from datetime import datetime, timedelta
 
-from shared.config.settings import ALERT_COOLDOWN_MINUTES, LOG_DIR, ALERT_LOG_FILE
+from shared.config.settings import (
+    ALERT_COOLDOWN_MINUTES, LOG_DIR, ALERT_LOG_FILE,
+    REDIS_HOST, REDIS_PORT
+)
 
 logger = logging.getLogger("skyguard.inference")
 
 
 class AlertSystem:
-    """Process and manage flight anomaly alerts."""
+    """Process and manage flight anomaly alerts using Redis/Local Memory."""
 
     def __init__(self):
         self.recent_alerts = {}
+
+        # Setup Redis Client
+        try:
+            self.redis_client = redis.Redis(
+                host=REDIS_HOST,
+                port=REDIS_PORT,
+                db=0,
+                decode_responses=True,
+                socket_timeout=2.0
+            )
+            self.redis_client.ping()
+            logger.info(f"✅ Redis connected successfully at {REDIS_HOST}:{REDIS_PORT}")
+        except Exception as e:
+            logger.warning(f"⚠️ Redis connection failed: {e}. Falling back to in-memory cooldown.")
+            self.redis_client = None
 
         # Setup dedicated alert file logger
         os.makedirs(LOG_DIR, exist_ok=True)
@@ -44,12 +63,32 @@ class AlertSystem:
             dict (alert_data) if alert was generated, None otherwise
         """
         alert_level = analysis["alert_level"]
+        icao24 = analysis["icao24"]
 
-        # Skip normal flights
+        # Cache latest vessel position state in Redis for fast dashboard/caching retrieval
+        if self.redis_client and icao24:
+            try:
+                state_key = f"vessel:{icao24}:state"
+                state_data = {
+                    "icao24": icao24,
+                    "callsign": analysis.get("callsign"),
+                    "latitude": analysis.get("latitude"),
+                    "longitude": analysis.get("longitude"),
+                    "altitude": analysis.get("altitude"),
+                    "speed": analysis.get("speed"),
+                    "heading": analysis.get("heading"),
+                    "anomaly_score": analysis.get("anomaly_score"),
+                    "alert_level": alert_level,
+                    "reasons": analysis.get("reasons", []),
+                    "timestamp": datetime.utcnow().isoformat()
+                }
+                self.redis_client.setex(state_key, 1800, json.dumps(state_data))  # Expire in 30 minutes
+            except Exception as e:
+                logger.debug(f"Redis error writing vessel state: {e}")
+
+        # Skip normal flights for DB alerting
         if alert_level == "NORMAL":
             return None
-
-        icao24 = analysis["icao24"]
 
         # Check cooldown
         if self._is_in_cooldown(icao24, alert_level):
@@ -83,18 +122,41 @@ class AlertSystem:
         return alert_data
 
     def _is_in_cooldown(self, icao24, alert_level):
-        """Check if this flight/level is still in cooldown."""
-        key = f"{icao24}_{alert_level}"
-        if key in self.recent_alerts:
-            elapsed = (datetime.utcnow() - self.recent_alerts[key]).total_seconds() / 60
+        """Check if this flight/level is still in cooldown using Redis or memory fallback."""
+        if not icao24:
+            return False
+        key = f"cooldown:{icao24}:{alert_level}"
+        if self.redis_client:
+            try:
+                return self.redis_client.exists(key) > 0
+            except Exception as e:
+                logger.error(f"Redis error in _is_in_cooldown: {e}")
+        
+        # Local memory fallback
+        mem_key = f"{icao24}_{alert_level}"
+        if mem_key in self.recent_alerts:
+            elapsed = (datetime.utcnow() - self.recent_alerts[mem_key]).total_seconds() / 60
             if elapsed < ALERT_COOLDOWN_MINUTES:
                 return True
         return False
 
     def _update_cooldown(self, icao24, alert_level):
-        """Update cooldown timestamp and cleanup old entries."""
-        key = f"{icao24}_{alert_level}"
-        self.recent_alerts[key] = datetime.utcnow()
+        """Update cooldown timestamp in Redis or memory fallback."""
+        if not icao24:
+            return
+        key = f"cooldown:{icao24}:{alert_level}"
+        cooldown_seconds = int(ALERT_COOLDOWN_MINUTES * 60)
+        
+        if self.redis_client:
+            try:
+                self.redis_client.setex(key, cooldown_seconds, "1")
+                return
+            except Exception as e:
+                logger.error(f"Redis error in _update_cooldown: {e}")
+                
+        # Local memory fallback
+        mem_key = f"{icao24}_{alert_level}"
+        self.recent_alerts[mem_key] = datetime.utcnow()
 
         # Cleanup entries older than 1 hour
         cutoff = datetime.utcnow() - timedelta(hours=1)

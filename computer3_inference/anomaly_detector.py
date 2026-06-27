@@ -9,6 +9,11 @@ Structure is ready for ML model integration.
 import math
 import time
 import logging
+import numpy as np
+import psycopg2
+from sklearn.ensemble import IsolationForest
+from sklearn.svm import OneClassSVM
+from sklearn.neighbors import LocalOutlierFactor
 from shared.config.settings import ANOMALY_CONFIG, ALERT_THRESHOLDS
 
 logger = logging.getLogger("skyguard.inference")
@@ -24,10 +29,98 @@ def haversine(lat1, lon1, lat2, lon2):
 
 
 class AnomalyDetector:
-    """Detect anomalous flight behavior from preprocessed features."""
+    """Detect anomalous flight behavior from preprocessed features using Rule-based + 3 ML Models."""
 
     def __init__(self):
         self.config = ANOMALY_CONFIG
+        self.models_trained = False
+        self.warmup_data = []
+        self.warmup_limit = 100
+
+        # Initialize the 3 unsupervised ML models
+        self.model_forest = IsolationForest(contamination=0.05, random_state=42)
+        self.model_svm = OneClassSVM(nu=0.05, kernel="rbf")
+        self.model_lof = LocalOutlierFactor(n_neighbors=20, novelty=True, contamination=0.05)
+
+        # Attempt to train using history
+        self._init_training()
+
+    def _init_training(self):
+        """Try to load historical data from PostgreSQL and train the models.
+        If it fails or has insufficient data, it leaves models_trained = False to trigger warmup."""
+        from shared.config.settings import (
+            POSTGRES_HOST, POSTGRES_PORT,
+            POSTGRES_USER, POSTGRES_PASSWORD, POSTGRES_DB
+        )
+        logger.info("🧠 ML Anomaly Detector: Initializing models...")
+        try:
+            conn = psycopg2.connect(
+                host=POSTGRES_HOST,
+                port=POSTGRES_PORT,
+                user=POSTGRES_USER,
+                password=POSTGRES_PASSWORD,
+                dbname=POSTGRES_DB,
+                connect_timeout=3
+            )
+            cursor = conn.cursor()
+            cursor.execute("""
+                SELECT latitude, longitude, altitude_feet, speed_knots, heading, COALESCE(climb_rate_fpm, 0)
+                FROM preprocessed_flights
+                WHERE latitude IS NOT NULL AND longitude IS NOT NULL
+                LIMIT 1000
+            """)
+            rows = cursor.fetchall()
+            cursor.close()
+            conn.close()
+
+            if len(rows) >= 100:
+                logger.info(f"📊 Found {len(rows)} historical records in PostgreSQL. Training models...")
+                self._train_models(rows)
+                logger.info("✅ ML Models trained successfully on historical data (Opsi B).")
+            else:
+                logger.info(f"⚠️ Insufficient historical records in DB ({len(rows)}/100). Switching to Warm-up mode (Opsi A).")
+        except Exception as e:
+            logger.warning(f"⚠️ Cannot connect to DB for historical training ({e}). Switching to Warm-up mode (Opsi A).")
+
+    def _train_models(self, data_list):
+        """Train scikit-learn models on provided coordinate and flight dynamic features."""
+        try:
+            X = np.array(data_list, dtype=float)
+            X = np.nan_to_num(X, nan=0.0, posinf=999999.0, neginf=-999999.0)
+
+            # Fit Isolation Forest (Model 1)
+            self.model_forest.fit(X)
+
+            # Fit One-Class SVM (Model 2)
+            self.model_svm.fit(X)
+
+            # Fit Local Outlier Factor (Model 3)
+            self.model_lof.fit(X)
+
+            self.models_trained = True
+        except Exception as e:
+            logger.error(f"❌ Error training ML models: {e}")
+            self.models_trained = False
+
+    def _check_warmup_and_train(self, features):
+        """Add current features to warmup buffer. Train when buffer limit reached."""
+        if self.models_trained:
+            return
+
+        lat = features.get("latitude")
+        lon = features.get("longitude")
+        alt = features.get("altitude_feet") or features.get("altitude") or 0
+        spd = features.get("speed_knots") or features.get("speed") or 0
+        hdg = features.get("heading") or 0
+        rate = features.get("climb_rate_fpm") or features.get("vertical_rate") or 0
+
+        if lat is not None and lon is not None:
+            self.warmup_data.append([lat, lon, alt, spd, hdg, rate])
+
+        if len(self.warmup_data) >= self.warmup_limit:
+            logger.info(f"🚀 Warm-up buffer reached {self.warmup_limit} items! Training ML models dynamically (Opsi A)...")
+            self._train_models(self.warmup_data)
+            self.warmup_data = []
 
     def detect_conflicts(self, batch):
         conflicts = {}
@@ -60,6 +153,48 @@ class AnomalyDetector:
         """
         score = 0.0
         reasons = []
+
+        # --- ML Prediction & Scoring (Hybrid Warmup/Inference) ---
+        ml_score = 0.0
+        ml_reasons = []
+
+        if not self.models_trained:
+            self._check_warmup_and_train(features)
+        
+        if self.models_trained:
+            try:
+                lat = features.get("latitude")
+                lon = features.get("longitude")
+                alt = features.get("altitude_feet") or features.get("altitude") or 0
+                spd = features.get("speed_knots") or features.get("speed") or 0
+                hdg = features.get("heading") or 0
+                rate = features.get("climb_rate_fpm") or features.get("vertical_rate") or 0
+
+                if lat is not None and lon is not None:
+                    sample = np.array([[lat, lon, alt, spd, hdg, rate]], dtype=float)
+                    sample = np.nan_to_num(sample, nan=0.0)
+
+                    # Model 1: Isolation Forest (predict: -1 = anomaly, 1 = normal)
+                    pred_forest = self.model_forest.predict(sample)[0]
+                    # Model 2: One-Class SVM
+                    pred_svm = self.model_svm.predict(sample)[0]
+                    # Model 3: Local Outlier Factor
+                    pred_lof = self.model_lof.predict(sample)[0]
+
+                    if pred_forest == -1:
+                        ml_score += 0.25
+                        ml_reasons.append("ML: Isolation Forest flagged abnormal flight profile")
+                    if pred_svm == -1:
+                        ml_score += 0.25
+                        ml_reasons.append("ML: One-Class SVM flagged spatial coordinate anomaly")
+                    if pred_lof == -1:
+                        ml_score += 0.25
+                        ml_reasons.append("ML: Local Outlier Factor flagged abnormal flight density/dynamics")
+            except Exception as e:
+                logger.error(f"Error during ML inference prediction: {e}")
+
+        score += ml_score
+        reasons.extend(ml_reasons)
 
         # --- Rule 1: Restricted zone entry ---
         if features.get("in_restricted_zone"):
