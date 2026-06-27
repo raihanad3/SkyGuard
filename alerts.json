@@ -2595,3 +2595,158 @@
 2026-06-27 20:43:25,756 [CRITICAL] 🔴 HIGH ALERT: KHV760 (70e048) | Score: 100% | ML: Isolation Forest flagged abnormal flight profile, ML: Local Outlier Factor flagged abnormal flight density/dynamics, Unusually slow: 24 knots, Sudden course change: 59°, STCA: Conflict with BOX586
 2026-06-27 20:43:25,809 [CRITICAL] 🔴 HIGH ALERT: KAL343 (71be02) | Score: 100% | ML: Isolation Forest flagged abnormal flight profile, ML: One-Class SVM flagged spatial coordinate anomaly, STCA: Conflict with ABL165
 2026-06-27 20:43:25,908 [INFO] 🔵 LOW ALERT: ASV704 (71bf89) | Score: 30% | Very low altitude: 4785 ft (not near airport)
+2026-06-27 20:43:46,091 [CRITICAL] 🔴 HIGH ALERT: MAS724 (750220) | Score: 100% | ML: Isolation Forest flagged abnormal flight profile, Very low altitude: 3383 ft (not near airport), STCA: Conflict with SIA967
+2026-06-27 20:43:46,146 [CRITICAL] 🔴 HIGH ALERT:  (76cc81) | Score: 90% | STCA: Conflict with SIA214, SIA157
+2026-06-27 20:43:46,164 [CRITICAL] 🔴 HIGH ALERT: SIA967 (76cd06) | Score: 100% | Very low altitude: 3771 ft (not near airport), STCA: Conflict with MAS724
+2026-06-27 20:43:46,602 [INFO] 🔵 LOW ALERT: CSZ230 (780303) | Score: 30% | Very low altitude: 2948 ft (not near airport)
+2026-06-27 20:43:46,907 [INFO] 🔵 LOW ALERT: MDA2064 (8990f2) | Score: 30% | Very low altitude: 480 ft (not near airport)
+2026-06-27 20:43:47,566 [CRITICAL] 🔴 HIGH ALERT: ESR871 (71c546) | Score: 80% | ML: One-Class SVM flagged spatial coordinate anomaly, Very low altitude: 1653 ft (not near airport), Rapid climb: 2751 ft/min
+2026-06-27 20:43:48,005 [INFO] 🔵 LOW ALERT: JAL530 (861f00) | Score: 30% | Very low altitude: 1790 ft (not near airport)
+2026-06-27 20:43:48,121 [CRITICAL] 🔴 HIGH ALERT: CHH7744 (7820ba) | Score: 100% | Very low altitude: 1028 ft (not near airport), STCA: Conflict with CSZ9206, CSN5844
+2026-06-27 20:43:48,238 [INFO] 🔵 LOW ALERT: CCA4124 (782259) | Score: 30% | Very low altitude: 4930 ft (not near airport)
+2026-06-27 20:43:49,152 [INFO] 🔵 LOW ALERT: CPA565 (780171) | Score: 30% | Very low altitude: 1912 ft (not near airport)
+2026-06-27 20:43:49,488 [INFO] 🔵 LOW ALERT:  (780f1c) | Score: 30% | Very low altitude: 2087 ft (not near airport)
+2026-06-27 20:44:08,606 [INFO] 🔵 LOW ALERT: THA304 (8851e2) | Score: 30% | Very low altitude: 4099 ft (not near airport)
+2026-06-27 20:44:10,329 [WARNING] 🟡 MEDIUM ALERT: ANA478 (8626cc) | Score: 75% | ML: Isolation Forest flagged abnormal flight profile, ML: One-Class SVM flagged spatial coordinate anomaly, Rapid descent: 2944 ft/min
+2026-06-27 20:44:13,294 [CRITICAL] 🔴 HIGH ALERT: AXM5435 (750239) | Score: 90% | STCA: Conflict with CHH702
+2026-06-27 20:44:13,945 [CRITICAL] 🔴 HIGH ALERT: SIA833 (76cd76) | Score: 100% | ML: Isolation Forest flagged abnormal flight profile, ML: One-Class SVM flagged spatial coordinate anomaly, Very low altitude: 3314 ft (not near airport), Rapid descent: 2816 ft/min, MSAW: Rapid descent at low altitude
+2026-06-27 20:44:14,271 [INFO] 🔵 LOW ALERT: MDA386 (899045) | Score: 55% | ML: One-Class SVM flagged spatial coordinate anomaly, Very low altitude: 327 ft (not near airport)
+2026-06-27 20:44:14,475 [CRITICAL] 🔴 HIGH ALERT: CAL504 (899020) | Score: 100% | Very low altitude: 2133 ft (not near airport), STCA: Conflict with JAL809
+2026-06-27 20:44:16,352 [INFO] 🔵 LOW ALERT: AIQ3343 (880c41) | Score: 50% | ML: One-Class SVM flagged spatial coordinate anomaly, Rapid descent: 3135 ft/min
+2026-06-27 20:44:17,065 [WARNING] 🟡 MEDIUM ALERT: BLVH (78920c) | Score: 75% | ML: Local Outlier Factor flagged abnormal flight density/dynamics, Very low altitude: 228 ft (not near airport), Sudden course change: 168°
+2026-06-27 20:44:17,304 [WARNING] 🟡 MEDIUM ALERT: ESR871 (71c546) | Score: 75% | Very low altitude: 2110 ft (not near airport), Rapid climb: 2624 ft/min, Sudden course change: 56°
+2026-06-27 20:44:17,383 [CRITICAL] 🔴 HIGH ALERT: CPA729 (789266) | Score: 100% | ML: Isolation Forest flagged abnormal flight profile, ML: One-Class SVM flagged spatial coordinate anomaly, Very low altitude: 4610 ft (not near airport), Rapid descent: 2879 ft/min, MSAW: Rapid descent at low altitude
+2026-06-27 20:44:18,818 [CRITICAL] 🔴 HIGH ALERT: CHH702 (7820fb) | Score: 90% | STCA: Conflict with AXM5435
+2026-06-27 20:44:19,387 [CRITICAL] 🔴 HIGH ALERT: MMA773 (7584bd) | Score: 80% | ML: One-Class SVM flagged spatial coordinate anomaly, ML: Local Outlier Factor flagged abnormal flight density/dynamics, Very low altitude: 76 ft (not near airport)
+2026-06-27 20:44:19,501 [INFO] 🔵 LOW ALERT: CHH730 (78105b) | Score: 50% | ML: One-Class SVM flagged spatial coordinate anomaly, Rapid descent: 2816 ft/min
+2026-06-27 20:44:22,921 [WARNING] 🟡 MEDIUM ALERT: CV6356 (4d0104) | Score: 75% | ML: One-Class SVM flagged spatial coordinate anomaly, ML: Local Outlier Factor flagged abnormal flight density/dynamics, Rapid climb: 3135 ft/min
+2026-06-27 20:44:24,156 [CRITICAL] 🔴 HIGH ALERT: AXM6354 (750481) | Score: 100% | ML: Isolation Forest flagged abnormal flight profile, ML: One-Class SVM flagged spatial coordinate anomaly, Very low altitude: 4084 ft (not near airport), Rapid descent: 2559 ft/min, MSAW: Rapid descent at low altitude
+2026-06-27 20:44:24,229 [INFO] 🔵 LOW ALERT: AXM896 (75047d) | Score: 55% | ML: One-Class SVM flagged spatial coordinate anomaly, Very low altitude: 1653 ft (not near airport)
+2026-06-27 20:44:24,653 [WARNING] 🟡 MEDIUM ALERT: SIA965 (76cef1) | Score: 75% | ML: Isolation Forest flagged abnormal flight profile, ML: One-Class SVM flagged spatial coordinate anomaly, Rapid descent: 3007 ft/min
+2026-06-27 20:44:25,856 [CRITICAL] 🔴 HIGH ALERT: AXM103 (7504af) | Score: 100% | ML: Isolation Forest flagged abnormal flight profile, ML: One-Class SVM flagged spatial coordinate anomaly, Very low altitude: 1028 ft (not near airport), Rapid climb: 2751 ft/min
+2026-06-27 20:44:25,946 [CRITICAL] 🔴 HIGH ALERT: TGW181 (76bcc1) | Score: 100% | Very low altitude: 1127 ft (not near airport), STCA: Conflict with SIA214
+2026-06-27 20:44:26,491 [INFO] 🔵 LOW ALERT: JAL8151 (86e4b8) | Score: 50% | ML: One-Class SVM flagged spatial coordinate anomaly, ML: Local Outlier Factor flagged abnormal flight density/dynamics
+2026-06-27 20:44:27,292 [INFO] 🔵 LOW ALERT: ANA1098 (86d594) | Score: 55% | ML: One-Class SVM flagged spatial coordinate anomaly, Very low altitude: 205 ft (not near airport)
+2026-06-27 20:44:35,746 [INFO] 🔵 LOW ALERT: SIA967 (76cd06) | Score: 30% | Very low altitude: 4213 ft (not near airport)
+2026-06-27 20:44:37,593 [CRITICAL] 🔴 HIGH ALERT: CAL5393 (8990ee) | Score: 90% | STCA: Conflict with CAL027, HKE116
+2026-06-27 20:44:38,217 [CRITICAL] 🔴 HIGH ALERT: AIQ3343 (880c41) | Score: 100% | ML: One-Class SVM flagged spatial coordinate anomaly, Very low altitude: 4579 ft (not near airport), Rapid descent: 2751 ft/min, MSAW: Rapid descent at low altitude
+2026-06-27 20:44:38,237 [CRITICAL] 🔴 HIGH ALERT: CSN3235 (78062a) | Score: 100% | ML: One-Class SVM flagged spatial coordinate anomaly, Rapid climb: 2879 ft/min, STCA: Conflict with CSZ8953
+2026-06-27 20:44:38,339 [WARNING] 🟡 MEDIUM ALERT: AIQ4116 (880c4d) | Score: 75% | ML: Isolation Forest flagged abnormal flight profile, ML: One-Class SVM flagged spatial coordinate anomaly, Rapid climb: 2559 ft/min
+2026-06-27 20:44:38,418 [CRITICAL] 🔴 HIGH ALERT: SIA157 (76b454) | Score: 90% | STCA: Conflict with SIA214, TGW181
+2026-06-27 20:44:38,502 [INFO] 🔵 LOW ALERT: BLVH (78920c) | Score: 55% | ML: Local Outlier Factor flagged abnormal flight density/dynamics, Very low altitude: 228 ft (not near airport)
+2026-06-27 20:44:38,582 [INFO] 🔵 LOW ALERT:  (504e36) | Score: 45% | ML: Local Outlier Factor flagged abnormal flight density/dynamics, Sudden course change: 179°
+2026-06-27 20:44:38,814 [CRITICAL] 🔴 HIGH ALERT: THA665 (885116) | Score: 100% | Very low altitude: 2225 ft (not near airport), STCA: Conflict with THA472
+2026-06-27 20:44:38,864 [INFO] 🔵 LOW ALERT: THA673 (88516c) | Score: 30% | Very low altitude: 3489 ft (not near airport)
+2026-06-27 20:44:39,287 [INFO] 🔵 LOW ALERT: QDA902 (78113c) | Score: 30% | Very low altitude: 4747 ft (not near airport)
+2026-06-27 20:44:39,345 [CRITICAL] 🔴 HIGH ALERT: APJ627 (84bbdf) | Score: 100% | ML: Isolation Forest flagged abnormal flight profile, ML: One-Class SVM flagged spatial coordinate anomaly, Rapid climb: 2624 ft/min, STCA: Conflict with APJ366
+2026-06-27 20:44:39,375 [WARNING] 🟡 MEDIUM ALERT: TGW580 (76d107) | Score: 75% | ML: Isolation Forest flagged abnormal flight profile, ML: One-Class SVM flagged spatial coordinate anomaly, Rapid climb: 2944 ft/min
+2026-06-27 20:44:39,405 [INFO] 🔵 LOW ALERT: CSN3395 (781126) | Score: 30% | Very low altitude: 2354 ft (not near airport)
+2026-06-27 20:44:39,429 [INFO] 🔵 LOW ALERT:  (7823c5) | Score: 30% | Very low altitude: 2788 ft (not near airport)
+2026-06-27 20:44:39,526 [CRITICAL] 🔴 HIGH ALERT: ANA116 (872fe4) | Score: 80% | ML: Isolation Forest flagged abnormal flight profile, Very low altitude: 4678 ft (not near airport), Rapid climb: 2559 ft/min
+2026-06-27 20:44:40,149 [INFO] 🔵 LOW ALERT: KXP2613 (75057b) | Score: 30% | Very low altitude: 822 ft (not near airport)
+2026-06-27 20:44:40,288 [INFO] 🔵 LOW ALERT: AXM103 (7504af) | Score: 55% | ML: Isolation Forest flagged abnormal flight profile, Very low altitude: 1303 ft (not near airport)
+2026-06-27 20:44:40,374 [CRITICAL] 🔴 HIGH ALERT: APJ366 (84b807) | Score: 90% | STCA: Conflict with APJ627
+2026-06-27 20:44:40,382 [WARNING] 🟡 MEDIUM ALERT: TNU5110 (8a0ab8) | Score: 75% | ML: Isolation Forest flagged abnormal flight profile, ML: One-Class SVM flagged spatial coordinate anomaly, Rapid climb: 2559 ft/min
+2026-06-27 20:44:40,452 [CRITICAL] 🔴 HIGH ALERT: SNJ26 (86d1f3) | Score: 80% | ML: Isolation Forest flagged abnormal flight profile, ML: One-Class SVM flagged spatial coordinate anomaly, Very low altitude: 2796 ft (not near airport)
+2026-06-27 20:44:56,977 [INFO] 🔵 LOW ALERT: SNJ38 (86cec5) | Score: 30% | Very low altitude: 2034 ft (not near airport)
+2026-06-27 20:44:57,096 [INFO] 🔵 LOW ALERT: THA602 (885310) | Score: 50% | Very low altitude: 1104 ft (not near airport), Sudden course change: 92°
+2026-06-27 20:44:57,389 [CRITICAL] 🔴 HIGH ALERT: CDC8788 (781c53) | Score: 100% | Very low altitude: 2278 ft (not near airport), STCA: Conflict with CSN3562
+2026-06-27 20:44:57,633 [CRITICAL] 🔴 HIGH ALERT: UAE380 (8963f4) | Score: 100% | Very low altitude: 1089 ft (not near airport), Sudden course change: 133°, STCA: Conflict with QTR816, CPA926
+2026-06-27 20:44:57,747 [INFO] 🔵 LOW ALERT:  (780b74) | Score: 30% | Very low altitude: 1569 ft (not near airport)
+2026-06-27 20:44:58,155 [INFO] 🔵 LOW ALERT: UAE386 (89667e) | Score: 30% | Very low altitude: 1844 ft (not near airport)
+2026-06-27 20:44:58,184 [INFO] 🔵 LOW ALERT: AXM6039 (7501f1) | Score: 30% | Very low altitude: 4922 ft (not near airport)
+2026-06-27 20:44:58,564 [INFO] 🔵 LOW ALERT: TWB9637 (71c086) | Score: 55% | Very low altitude: 1714 ft (not near airport), Rapid climb: 2624 ft/min
+2026-06-27 20:44:58,861 [INFO] 🔵 LOW ALERT: CAL024 (8990ec) | Score: 30% | Very low altitude: 3070 ft (not near airport)
+2026-06-27 20:44:59,254 [CRITICAL] 🔴 HIGH ALERT: TWB013 (71c300) | Score: 90% | STCA: Conflict with JJA2303
+2026-06-27 20:44:59,319 [INFO] 🔵 LOW ALERT: AIQ4116 (880c4d) | Score: 50% | ML: Isolation Forest flagged abnormal flight profile, ML: One-Class SVM flagged spatial coordinate anomaly
+2026-06-27 20:44:59,469 [CRITICAL] 🔴 HIGH ALERT: JJA2303 (71c594) | Score: 90% | STCA: Conflict with TWB013
+2026-06-27 20:44:59,889 [INFO] 🔵 LOW ALERT: QTR835 (06a14a) | Score: 30% | Very low altitude: 3482 ft (not near airport)
+2026-06-27 20:45:00,090 [INFO] 🔵 LOW ALERT: AAR352 (71c705) | Score: 30% | Very low altitude: 2804 ft (not near airport)
+2026-06-27 20:45:00,379 [INFO] 🔵 LOW ALERT: SRQ6358 (75859f) | Score: 30% | Very low altitude: 4191 ft (not near airport)
+2026-06-27 20:45:00,469 [INFO] 🔵 LOW ALERT: MMA773 (7584bd) | Score: 50% | ML: One-Class SVM flagged spatial coordinate anomaly, ML: Local Outlier Factor flagged abnormal flight density/dynamics
+2026-06-27 20:45:00,517 [INFO] 🔵 LOW ALERT: CEB570 (7585a1) | Score: 30% | Very low altitude: 1546 ft (not near airport)
+2026-06-27 20:45:00,584 [WARNING] 🟡 MEDIUM ALERT: CEB992 (758707) | Score: 75% | ML: Isolation Forest flagged abnormal flight profile, ML: One-Class SVM flagged spatial coordinate anomaly, Rapid descent: 2688 ft/min
+2026-06-27 20:45:00,929 [INFO] 🔵 LOW ALERT: VJC154 (888133) | Score: 30% | Very low altitude: 3192 ft (not near airport)
+2026-06-27 20:45:00,954 [INFO] 🔵 LOW ALERT: HVN578 (888165) | Score: 30% | Very low altitude: 1996 ft (not near airport)
+2026-06-27 20:45:01,181 [INFO] 🔵 LOW ALERT:  (8880b4) | Score: 30% | Very low altitude: 1417 ft (not near airport)
+2026-06-27 20:45:01,269 [INFO] 🔵 LOW ALERT: CV6356 (4d0104) | Score: 50% | ML: One-Class SVM flagged spatial coordinate anomaly, Rapid climb: 2559 ft/min
+2026-06-27 20:45:01,763 [WARNING] 🟡 MEDIUM ALERT: AXM5130 (7504ec) | Score: 75% | ML: Isolation Forest flagged abnormal flight profile, Very low altitude: 30 ft (not near airport), Unusually slow: 8 knots
+2026-06-27 20:45:01,828 [INFO] 🔵 LOW ALERT: NOK529 (881056) | Score: 30% | Very low altitude: 205 ft (not near airport)
+2026-06-27 20:45:01,948 [INFO] 🔵 LOW ALERT: SKY558 (8681ac) | Score: 30% | Very low altitude: 3375 ft (not near airport)
+2026-06-27 20:45:02,047 [WARNING] 🟡 MEDIUM ALERT: KHV760 (70e048) | Score: 70% | ML: Isolation Forest flagged abnormal flight profile, ML: Local Outlier Factor flagged abnormal flight density/dynamics, Unusually slow: 24 knots
+2026-06-27 20:45:02,193 [INFO] 🔵 LOW ALERT: KAL2028 (71bf09) | Score: 30% | Very low altitude: 2034 ft (not near airport)
+2026-06-27 20:45:23,721 [CRITICAL] 🔴 HIGH ALERT: IGO1054 (801745) | Score: 80% | ML: Isolation Forest flagged abnormal flight profile, Very low altitude: 1920 ft (not near airport), Rapid climb: 2624 ft/min
+2026-06-27 20:45:24,346 [CRITICAL] 🔴 HIGH ALERT: BKP148 (884207) | Score: 90% | STCA: Conflict with BKP908
+2026-06-27 20:45:24,421 [INFO] 🔵 LOW ALERT: CDC8788 (781c53) | Score: 30% | Very low altitude: 2270 ft (not near airport)
+2026-06-27 20:45:24,690 [CRITICAL] 🔴 HIGH ALERT: BKP908 (884342) | Score: 90% | STCA: Conflict with BKP148
+2026-06-27 20:45:24,710 [INFO] 🔵 LOW ALERT: CRK261 (780a8f) | Score: 30% | Very low altitude: 2727 ft (not near airport)
+2026-06-27 20:45:24,731 [INFO] 🔵 LOW ALERT: ADO44 (841e00) | Score: 30% | Very low altitude: 525 ft (not near airport)
+2026-06-27 20:45:24,792 [INFO] 🔵 LOW ALERT:  (781d14) | Score: 30% | Very low altitude: 2788 ft (not near airport)
+2026-06-27 20:45:24,942 [INFO] 🔵 LOW ALERT: UAE380 (8963f4) | Score: 30% | Very low altitude: 975 ft (not near airport)
+2026-06-27 20:45:25,498 [CRITICAL] 🔴 HIGH ALERT: CRK217 (780aa6) | Score: 100% | Very low altitude: 2354 ft (not near airport), STCA: Conflict with HKE825
+2026-06-27 20:45:25,797 [INFO] 🔵 LOW ALERT: MAS724 (750220) | Score: 55% | ML: Isolation Forest flagged abnormal flight profile, Very low altitude: 3383 ft (not near airport)
+2026-06-27 20:45:25,914 [INFO] 🔵 LOW ALERT: SJV865 (8a0948) | Score: 30% | Very low altitude: 1257 ft (not near airport)
+2026-06-27 20:45:26,208 [CRITICAL] 🔴 HIGH ALERT: CES5360 (781ef0) | Score: 100% | Very low altitude: 3901 ft (not near airport), STCA: Conflict with EPA6313
+2026-06-27 20:45:26,965 [CRITICAL] 🔴 HIGH ALERT: MDA386 (899045) | Score: 100% | ML: One-Class SVM flagged spatial coordinate anomaly, Very low altitude: 861 ft (not near airport), Rapid climb: 2688 ft/min, Sudden course change: 58°
+2026-06-27 20:45:27,360 [CRITICAL] 🔴 HIGH ALERT:  (78024f) | Score: 100% | Very low altitude: 990 ft (not near airport), STCA: Conflict with 79a058
+2026-06-27 20:45:27,683 [INFO] 🔵 LOW ALERT: AAR105 (71c079) | Score: 30% | Very low altitude: 4998 ft (not near airport)
+2026-06-27 20:45:27,879 [CRITICAL] 🔴 HIGH ALERT: TWB9637 (71c086) | Score: 100% | ML: Isolation Forest flagged abnormal flight profile, ML: One-Class SVM flagged spatial coordinate anomaly, Very low altitude: 2164 ft (not near airport), Rapid climb: 2944 ft/min, Sudden course change: 45°
+2026-06-27 20:45:28,149 [INFO] 🔵 LOW ALERT: EVA695 (899123) | Score: 30% | Very low altitude: 4876 ft (not near airport)
+2026-06-27 20:45:29,259 [INFO] 🔵 LOW ALERT: CHH7716 (780459) | Score: 30% | Very low altitude: 4069 ft (not near airport)
+2026-06-27 20:45:29,386 [WARNING] 🟡 MEDIUM ALERT: KAL313 (71c226) | Score: 75% | ML: One-Class SVM flagged spatial coordinate anomaly, ML: Local Outlier Factor flagged abnormal flight density/dynamics, Rapid climb: 3840 ft/min
+2026-06-27 20:45:31,814 [CRITICAL] 🔴 HIGH ALERT: HKE825 (789206) | Score: 100% | Very low altitude: 2255 ft (not near airport), STCA: Conflict with CRK217
+2026-06-27 20:45:31,972 [INFO] 🔵 LOW ALERT: CPA784 (789237) | Score: 30% | Very low altitude: 2362 ft (not near airport)
+2026-06-27 20:45:32,916 [INFO] 🔵 LOW ALERT: QTR807 (06a1bc) | Score: 55% | ML: Isolation Forest flagged abnormal flight profile, Very low altitude: 1577 ft (not near airport)
+2026-06-27 20:45:33,441 [CRITICAL] 🔴 HIGH ALERT: HKE116 (78927f) | Score: 100% | ML: One-Class SVM flagged spatial coordinate anomaly, STCA: Conflict with CAL027, CAL5393
+2026-06-27 20:45:34,408 [WARNING] 🟡 MEDIUM ALERT: SIA7446 (769101) | Score: 75% | ML: Isolation Forest flagged abnormal flight profile, ML: One-Class SVM flagged spatial coordinate anomaly, Rapid climb: 3072 ft/min
+2026-06-27 20:45:35,133 [WARNING] 🟡 MEDIUM ALERT: APJ627 (84bbdf) | Score: 75% | ML: Isolation Forest flagged abnormal flight profile, ML: One-Class SVM flagged spatial coordinate anomaly, Rapid climb: 2559 ft/min
+2026-06-27 20:45:35,421 [INFO] 🔵 LOW ALERT: KZR227 (4ca7c6) | Score: 30% | Very low altitude: 3901 ft (not near airport)
+2026-06-27 20:45:36,641 [CRITICAL] 🔴 HIGH ALERT: EPA6313 (780cd9) | Score: 100% | Very low altitude: 4511 ft (not near airport), STCA: Conflict with CES5360
+2026-06-27 20:45:36,998 [CRITICAL] 🔴 HIGH ALERT: CSN6102 (780df2) | Score: 100% | ML: Isolation Forest flagged abnormal flight profile, ML: One-Class SVM flagged spatial coordinate anomaly, ML: Local Outlier Factor flagged abnormal flight density/dynamics, Rapid climb: 3391 ft/min
+2026-06-27 20:45:37,037 [INFO] 🔵 LOW ALERT: CDG4912 (780dec) | Score: 30% | Very low altitude: 4122 ft (not near airport)
+2026-06-27 20:45:37,296 [CRITICAL] 🔴 HIGH ALERT: AXM893 (75052a) | Score: 100% | Very low altitude: 807 ft (not near airport), STCA: Conflict with AXM6129, AXM718
+2026-06-27 20:45:37,781 [INFO] 🔵 LOW ALERT:  (780fde) | Score: 30% | Very low altitude: 1257 ft (not near airport)
+2026-06-27 20:45:38,588 [INFO] 🔵 LOW ALERT: KAL343 (71be02) | Score: 30% | Very low altitude: 1181 ft (not near airport)
+2026-06-27 20:45:38,662 [CRITICAL] 🔴 HIGH ALERT:  (79a058) | Score: 100% | Very low altitude: 990 ft (not near airport), STCA: Conflict with 78024f
+2026-06-27 20:45:50,818 [CRITICAL] 🔴 HIGH ALERT: ANA478 (8626cc) | Score: 100% | ML: Isolation Forest flagged abnormal flight profile, ML: One-Class SVM flagged spatial coordinate anomaly, Very low altitude: 4754 ft (not near airport), Rapid descent: 3328 ft/min, MSAW: Rapid descent at low altitude
+2026-06-27 20:45:51,158 [CRITICAL] 🔴 HIGH ALERT: ADO44 (841e00) | Score: 100% | Very low altitude: 434 ft (not near airport), STCA: Conflict with AAR1065, ANA274
+2026-06-27 20:45:51,559 [INFO] 🔵 LOW ALERT: SIA879 (76cc68) | Score: 30% | Very low altitude: 1226 ft (not near airport)
+2026-06-27 20:45:51,585 [WARNING] 🟡 MEDIUM ALERT: SJV865 (8a0948) | Score: 75% | ML: Isolation Forest flagged abnormal flight profile, Very low altitude: 1242 ft (not near airport), Sudden course change: 53°
+2026-06-27 20:45:51,649 [CRITICAL] 🔴 HIGH ALERT: CSN8825 (780ba5) | Score: 90% | STCA: Conflict with CSN6102
+2026-06-27 20:45:51,664 [WARNING] 🟡 MEDIUM ALERT: QFA60 (7c5323) | Score: 75% | ML: One-Class SVM flagged spatial coordinate anomaly, ML: Local Outlier Factor flagged abnormal flight density/dynamics, Rapid climb: 3647 ft/min
+2026-06-27 20:45:51,675 [INFO] 🔵 LOW ALERT: QFA128 (7c531e) | Score: 30% | Very low altitude: 4617 ft (not near airport)
+2026-06-27 20:45:51,748 [CRITICAL] 🔴 HIGH ALERT: AXM718 (7501e4) | Score: 100% | Very low altitude: 556 ft (not near airport), STCA: Conflict with AXM6129, AXM893
+2026-06-27 20:45:51,869 [CRITICAL] 🔴 HIGH ALERT: EVA068 (899040) | Score: 100% | Very low altitude: 3543 ft (not near airport), STCA: Conflict with CPA464
+2026-06-27 20:45:51,956 [INFO] 🔵 LOW ALERT:  (78024f) | Score: 30% | Very low altitude: 990 ft (not near airport)
+2026-06-27 20:45:51,972 [CRITICAL] 🔴 HIGH ALERT: CHH7349 (78158c) | Score: 90% | STCA: Conflict with CES5832
+2026-06-27 20:45:52,497 [INFO] 🔵 LOW ALERT: MMA332 (704009) | Score: 55% | ML: Isolation Forest flagged abnormal flight profile, Very low altitude: 3238 ft (not near airport)
+2026-06-27 20:45:52,523 [INFO] 🔵 LOW ALERT: MMA234 (704010) | Score: 50% | ML: Isolation Forest flagged abnormal flight profile, Rapid climb: 2688 ft/min
+2026-06-27 20:45:52,964 [CRITICAL] 🔴 HIGH ALERT: CPA464 (789265) | Score: 100% | Very low altitude: 2567 ft (not near airport), STCA: Conflict with EVA068
+2026-06-27 20:45:53,018 [INFO] 🔵 LOW ALERT: AHK326 (78926e) | Score: 30% | Very low altitude: 3261 ft (not near airport)
+2026-06-27 20:45:53,161 [INFO] 🔵 LOW ALERT: THA472 (885118) | Score: 30% | Very low altitude: 1318 ft (not near airport)
+2026-06-27 20:45:53,380 [CRITICAL] 🔴 HIGH ALERT: ANA274 (86d6c8) | Score: 100% | Very low altitude: 274 ft (not near airport), STCA: Conflict with ADO44, AAR1065
+2026-06-27 20:45:53,845 [CRITICAL] 🔴 HIGH ALERT: VJC154 (888133) | Score: 100% | ML: Isolation Forest flagged abnormal flight profile, Very low altitude: 2575 ft (not near airport), STCA: Conflict with HVN188
+2026-06-27 20:45:54,001 [CRITICAL] 🔴 HIGH ALERT: HVN188 (8881b6) | Score: 100% | ML: Isolation Forest flagged abnormal flight profile, Very low altitude: 1684 ft (not near airport), STCA: Conflict with VJC154
+2026-06-27 20:45:54,011 [CRITICAL] 🔴 HIGH ALERT: CJX8909 (7812c1) | Score: 100% | Very low altitude: 1569 ft (not near airport), STCA: Conflict with CDC8788
+2026-06-27 20:45:54,155 [INFO] 🔵 LOW ALERT: CSC8764 (780cea) | Score: 30% | Very low altitude: 4511 ft (not near airport)
+2026-06-27 20:45:54,244 [CRITICAL] 🔴 HIGH ALERT: CES5832 (780e83) | Score: 90% | STCA: Conflict with CHH7349
+2026-06-27 20:45:54,311 [INFO] 🔵 LOW ALERT: UEA2863 (780ef6) | Score: 30% | Very low altitude: 4853 ft (not near airport)
+2026-06-27 20:45:54,551 [INFO] 🔵 LOW ALERT:  (76bccc) | Score: 50% | ML: One-Class SVM flagged spatial coordinate anomaly, ML: Local Outlier Factor flagged abnormal flight density/dynamics
+2026-06-27 20:45:54,597 [CRITICAL] 🔴 HIGH ALERT: TNU5110 (8a0ab8) | Score: 80% | ML: Isolation Forest flagged abnormal flight profile, Very low altitude: 1897 ft (not near airport), Rapid climb: 2624 ft/min
+2026-06-27 20:46:14,514 [INFO] 🔵 LOW ALERT: TGW346 (76b864) | Score: 30% | Very low altitude: 1257 ft (not near airport)
+2026-06-27 20:46:15,815 [CRITICAL] 🔴 HIGH ALERT: ETD446 (8962e5) | Score: 100% | ML: One-Class SVM flagged spatial coordinate anomaly, Very low altitude: 3291 ft (not near airport), Rapid descent: 2559 ft/min, MSAW: Rapid descent at low altitude
+2026-06-27 20:46:15,844 [CRITICAL] 🔴 HIGH ALERT: THY301 (4bb1a6) | Score: 90% | STCA: Conflict with KAL714
+2026-06-27 20:46:17,535 [CRITICAL] 🔴 HIGH ALERT: SIA879 (76cc68) | Score: 100% | Very low altitude: 1120 ft (not near airport), STCA: Conflict with SIA214, TGW181
+2026-06-27 20:46:17,904 [CRITICAL] 🔴 HIGH ALERT: CSZ9206 (780bf1) | Score: 100% | ML: Local Outlier Factor flagged abnormal flight density/dynamics, Very low altitude: 350 ft (not near airport), STCA: Conflict with CXA8872, CHH7744, CSN5844
+2026-06-27 20:46:19,004 [INFO] 🔵 LOW ALERT: CSN5538 (7802c1) | Score: 30% | Very low altitude: 4206 ft (not near airport)
+2026-06-27 20:46:19,065 [CRITICAL] 🔴 HIGH ALERT: CAL920 (8991b5) | Score: 100% | ML: Local Outlier Factor flagged abnormal flight density/dynamics, Sudden course change: 179°, STCA: Conflict with CPA926
+2026-06-27 20:46:19,271 [CRITICAL] 🔴 HIGH ALERT: CCA2817 (7803f6) | Score: 100% | Very low altitude: 2209 ft (not near airport), STCA: Conflict with CDC8788
+2026-06-27 20:46:19,400 [CRITICAL] 🔴 HIGH ALERT: KAL714 (71c349) | Score: 90% | STCA: Conflict with THY301
+2026-06-27 20:46:19,613 [INFO] 🔵 LOW ALERT: SIA141 (76b44d) | Score: 30% | Very low altitude: 1554 ft (not near airport)
+2026-06-27 20:46:19,681 [INFO] 🔵 LOW ALERT: CSN3810 (780861) | Score: 30% | Very low altitude: 990 ft (not near airport)
+2026-06-27 20:46:20,367 [CRITICAL] 🔴 HIGH ALERT: AMU986 (78227c) | Score: 80% | ML: One-Class SVM flagged spatial coordinate anomaly, Very low altitude: 1501 ft (not near airport), Rapid climb: 2688 ft/min
+2026-06-27 20:46:21,331 [CRITICAL] 🔴 HIGH ALERT: KXP2613 (75057b) | Score: 100% | Very low altitude: 403 ft (not near airport), STCA: Conflict with AXM5130
+2026-06-27 20:46:21,403 [INFO] 🔵 LOW ALERT: TGW875 (76bd43) | Score: 50% | ML: One-Class SVM flagged spatial coordinate anomaly, ML: Local Outlier Factor flagged abnormal flight density/dynamics
+2026-06-27 20:46:21,465 [CRITICAL] 🔴 HIGH ALERT: AXM5130 (7504ec) | Score: 100% | ML: Isolation Forest flagged abnormal flight profile, Very low altitude: 30 ft (not near airport), Unusually slow: 8 knots, STCA: Conflict with KXP2613
+2026-06-27 20:46:21,483 [INFO] 🔵 LOW ALERT:  (780fd8) | Score: 50% | Very low altitude: 3840 ft (not near airport), Sudden course change: 97°
+2026-06-27 20:46:21,565 [INFO] 🔵 LOW ALERT: APJ79 (84b86d) | Score: 30% | Very low altitude: 4259 ft (not near airport)
