@@ -119,8 +119,8 @@ def main():
             proc = subprocess.Popen(
                 config["cmd"],
                 cwd=project_root,
-                stdout=subprocess.DEVNULL,
-                stderr=subprocess.DEVNULL,
+                # stdout=subprocess.DEVNULL,  # Uncomment to hide output
+                # stderr=subprocess.DEVNULL,  # Uncomment to hide errors
             )
             processes[comp_id] = proc
             print(f"  [{comp_id}] ✅ PID {proc.pid}")

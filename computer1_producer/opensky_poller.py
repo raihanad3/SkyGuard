@@ -32,28 +32,10 @@ class OpenSkyPoller:
 
     async def start(self):
         """Start the polling loop."""
-        from opensky_api import OpenSkyApi, TokenManager
-
         self.running = True
         
-        # Check for OpenSky authentication using credentials.json
-        cred_path = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "credentials.json")
-        tm = None
-        if os.path.exists(cred_path):
-            try:
-                tm = TokenManager.from_json_file(cred_path)
-            except Exception as e:
-                logger.error("Failed to load OpenSky TokenManager from %s: %s", cred_path, e)
-        else:
-            logger.warning("No credentials.json found at %s. Unauthenticated access.", cred_path)
-            
-        self.api = OpenSkyApi(token_manager=tm) if tm else OpenSkyApi()
-
         logger.info("🚀 OpenSky poller started")
-        if tm:
-            logger.info("🔒 Authenticated with OpenSky TokenManager")
-        else:
-            logger.warning("🔓 Unauthenticated OpenSky polling. Subject to strict rate limits.")
+        logger.warning("🔓 Unauthenticated OpenSky polling. Subject to strict rate limits.")
             
         logger.info("📡 Interval: %ds | Bbox: lat[%.1f, %.1f] lon[%.1f, %.1f]",
                      OPENSKY_UPDATE_INTERVAL,
@@ -94,109 +76,111 @@ class OpenSkyPoller:
             self.running = False
 
     async def _fetch_flights(self):
-        """Fetch flights from OpenSky API within Asian airspace."""
+        """Fetch flights from OpenSky API within Asian airspace using direct REST API."""
         bbox = ASIA_AIRSPACE_BBOX
 
         try:
-            # Run the synchronous API call in a thread
-            loop = asyncio.get_running_loop()
-            def fetch_states():
-                # bbox tuple format: (minLatitude, maxLatitude, minLongitude, maxLongitude)
-                return self.api.get_states(bbox=(bbox["lat_min"], bbox["lat_max"], bbox["lon_min"], bbox["lon_max"]))
-
-            opensky_data = await loop.run_in_executor(None, fetch_states)
-
-            if opensky_data is None:
-                logger.error("DEBUG: opensky_data is None. The API rate limiter or HTTP request blocked it.")
-                return []
-            if not opensky_data.states:
-                logger.warning("DEBUG: opensky_data.states is empty.")
-                return []
-
-            # Extract all valid flights with positions
-            opensky_flights = []
-            for s in opensky_data.states:
-                if s.longitude is None or s.latitude is None:
-                    continue
-                opensky_flights.append(s)
-
-            if not opensky_flights:
-                return []
-
-            # --- Airplanes.live Enrichment ---
-            hex_codes = [s.icao24.lower() for s in opensky_flights[:1000] if s.icao24]
-            enrichment_map = {}
-
-            # Fetch al_response asynchronously (using IPv4 to avoid Tailscale timeout issues)
+            # Build OpenSky API URL with bbox parameters
+            url = f"{OPENSKY_API_URL}?lamin={bbox['lat_min']}&lamax={bbox['lat_max']}&lomin={bbox['lon_min']}&lomax={bbox['lon_max']}"
+            
             import socket
             connector = aiohttp.TCPConnector(family=socket.AF_INET)
             async with aiohttp.ClientSession(connector=connector) as session:
-                try:
-                    # Batch hex codes into chunks of 50 to prevent URI Too Long (414)
-                    chunk_size = 50
-                    for i in range(0, len(hex_codes), chunk_size):
-                        chunk = hex_codes[i:i + chunk_size]
-                        hex_str = ",".join(chunk)
-                        
-                        async with session.get(
-                            f"https://api.airplanes.live/v2/hex/{hex_str}",
-                            timeout=aiohttp.ClientTimeout(total=10)
-                        ) as al_response:
-                            if al_response.status == 200:
-                                al_data = await al_response.json()
-                                if "ac" in al_data:
-                                    for ac in al_data["ac"]:
-                                        hex_key = ac.get("hex", "").lower()
-                                        if hex_key:
-                                            enrichment_map[hex_key] = ac
-                except Exception as e:
-                    logger.warning("Airplanes.live enrichment failed: %s", type(e).__name__)
-
-            # --- Merge Data ---
-            flights = []
-            for s in opensky_flights:
-                try:
-                    icao24 = s.icao24.lower()
-                    al_info = enrichment_map.get(icao24, {})
+                async with session.get(url, timeout=aiohttp.ClientTimeout(total=30)) as response:
+                    if response.status != 200:
+                        logger.warning("OpenSky API returned status %d", response.status)
+                        return []
                     
-                    # Prefer Airplanes.live callsign if available, else OpenSky
-                    callsign = al_info.get("flight", "").strip()
-                    if not callsign:
-                        callsign = s.callsign.strip() if s.callsign else ""
-                        
-                    # Prefer Airplanes.live squawk
-                    squawk = al_info.get("squawk", "")
-                    if not squawk:
-                        squawk = s.squawk
-
-                    flights.append({
-                        "icao24": icao24,
-                        "callsign": callsign,
-                        "origin_country": s.origin_country,
-                        "time_position": s.time_position,
-                        "last_contact": s.last_contact,
-                        "longitude": s.longitude,
-                        "latitude": s.latitude,
-                        "baro_altitude": s.baro_altitude,
-                        "on_ground": s.on_ground,
-                        "velocity": s.velocity,
-                        "true_track": s.true_track,
-                        "vertical_rate": s.vertical_rate,
-                        "sensors": ",".join(map(str, s.sensors)) if s.sensors else "",
-                        "geo_altitude": s.geo_altitude,
-                        "squawk": squawk,
-                        "spi": s.spi,
-                        "position_source": s.position_source,
-                        "registration": al_info.get("r", ""),
-                        "aircraft_type": al_info.get("t", ""),
-                        "aircraft_desc": al_info.get("desc", ""),
-                        "timestamp": datetime.utcnow().isoformat(),
-                    })
-                except (IndexError, TypeError) as e:
-                    logger.debug("Parse error: %s", e)
-                    continue
-
-            return flights
+                    data = await response.json()
+                    
+                    if not data or "states" not in data or not data["states"]:
+                        return []
+                    
+                    # Parse OpenSky states
+                    opensky_flights = []
+                    for state in data["states"]:
+                        # OpenSky state vector format:
+                        # [0]=icao24, [1]=callsign, [2]=origin_country, [3]=time_position, [4]=last_contact,
+                        # [5]=longitude, [6]=latitude, [7]=baro_altitude, [8]=on_ground, [9]=velocity,
+                        # [10]=true_track, [11]=vertical_rate, [12]=sensors, [13]=geo_altitude, 
+                        # [14]=squawk, [15]=spi, [16]=position_source
+                        if state[5] is None or state[6] is None:  # longitude, latitude
+                            continue
+                        opensky_flights.append(state)
+                    
+                    if not opensky_flights:
+                        return []
+                    
+                    # --- Airplanes.live Enrichment ---
+                    hex_codes = [state[0].lower() for state in opensky_flights[:1000] if state[0]]
+                    enrichment_map = {}
+                    
+                    try:
+                        # Batch hex codes into chunks of 50
+                        chunk_size = 50
+                        for i in range(0, len(hex_codes), chunk_size):
+                            chunk = hex_codes[i:i + chunk_size]
+                            hex_str = ",".join(chunk)
+                            
+                            async with session.get(
+                                f"https://api.airplanes.live/v2/hex/{hex_str}",
+                                timeout=aiohttp.ClientTimeout(total=10)
+                            ) as al_response:
+                                if al_response.status == 200:
+                                    al_data = await al_response.json()
+                                    if "ac" in al_data:
+                                        for ac in al_data["ac"]:
+                                            hex_key = ac.get("hex", "").lower()
+                                            if hex_key:
+                                                enrichment_map[hex_key] = ac
+                    except Exception as e:
+                        logger.warning("Airplanes.live enrichment failed: %s", type(e).__name__)
+                    
+                    # --- Merge Data ---
+                    flights = []
+                    for state in opensky_flights:
+                        try:
+                            icao24 = state[0].lower() if state[0] else ""
+                            al_info = enrichment_map.get(icao24, {})
+                            
+                            # Prefer Airplanes.live callsign if available
+                            callsign = al_info.get("flight", "").strip()
+                            if not callsign:
+                                callsign = state[1].strip() if state[1] else ""
+                            
+                            # Prefer Airplanes.live squawk
+                            squawk = al_info.get("squawk", "")
+                            if not squawk:
+                                squawk = state[14] if len(state) > 14 else ""
+                            
+                            flights.append({
+                                "icao24": icao24,
+                                "callsign": callsign,
+                                "origin_country": state[2] if state[2] else "",
+                                "time_position": state[3],
+                                "last_contact": state[4],
+                                "longitude": state[5],
+                                "latitude": state[6],
+                                "baro_altitude": state[7],
+                                "on_ground": state[8] if state[8] is not None else False,
+                                "velocity": state[9],
+                                "true_track": state[10],
+                                "vertical_rate": state[11],
+                                "sensors": ",".join(map(str, state[12])) if len(state) > 12 and state[12] else "",
+                                "geo_altitude": state[13] if len(state) > 13 else None,
+                                "squawk": squawk,
+                                "spi": state[15] if len(state) > 15 else False,
+                                "position_source": state[16] if len(state) > 16 else 0,
+                                "registration": al_info.get("r", ""),
+                                "aircraft_type": al_info.get("t", ""),
+                                "aircraft_desc": al_info.get("desc", ""),
+                                "timestamp": datetime.utcnow().isoformat(),
+                            })
+                        except (IndexError, TypeError) as e:
+                            logger.debug("Parse error: %s", e)
+                            continue
+                    
+                    return flights
 
         except asyncio.TimeoutError:
             logger.warning("⏱️  OpenSky API timeout")

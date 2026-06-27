@@ -10,6 +10,11 @@ Usage:
 
 import streamlit as st
 from streamlit_autorefresh import st_autorefresh
+import sys
+import os
+
+# Add project root to path
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
 from computer4_dashboard.components.sidebar import render_sidebar, get_db_connection
 

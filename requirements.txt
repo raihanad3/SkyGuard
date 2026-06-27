@@ -23,6 +23,9 @@ plotly
 aiohttp
 requests
 
+# --- OpenSky Network API ---
+python-opensky
+
 # --- News / NLP ---
 feedparser
 beautifulsoup4

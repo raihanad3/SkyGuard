@@ -1,0 +1,374 @@
+2026-06-27 19:40:35,209 [INFO] 🔵 LOW ALERT: ANA878 (86ced2) | Score: 30% | Very low altitude: 754 ft (not near airport)
+2026-06-27 19:40:35,214 [INFO] 🔵 LOW ALERT: JAL266 (85188c) | Score: 30% | Very low altitude: 4046 ft (not near airport)
+2026-06-27 19:40:35,218 [INFO] 🔵 LOW ALERT: HOIST20 (ae6221) | Score: 30% | Very low altitude: 762 ft (not near airport)
+2026-06-27 19:40:35,222 [INFO] 🔵 LOW ALERT: CSN8698 (7809b2) | Score: 30% | Very low altitude: 2834 ft (not near airport)
+2026-06-27 19:40:35,225 [INFO] 🔵 LOW ALERT: CSN8283 (7809fc) | Score: 30% | Very low altitude: 2735 ft (not near airport)
+2026-06-27 19:40:35,231 [INFO] 🔵 LOW ALERT: CTV938 (8a0378) | Score: 30% | Very low altitude: 4335 ft (not near airport)
+2026-06-27 19:40:35,259 [INFO] 🔵 LOW ALERT: THA047 (885307) | Score: 30% | Very low altitude: 3863 ft (not near airport)
+2026-06-27 19:40:35,266 [INFO] 🔵 LOW ALERT: THA401 (88530c) | Score: 30% | Very low altitude: 4953 ft (not near airport)
+2026-06-27 19:40:35,291 [INFO] 🔵 LOW ALERT: JAL566 (8518d0) | Score: 30% | Very low altitude: 4892 ft (not near airport)
+2026-06-27 19:40:35,304 [INFO] 🔵 LOW ALERT: KBZ782 (70472a) | Score: 30% | Very low altitude: 3870 ft (not near airport)
+2026-06-27 19:40:35,312 [INFO] 🔵 LOW ALERT: UAL849 (a1270b) | Score: 30% | Very low altitude: 1676 ft (not near airport)
+2026-06-27 19:40:35,318 [INFO] 🔵 LOW ALERT: CTV988 (8a03ac) | Score: 30% | Very low altitude: 4274 ft (not near airport)
+2026-06-27 19:40:35,321 [CRITICAL] 🔴 HIGH ALERT: BTK7058 (8a0516) | Score: 90% | STCA: Conflict with CTV689
+2026-06-27 19:40:35,326 [CRITICAL] 🔴 HIGH ALERT: ANA650 (85e27c) | Score: 100% | Very low altitude: 388 ft (not near airport), STCA: Conflict with JAL330
+2026-06-27 19:40:35,330 [INFO] 🔵 LOW ALERT: BKP167 (884215) | Score: 55% | Very low altitude: 3726 ft (not near airport), Rapid climb: 2624 ft/min
+2026-06-27 19:40:35,332 [CRITICAL] 🔴 HIGH ALERT: CTV689 (8a04a4) | Score: 90% | STCA: Conflict with BTK7058
+2026-06-27 19:40:35,334 [INFO] 🔵 LOW ALERT: CTV979 (8a04a7) | Score: 30% | Very low altitude: 1638 ft (not near airport)
+2026-06-27 19:40:35,338 [CRITICAL] 🔴 HIGH ALERT: JAL330 (840a7c) | Score: 100% | Very low altitude: 365 ft (not near airport), STCA: Conflict with ANA650
+2026-06-27 19:40:35,343 [INFO] 🔵 LOW ALERT: THY301 (4bb1a6) | Score: 30% | Very low altitude: 2712 ft (not near airport)
+2026-06-27 19:40:35,348 [INFO] 🔵 LOW ALERT: CPA402 (780a7e) | Score: 30% | Very low altitude: 4991 ft (not near airport)
+2026-06-27 19:40:35,352 [INFO] 🔵 LOW ALERT: CPA581 (780a96) | Score: 30% | Very low altitude: 2141 ft (not near airport)
+2026-06-27 19:40:35,356 [INFO] 🔵 LOW ALERT: CRK261 (780a8f) | Score: 55% | Very low altitude: 2438 ft (not near airport), Rapid climb: 3072 ft/min
+2026-06-27 19:40:35,358 [INFO] 🔵 LOW ALERT: BKP185 (88434a) | Score: 30% | Very low altitude: 2613 ft (not near airport)
+2026-06-27 19:40:35,363 [INFO] 🔵 LOW ALERT: CES2711 (781d39) | Score: 30% | Very low altitude: 1097 ft (not near airport)
+2026-06-27 19:40:35,368 [INFO] 🔵 LOW ALERT: HKC830 (780a1e) | Score: 30% | Very low altitude: 1623 ft (not near airport)
+2026-06-27 19:40:35,374 [INFO] 🔵 LOW ALERT: CRK2726 (780a44) | Score: 55% | Very low altitude: 2247 ft (not near airport), Rapid climb: 2688 ft/min
+2026-06-27 19:40:35,386 [INFO] 🔵 LOW ALERT: CCA4324 (781ca6) | Score: 30% | Very low altitude: 4366 ft (not near airport)
+2026-06-27 19:40:35,393 [INFO] 🔵 LOW ALERT: AXM6033 (750109) | Score: 30% | Very low altitude: 716 ft (not near airport)
+2026-06-27 19:40:35,397 [INFO] 🔵 LOW ALERT: CCA709 (780b45) | Score: 30% | Very low altitude: 2171 ft (not near airport)
+2026-06-27 19:40:35,404 [INFO] 🔵 LOW ALERT: AXM6323 (750148) | Score: 30% | Very low altitude: 815 ft (not near airport)
+2026-06-27 19:40:35,421 [INFO] 🔵 LOW ALERT: TVJ203 (88596a) | Score: 30% | Very low altitude: 1135 ft (not near airport)
+2026-06-27 19:40:35,431 [INFO] 🔵 LOW ALERT: HKE671 (780abe) | Score: 30% | Very low altitude: 3169 ft (not near airport)
+2026-06-27 19:40:35,436 [INFO] 🔵 LOW ALERT: CCA1307 (780c43) | Score: 30% | Very low altitude: 3649 ft (not near airport)
+2026-06-27 19:40:35,440 [INFO] 🔵 LOW ALERT: MAS763 (750222) | Score: 30% | Very low altitude: 1143 ft (not near airport)
+2026-06-27 19:40:35,453 [INFO] 🔵 LOW ALERT: PAS325 (8a0915) | Score: 30% | Very low altitude: 2430 ft (not near airport)
+2026-06-27 19:40:35,457 [INFO] 🔵 LOW ALERT: MAS2665 (75029e) | Score: 30% | Very low altitude: 3329 ft (not near airport)
+2026-06-27 19:40:35,467 [INFO] 🔵 LOW ALERT: AXM5324 (750288) | Score: 30% | Very low altitude: 182 ft (not near airport)
+2026-06-27 19:40:35,470 [INFO] 🔵 LOW ALERT: MAS6178 (750264) | Score: 30% | Very low altitude: 3901 ft (not near airport)
+2026-06-27 19:40:35,479 [CRITICAL] 🔴 HIGH ALERT: PAS357 (8a0998) | Score: 90% | STCA: Conflict with SJV903
+2026-06-27 19:40:35,482 [INFO] 🔵 LOW ALERT: CSN315 (780bd9) | Score: 30% | Very low altitude: 1005 ft (not near airport)
+2026-06-27 19:40:35,485 [INFO] 🔵 LOW ALERT: CSN3355 (780bcb) | Score: 30% | Very low altitude: 373 ft (not near airport)
+2026-06-27 19:40:35,489 [INFO] 🔵 LOW ALERT: TNU699 (8a0987) | Score: 30% | Very low altitude: 563 ft (not near airport)
+2026-06-27 19:40:35,492 [INFO] 🔵 LOW ALERT: ANA716 (85d42c) | Score: 30% | Very low altitude: 3208 ft (not near airport)
+2026-06-27 19:40:35,495 [INFO] 🔵 LOW ALERT: TNU860 (8a095b) | Score: 30% | Very low altitude: 3307 ft (not near airport)
+2026-06-27 19:40:35,498 [CRITICAL] 🔴 HIGH ALERT: SJV903 (8a094b) | Score: 90% | STCA: Conflict with PAS357
+2026-06-27 19:40:35,506 [INFO] 🔵 LOW ALERT: CCA2694 (781fe8) | Score: 30% | Very low altitude: 4206 ft (not near airport)
+2026-06-27 19:40:35,508 [INFO] 🔵 LOW ALERT: AXM6038 (7501f1) | Score: 30% | Very low altitude: 952 ft (not near airport)
+2026-06-27 19:40:35,528 [INFO] 🔵 LOW ALERT: TLM747 (8832cb) | Score: 30% | Very low altitude: 4130 ft (not near airport)
+2026-06-27 19:40:35,531 [CRITICAL] 🔴 HIGH ALERT: TLM515 (8832d1) | Score: 100% | Very low altitude: 3863 ft (not near airport), Rapid descent: 2879 ft/min, MSAW: Rapid descent at low altitude
+2026-06-27 19:40:35,537 [INFO] 🔵 LOW ALERT: SIA222 (76cd72) | Score: 30% | Very low altitude: 2087 ft (not near airport)
+2026-06-27 19:40:35,542 [INFO] 🔵 LOW ALERT: EVA185 (89906b) | Score: 30% | Very low altitude: 1394 ft (not near airport)
+2026-06-27 19:40:35,544 [INFO] 🔵 LOW ALERT: UIA9117 (89906d) | Score: 30% | Very low altitude: 114 ft (not near airport)
+2026-06-27 19:40:35,549 [INFO] 🔵 LOW ALERT: EVA850 (899070) | Score: 30% | Very low altitude: 1371 ft (not near airport)
+2026-06-27 19:40:35,560 [INFO] 🔵 LOW ALERT: TTW259 (899023) | Score: 30% | Very low altitude: 4061 ft (not near airport)
+2026-06-27 19:40:35,565 [INFO] 🔵 LOW ALERT: BAW16 (406f79) | Score: 30% | Very low altitude: 2964 ft (not near airport)
+2026-06-27 19:40:35,571 [INFO] 🔵 LOW ALERT: ANA98 (868b50) | Score: 30% | Very low altitude: 3710 ft (not near airport)
+2026-06-27 19:40:35,574 [INFO] 🔵 LOW ALERT: APJ162 (845ce4) | Score: 30% | Very low altitude: 2857 ft (not near airport)
+2026-06-27 19:40:35,577 [INFO] 🔵 LOW ALERT: BAV271 (8881e0) | Score: 30% | Very low altitude: 3535 ft (not near airport)
+2026-06-27 19:40:35,581 [INFO] 🔵 LOW ALERT: CPA067 (780218) | Score: 30% | Very low altitude: 3863 ft (not near airport)
+2026-06-27 19:40:35,585 [CRITICAL] 🔴 HIGH ALERT: CPA459 (780236) | Score: 100% | Very low altitude: 3451 ft (not near airport), STCA: Conflict with EVA6819
+2026-06-27 19:40:35,590 [INFO] 🔵 LOW ALERT: CSN364 (78156f) | Score: 30% | Very low altitude: 4892 ft (not near airport)
+2026-06-27 19:40:35,605 [INFO] 🔵 LOW ALERT: UIA8628 (899141) | Score: 30% | Very low altitude: 1699 ft (not near airport)
+2026-06-27 19:40:35,608 [INFO] 🔵 LOW ALERT: UIA8928 (89913d) | Score: 30% | Very low altitude: 3101 ft (not near airport)
+2026-06-27 19:40:35,612 [INFO] 🔵 LOW ALERT: MDA378 (899150) | Score: 30% | Very low altitude: 2087 ft (not near airport)
+2026-06-27 19:40:35,618 [INFO] 🔵 LOW ALERT: CPA964 (7801a3) | Score: 30% | Very low altitude: 1478 ft (not near airport)
+2026-06-27 19:40:35,622 [INFO] 🔵 LOW ALERT: ASV908 (71c072) | Score: 30% | Very low altitude: 4663 ft (not near airport)
+2026-06-27 19:40:35,625 [INFO] 🔵 LOW ALERT: AAR8996 (71c071) | Score: 30% | Very low altitude: 4876 ft (not near airport)
+2026-06-27 19:40:35,628 [INFO] 🔵 LOW ALERT: AAR8994 (71c074) | Score: 30% | Very low altitude: 1181 ft (not near airport)
+2026-06-27 19:40:35,632 [INFO] 🔵 LOW ALERT: MDA7846 (8990ad) | Score: 30% | Very low altitude: 1882 ft (not near airport)
+2026-06-27 19:40:35,639 [INFO] 🔵 LOW ALERT: HKE845 (7801c1) | Score: 30% | Very low altitude: 1752 ft (not near airport)
+2026-06-27 19:40:35,643 [INFO] 🔵 LOW ALERT: JJA136 (71c090) | Score: 30% | Very low altitude: 3025 ft (not near airport)
+2026-06-27 19:40:35,651 [INFO] 🔵 LOW ALERT: ANA118 (86ef4a) | Score: 30% | Very low altitude: 2065 ft (not near airport)
+2026-06-27 19:40:35,664 [INFO] 🔵 LOW ALERT: CCA1295 (78165c) | Score: 30% | Very low altitude: 3787 ft (not near airport)
+2026-06-27 19:40:35,668 [INFO] 🔵 LOW ALERT: LKE9979 (781678) | Score: 30% | Very low altitude: 312 ft (not near airport)
+2026-06-27 19:40:35,671 [CRITICAL] 🔴 HIGH ALERT: EVA6819 (899137) | Score: 100% | Very low altitude: 3040 ft (not near airport), STCA: Conflict with CPA459
+2026-06-27 19:40:35,676 [INFO] 🔵 LOW ALERT: CAL129 (899115) | Score: 30% | Very low altitude: 830 ft (not near airport)
+2026-06-27 19:40:35,768 [INFO] 🔵 LOW ALERT: CHH7357 (7815f9) | Score: 30% | Very low altitude: 4503 ft (not near airport)
+2026-06-27 19:40:35,772 [INFO] 🔵 LOW ALERT: SJX313 (8991d8) | Score: 30% | Very low altitude: 1790 ft (not near airport)
+2026-06-27 19:40:35,774 [INFO] 🔵 LOW ALERT: CAL222 (8991a9) | Score: 30% | Very low altitude: 3048 ft (not near airport)
+2026-06-27 19:40:35,780 [INFO] 🔵 LOW ALERT: JAL208 (8511ec) | Score: 55% | Very low altitude: 4632 ft (not near airport), Rapid climb: 2624 ft/min
+2026-06-27 19:40:35,782 [INFO] 🔵 LOW ALERT: BAW15 (406d78) | Score: 30% | Very low altitude: 4914 ft (not near airport)
+2026-06-27 19:40:35,791 [INFO] 🔵 LOW ALERT: MDA349 (8990f5) | Score: 30% | Very low altitude: 1783 ft (not near airport)
+2026-06-27 19:40:35,794 [CRITICAL] 🔴 HIGH ALERT: SJX861 (8990bc) | Score: 90% | STCA: Conflict with SJX903
+2026-06-27 19:40:35,797 [CRITICAL] 🔴 HIGH ALERT: SJX903 (8990bd) | Score: 90% | STCA: Conflict with SJX861
+2026-06-27 19:40:35,801 [INFO] 🔵 LOW ALERT: EVA806 (8990cf) | Score: 30% | Very low altitude: 1463 ft (not near airport)
+2026-06-27 19:40:35,807 [INFO] 🔵 LOW ALERT: JNA111 (71c243) | Score: 30% | Very low altitude: 45 ft (not near airport)
+2026-06-27 19:40:35,813 [CRITICAL] 🔴 HIGH ALERT: CES5349 (7803ed) | Score: 100% | Very low altitude: 449 ft (not near airport), STCA: Conflict with CSN3452, CSN3626
+2026-06-27 19:40:35,818 [CRITICAL] 🔴 HIGH ALERT: KAL475 (71c274) | Score: 90% | STCA: Conflict with KAL689
+2026-06-27 19:40:35,826 [INFO] 🔵 LOW ALERT: SJX026 (8991e8) | Score: 30% | Very low altitude: 3192 ft (not near airport)
+2026-06-27 19:40:35,829 [INFO] 🔵 LOW ALERT: SJX010 (8991e7) | Score: 30% | Very low altitude: 3916 ft (not near airport)
+2026-06-27 19:40:35,836 [INFO] 🔵 LOW ALERT: MMA350 (704015) | Score: 30% | Very low altitude: 1920 ft (not near airport)
+2026-06-27 19:40:35,838 [INFO] 🔵 LOW ALERT: DKH1789 (781942) | Score: 30% | Very low altitude: 1897 ft (not near airport)
+2026-06-27 19:40:35,842 [INFO] 🔵 LOW ALERT: CCA1385 (78060a) | Score: 30% | Very low altitude: 4023 ft (not near airport)
+2026-06-27 19:40:35,846 [CRITICAL] 🔴 HIGH ALERT: CSN3452 (780629) | Score: 100% | Very low altitude: 274 ft (not near airport), STCA: Conflict with CES5349
+2026-06-27 19:40:35,849 [INFO] 🔵 LOW ALERT: AIQ3311 (880c49) | Score: 30% | Very low altitude: 1066 ft (not near airport)
+2026-06-27 19:40:35,852 [CRITICAL] 🔴 HIGH ALERT: AIQ3022 (880c48) | Score: 100% | Very low altitude: 464 ft (not near airport), STCA: Conflict with AIQ322
+2026-06-27 19:40:35,854 [CRITICAL] 🔴 HIGH ALERT: ESR650 (71c375) | Score: 100% | Very low altitude: 792 ft (not near airport), STCA: Conflict with CDG4619
+2026-06-27 19:40:35,857 [INFO] 🔵 LOW ALERT: TWB736 (71c363) | Score: 30% | Very low altitude: 4876 ft (not near airport)
+2026-06-27 19:40:35,861 [INFO] 🔵 LOW ALERT: KAL1561 (71c315) | Score: 30% | Very low altitude: 4876 ft (not near airport)
+2026-06-27 19:40:35,864 [INFO] 🔵 LOW ALERT: MMA363 (70401f) | Score: 30% | Very low altitude: 3147 ft (not near airport)
+2026-06-27 19:40:35,868 [INFO] 🔵 LOW ALERT: APZ131 (71c389) | Score: 30% | Very low altitude: 1341 ft (not near airport)
+2026-06-27 19:40:35,876 [INFO] 🔵 LOW ALERT: CXA819 (7805c2) | Score: 30% | Very low altitude: 1272 ft (not near airport)
+2026-06-27 19:40:35,878 [INFO] 🔵 LOW ALERT: CSZ9616 (7805e1) | Score: 30% | Very low altitude: 3406 ft (not near airport)
+2026-06-27 19:40:35,890 [CRITICAL] 🔴 HIGH ALERT: SIA763 (76b449) | Score: 90% | STCA: Conflict with SIA431
+2026-06-27 19:40:35,892 [INFO] 🔵 LOW ALERT: JAL193 (8514d6) | Score: 30% | Very low altitude: 563 ft (not near airport)
+2026-06-27 19:40:35,895 [INFO] 🔵 LOW ALERT: CCA116 (780781) | Score: 30% | Very low altitude: 2811 ft (not near airport)
+2026-06-27 19:40:35,898 [INFO] 🔵 LOW ALERT: JAL671 (8514f8) | Score: 30% | Very low altitude: 3413 ft (not near airport)
+2026-06-27 19:40:35,906 [INFO] 🔵 LOW ALERT: TWB155 (71c500) | Score: 30% | Very low altitude: 3375 ft (not near airport)
+2026-06-27 19:40:35,911 [CRITICAL] 🔴 HIGH ALERT: KAL689 (71c530) | Score: 90% | STCA: Conflict with KAL475
+2026-06-27 19:40:35,913 [CRITICAL] 🔴 HIGH ALERT: AAR761 (71c521) | Score: 100% | Very low altitude: 655 ft (not near airport), STCA: Conflict with GIA179
+2026-06-27 19:40:35,916 [CRITICAL] 🔴 HIGH ALERT: JJA6013 (71c524) | Score: 90% | STCA: Conflict with JNA081
+2026-06-27 19:40:35,923 [CRITICAL] 🔴 HIGH ALERT: KAL655 (71c589) | Score: 90% | STCA: Conflict with AAR178
+2026-06-27 19:40:35,926 [INFO] 🔵 LOW ALERT: AAR745 (71c582) | Score: 30% | Very low altitude: 3916 ft (not near airport)
+2026-06-27 19:40:35,929 [CRITICAL] 🔴 HIGH ALERT: CPA812 (789213) | Score: 90% | STCA: Conflict with GTI638
+2026-06-27 19:40:35,933 [CRITICAL] 🔴 HIGH ALERT: HKE559 (789229) | Score: 100% | Very low altitude: 1356 ft (not near airport), STCA: Conflict with HGB2327, CRK619
+2026-06-27 19:40:35,939 [CRITICAL] 🔴 HIGH ALERT: KAL737 (71c558) | Score: 90% | STCA: Conflict with APJ710
+2026-06-27 19:40:35,942 [INFO] 🔵 LOW ALERT: JJA1108 (71c555) | Score: 30% | Very low altitude: 4914 ft (not near airport)
+2026-06-27 19:40:35,946 [INFO] 🔵 LOW ALERT: CPA988 (789248) | Score: 30% | Very low altitude: 4213 ft (not near airport)
+2026-06-27 19:40:35,955 [CRITICAL] 🔴 HIGH ALERT: JNA081 (71c568) | Score: 90% | STCA: Conflict with JJA6013
+2026-06-27 19:40:35,959 [CRITICAL] 🔴 HIGH ALERT: CSZ9130 (780839) | Score: 100% | Very low altitude: 1234 ft (not near airport), STCA: Conflict with UEA2219, CSN3626
+2026-06-27 19:40:35,963 [CRITICAL] 🔴 HIGH ALERT: GIA179 (8a021e) | Score: 90% | STCA: Conflict with AAR761
+2026-06-27 19:40:35,967 [CRITICAL] 🔴 HIGH ALERT: HGB2327 (789270) | Score: 100% | Very low altitude: 929 ft (not near airport), STCA: Conflict with HKE559, CRK619
+2026-06-27 19:40:35,972 [CRITICAL] 🔴 HIGH ALERT: AHK456 (78926c) | Score: 90% | STCA: Conflict with CEB970
+2026-06-27 19:40:35,977 [INFO] 🔵 LOW ALERT: HKE755 (789285) | Score: 30% | Very low altitude: 2933 ft (not near airport)
+2026-06-27 19:40:35,979 [CRITICAL] 🔴 HIGH ALERT: CRK619 (78927c) | Score: 100% | Very low altitude: 1127 ft (not near airport), STCA: Conflict with HKE559, HGB2327
+2026-06-27 19:40:35,989 [INFO] 🔵 LOW ALERT: CRK282 (78929e) | Score: 30% | Very low altitude: 4099 ft (not near airport)
+2026-06-27 19:40:36,008 [CRITICAL] 🔴 HIGH ALERT: THA349 (885115) | Score: 100% | Very low altitude: 1889 ft (not near airport), STCA: Conflict with OMA816
+2026-06-27 19:40:36,014 [CRITICAL] 🔴 HIGH ALERT: EOK341 (71c743) | Score: 100% | Very low altitude: 4716 ft (not near airport), Rapid descent: 3263 ft/min, MSAW: Rapid descent at low altitude
+2026-06-27 19:40:36,023 [INFO] 🔵 LOW ALERT: JJA1432 (71c739) | Score: 30% | Very low altitude: 4084 ft (not near airport)
+2026-06-27 19:40:36,031 [CRITICAL] 🔴 HIGH ALERT: ANA476 (8686aa) | Score: 100% | Very low altitude: 1295 ft (not near airport), STCA: Conflict with SKY116
+2026-06-27 19:40:36,042 [CRITICAL] 🔴 HIGH ALERT: ADO39 (861e92) | Score: 100% | Very low altitude: 144 ft (not near airport), Rapid climb: 3135 ft/min, STCA: Conflict with SFJ93
+2026-06-27 19:40:36,047 [INFO] 🔵 LOW ALERT: CEB652 (758453) | Score: 30% | Very low altitude: 2819 ft (not near airport)
+2026-06-27 19:40:36,049 [INFO] 🔵 LOW ALERT: CEB1834 (75843e) | Score: 30% | Very low altitude: 3665 ft (not near airport)
+2026-06-27 19:40:36,051 [INFO] 🔵 LOW ALERT: ANA274 (86d6c8) | Score: 30% | Very low altitude: 4579 ft (not near airport)
+2026-06-27 19:40:36,054 [CRITICAL] 🔴 HIGH ALERT: CEB970 (758437) | Score: 90% | STCA: Conflict with AHK456
+2026-06-27 19:40:36,064 [CRITICAL] 🔴 HIGH ALERT: UEA2219 (7820cd) | Score: 100% | Very low altitude: 990 ft (not near airport), STCA: Conflict with CSZ9130, EPA6230
+2026-06-27 19:40:36,067 [INFO] 🔵 LOW ALERT: PAL126 (758525) | Score: 30% | Very low altitude: 3467 ft (not near airport)
+2026-06-27 19:40:36,073 [INFO] 🔵 LOW ALERT: JST29 (7c6bbb) | Score: 30% | Very low altitude: 1417 ft (not near airport)
+2026-06-27 19:40:36,077 [INFO] 🔵 LOW ALERT: ANZ80 (c82258) | Score: 30% | Very low altitude: 4610 ft (not near airport)
+2026-06-27 19:40:36,083 [INFO] 🔵 LOW ALERT: JAL99 (86d974) | Score: 30% | Very low altitude: 1874 ft (not near airport)
+2026-06-27 19:40:36,088 [INFO] 🔵 LOW ALERT: JAL526 (842388) | Score: 30% | Very low altitude: 3489 ft (not near airport)
+2026-06-27 19:40:36,096 [INFO] 🔵 LOW ALERT: SVA870 (7105b2) | Score: 30% | Very low altitude: 2324 ft (not near airport)
+2026-06-27 19:40:36,104 [INFO] 🔵 LOW ALERT: CHH7205 (78239b) | Score: 55% | Very low altitude: 3810 ft (not near airport), Rapid climb: 2751 ft/min
+2026-06-27 19:40:36,107 [INFO] 🔵 LOW ALERT: CES5216 (781087) | Score: 55% | Very low altitude: 2674 ft (not near airport), Rapid climb: 2559 ft/min
+2026-06-27 19:40:36,110 [INFO] 🔵 LOW ALERT: APG698 (7585b3) | Score: 30% | Very low altitude: 2004 ft (not near airport)
+2026-06-27 19:40:36,117 [CRITICAL] 🔴 HIGH ALERT: EPA6230 (7822cb) | Score: 100% | Very low altitude: 1569 ft (not near airport), STCA: Conflict with UEA2219
+2026-06-27 19:40:36,126 [CRITICAL] 🔴 HIGH ALERT: CSN3626 (7822bb) | Score: 100% | Very low altitude: 899 ft (not near airport), STCA: Conflict with CES5349, CSZ9130
+2026-06-27 19:40:36,129 [CRITICAL] 🔴 HIGH ALERT: OMA816 (70c122) | Score: 90% | STCA: Conflict with THA349
+2026-06-27 19:40:36,131 [CRITICAL] 🔴 HIGH ALERT: GTI638 (abed37) | Score: 90% | STCA: Conflict with CPA812
+2026-06-27 19:40:36,135 [INFO] 🔵 LOW ALERT: QFA36 (7c146d) | Score: 55% | Very low altitude: 1737 ft (not near airport), Rapid climb: 2688 ft/min
+2026-06-27 19:40:36,138 [INFO] 🔵 LOW ALERT: CCA422 (78115d) | Score: 30% | Very low altitude: 4335 ft (not near airport)
+2026-06-27 19:40:36,147 [CRITICAL] 🔴 HIGH ALERT: SFJ93 (84cefa) | Score: 100% | Very low altitude: 1066 ft (not near airport), STCA: Conflict with ADO39
+2026-06-27 19:40:36,153 [INFO] 🔵 LOW ALERT: AIQ5500 (880845) | Score: 55% | Very low altitude: 1120 ft (not near airport), Rapid climb: 3647 ft/min
+2026-06-27 19:40:36,156 [CRITICAL] 🔴 HIGH ALERT: AIQ322 (880844) | Score: 100% | Very low altitude: 396 ft (not near airport), STCA: Conflict with AIQ3022
+2026-06-27 19:40:36,161 [INFO] 🔵 LOW ALERT: TGW695 (76d101) | Score: 30% | Very low altitude: 2796 ft (not near airport)
+2026-06-27 19:40:36,164 [INFO] 🔵 LOW ALERT: TGW525 (76d103) | Score: 30% | Very low altitude: 1737 ft (not near airport)
+2026-06-27 19:40:36,174 [INFO] 🔵 LOW ALERT: HVN1186 (88808e) | Score: 30% | Very low altitude: 114 ft (not near airport)
+2026-06-27 19:40:36,177 [INFO] 🔵 LOW ALERT: HVN1544 (888093) | Score: 30% | Very low altitude: 3025 ft (not near airport)
+2026-06-27 19:40:36,184 [INFO] 🔵 LOW ALERT: VJC468 (88815f) | Score: 30% | Very low altitude: 3962 ft (not near airport)
+2026-06-27 19:40:36,189 [INFO] 🔵 LOW ALERT: HVN385 (88812a) | Score: 30% | Very low altitude: 2529 ft (not near airport)
+2026-06-27 19:40:36,192 [INFO] 🔵 LOW ALERT: VJC7317 (88811c) | Score: 30% | Very low altitude: 3352 ft (not near airport)
+2026-06-27 19:40:36,198 [INFO] 🔵 LOW ALERT: VJC722 (888156) | Score: 30% | Very low altitude: 2369 ft (not near airport)
+2026-06-27 19:40:36,201 [INFO] 🔵 LOW ALERT: HVN1560 (8880a4) | Score: 30% | Very low altitude: 2529 ft (not near airport)
+2026-06-27 19:40:36,205 [CRITICAL] 🔴 HIGH ALERT: TGW517 (76d1c7) | Score: 100% | Very low altitude: 1028 ft (not near airport), STCA: Conflict with SIA431
+2026-06-27 19:40:36,210 [INFO] 🔵 LOW ALERT: CCA1337 (781347) | Score: 30% | Very low altitude: 2057 ft (not near airport)
+2026-06-27 19:40:36,217 [INFO] 🔵 LOW ALERT: HVN178 (8881b5) | Score: 30% | Very low altitude: 2712 ft (not near airport)
+2026-06-27 19:40:36,220 [INFO] 🔵 LOW ALERT: CPA719 (78016d) | Score: 30% | Very low altitude: 708 ft (not near airport)
+2026-06-27 19:40:36,225 [INFO] 🔵 LOW ALERT: CPA589 (780191) | Score: 30% | Very low altitude: 2468 ft (not near airport)
+2026-06-27 19:40:36,238 [INFO] 🔵 LOW ALERT: CSC8895 (781479) | Score: 30% | Very low altitude: 3596 ft (not near airport)
+2026-06-27 19:40:36,242 [INFO] 🔵 LOW ALERT: CHH7026 (780e2a) | Score: 30% | Very low altitude: 1409 ft (not near airport)
+2026-06-27 19:40:36,245 [INFO] 🔵 LOW ALERT: CSC6872 (780e54) | Score: 30% | Very low altitude: 2628 ft (not near airport)
+2026-06-27 19:40:36,251 [CRITICAL] 🔴 HIGH ALERT: MXD1636 (750405) | Score: 100% | Very low altitude: 3878 ft (not near airport), STCA: Conflict with MXD1907
+2026-06-27 19:40:36,256 [CRITICAL] 🔴 HIGH ALERT: SIA431 (76cdb0) | Score: 100% | Very low altitude: 693 ft (not near airport), STCA: Conflict with SIA763, TGW517
+2026-06-27 19:40:36,262 [INFO] 🔵 LOW ALERT: AXM171 (750494) | Score: 30% | Very low altitude: 3101 ft (not near airport)
+2026-06-27 19:40:36,265 [CRITICAL] 🔴 HIGH ALERT: CDG4619 (780e5c) | Score: 90% | STCA: Conflict with ESR650
+2026-06-27 19:40:36,271 [INFO] 🔵 LOW ALERT: AXM6274 (75047c) | Score: 30% | Very low altitude: 4953 ft (not near airport)
+2026-06-27 19:40:36,278 [INFO] 🔵 LOW ALERT: AXM5213 (75043c) | Score: 30% | Very low altitude: 2133 ft (not near airport)
+2026-06-27 19:40:36,287 [INFO] 🔵 LOW ALERT: MAS2717 (7503aa) | Score: 30% | Very low altitude: 3398 ft (not near airport)
+2026-06-27 19:40:36,291 [CRITICAL] 🔴 HIGH ALERT: SKY116 (868043) | Score: 100% | Very low altitude: 1249 ft (not near airport), STCA: Conflict with ANA476
+2026-06-27 19:40:36,298 [INFO] 🔵 LOW ALERT: SIA831 (76ceeb) | Score: 30% | Very low altitude: 4389 ft (not near airport)
+2026-06-27 19:40:36,316 [INFO] 🔵 LOW ALERT: MXD1005 (75056a) | Score: 30% | Very low altitude: 822 ft (not near airport)
+2026-06-27 19:40:36,325 [INFO] 🔵 LOW ALERT: MXD616 (750571) | Score: 55% | Very low altitude: 3093 ft (not near airport), Rapid climb: 2624 ft/min
+2026-06-27 19:40:36,354 [CRITICAL] 🔴 HIGH ALERT: MXD1907 (7505aa) | Score: 100% | Very low altitude: 4732 ft (not near airport), STCA: Conflict with MXD1636
+2026-06-27 19:40:36,379 [INFO] 🔵 LOW ALERT: JAL576 (862d94) | Score: 30% | Very low altitude: 3436 ft (not near airport)
+2026-06-27 19:40:36,382 [INFO] 🔵 LOW ALERT: ANA415 (846932) | Score: 30% | Very low altitude: 594 ft (not near airport)
+2026-06-27 19:40:36,389 [INFO] 🔵 LOW ALERT: JAL616 (862db6) | Score: 30% | Very low altitude: 2880 ft (not near airport)
+2026-06-27 19:40:36,396 [INFO] 🔵 LOW ALERT: ADO36 (861b64) | Score: 30% | Very low altitude: 4099 ft (not near airport)
+2026-06-27 19:40:36,407 [INFO] 🔵 LOW ALERT: JAL229 (850dae) | Score: 30% | Very low altitude: 1196 ft (not near airport)
+2026-06-27 19:40:36,413 [INFO] 🔵 LOW ALERT: TVJ109 (885b43) | Score: 30% | Very low altitude: 3505 ft (not near airport)
+2026-06-27 19:40:36,431 [INFO] 🔵 LOW ALERT: KAL1330 (71bf28) | Score: 30% | Very low altitude: 1889 ft (not near airport)
+2026-06-27 19:40:36,436 [INFO] 🔵 LOW ALERT: ANA966 (86d682) | Score: 30% | Very low altitude: 2026 ft (not near airport)
+2026-06-27 19:40:36,441 [CRITICAL] 🔴 HIGH ALERT: AAR178 (71bf92) | Score: 90% | STCA: Conflict with KAL655
+2026-06-27 19:40:36,446 [CRITICAL] 🔴 HIGH ALERT: APJ710 (86d64b) | Score: 90% | STCA: Conflict with KAL737
+2026-06-27 19:45:37,321 [INFO] 🔵 LOW ALERT: JAL266 (85188c) | Score: 50% | Very low altitude: 2438 ft (not near airport), Sudden course change: 97°
+2026-06-27 19:45:37,329 [INFO] 🔵 LOW ALERT: HOIST20 (ae6221) | Score: 50% | Very low altitude: 312 ft (not near airport), Unusually slow: 65 knots
+2026-06-27 19:45:37,335 [INFO] 🔵 LOW ALERT: CSN8283 (7809fc) | Score: 30% | Very low altitude: 4922 ft (not near airport)
+2026-06-27 19:45:37,346 [INFO] 🔵 LOW ALERT: CTV195 (8a0376) | Score: 30% | Very low altitude: 1196 ft (not near airport)
+2026-06-27 19:45:37,361 [INFO] 🔵 LOW ALERT: THA047 (885307) | Score: 50% | Very low altitude: 2255 ft (not near airport), Sudden course change: 90°
+2026-06-27 19:45:37,368 [INFO] 🔵 LOW ALERT: THA120 (88530e) | Score: 55% | Very low altitude: 3101 ft (not near airport), Rapid climb: 2879 ft/min
+2026-06-27 19:45:37,374 [INFO] 🔵 LOW ALERT: JAL566 (8518d0) | Score: 30% | Very low altitude: 3520 ft (not near airport)
+2026-06-27 19:45:37,380 [INFO] 🔵 LOW ALERT: BTK6884 (8a0634) | Score: 30% | Very low altitude: 1356 ft (not near airport)
+2026-06-27 19:45:37,385 [INFO] 🔵 LOW ALERT: KBZ835 (70472b) | Score: 30% | Very low altitude: 624 ft (not near airport)
+2026-06-27 19:45:37,387 [INFO] 🔵 LOW ALERT: KBZ782 (70472a) | Score: 50% | Very low altitude: 472 ft (not near airport), Sudden course change: 52°
+2026-06-27 19:45:37,395 [INFO] 🔵 LOW ALERT: GIA717 (8a05ad) | Score: 30% | Very low altitude: 2720 ft (not near airport)
+2026-06-27 19:45:37,397 [INFO] 🔵 LOW ALERT: UAL849 (a1270b) | Score: 30% | Very low altitude: 320 ft (not near airport)
+2026-06-27 19:45:37,400 [INFO] 🔵 LOW ALERT: IGO1343 (801819) | Score: 50% | Very low altitude: 2956 ft (not near airport), Sudden course change: 76°
+2026-06-27 19:45:37,402 [INFO] 🔵 LOW ALERT: IGO1014 (801822) | Score: 30% | Very low altitude: 3909 ft (not near airport)
+2026-06-27 19:45:37,404 [INFO] 🔵 LOW ALERT: BTK6803 (8a051c) | Score: 30% | Very low altitude: 3291 ft (not near airport)
+2026-06-27 19:45:37,407 [INFO] 🔵 LOW ALERT: JTA46 (846021) | Score: 30% | Very low altitude: 3162 ft (not near airport)
+2026-06-27 19:45:37,420 [INFO] 🔵 LOW ALERT: CPA402 (780a7e) | Score: 30% | Very low altitude: 2796 ft (not near airport)
+2026-06-27 19:45:37,422 [INFO] 🔵 LOW ALERT: CPA581 (780a96) | Score: 30% | Very low altitude: 1272 ft (not near airport)
+2026-06-27 19:45:37,428 [INFO] 🔵 LOW ALERT: BKP185 (88434a) | Score: 30% | Very low altitude: 3497 ft (not near airport)
+2026-06-27 19:45:37,455 [INFO] 🔵 LOW ALERT:  (780a19) | Score: 30% | Very low altitude: 4945 ft (not near airport)
+2026-06-27 19:45:37,461 [CRITICAL] 🔴 HIGH ALERT: HKC830 (780a1e) | Score: 100% | Very low altitude: 899 ft (not near airport), Sudden course change: 49°, STCA: Conflict with HKE845
+2026-06-27 19:45:37,477 [INFO] 🔵 LOW ALERT: CCA709 (780b45) | Score: 30% | Very low altitude: 807 ft (not near airport)
+2026-06-27 19:45:37,484 [CRITICAL] 🔴 HIGH ALERT: AXM6323 (750148) | Score: 100% | Very low altitude: 792 ft (not near airport), Sudden course change: 55°, STCA: Conflict with MAS763
+2026-06-27 19:45:37,490 [INFO] 🔵 LOW ALERT: AXM5134 (7500e4) | Score: 50% | Very low altitude: 2453 ft (not near airport), Sudden course change: 56°
+2026-06-27 19:45:37,494 [INFO] 🔵 LOW ALERT:  (780c41) | Score: 55% | Very low altitude: 3505 ft (not near airport), Rapid climb: 3135 ft/min
+2026-06-27 19:45:37,496 [INFO] 🔵 LOW ALERT: CHH7358 (780c58) | Score: 30% | Very low altitude: 982 ft (not near airport)
+2026-06-27 19:45:37,500 [CRITICAL] 🔴 HIGH ALERT: MAS763 (750222) | Score: 100% | Very low altitude: 358 ft (not near airport), STCA: Conflict with AXM6323
+2026-06-27 19:45:37,511 [INFO] 🔵 LOW ALERT: PAS325 (8a0915) | Score: 50% | Very low altitude: 1280 ft (not near airport), Sudden course change: 176°
+2026-06-27 19:45:37,514 [INFO] 🔵 LOW ALERT: MAS2665 (75029e) | Score: 50% | Very low altitude: 1859 ft (not near airport), Sudden course change: 93°
+2026-06-27 19:45:37,518 [INFO] 🔵 LOW ALERT: SJV874 (8a0909) | Score: 30% | Very low altitude: 3589 ft (not near airport)
+2026-06-27 19:45:37,522 [INFO] 🔵 LOW ALERT: SIA510 (76cd08) | Score: 30% | Very low altitude: 4975 ft (not near airport)
+2026-06-27 19:45:37,526 [INFO] 🔵 LOW ALERT: QFA30 (7c5325) | Score: 30% | Very low altitude: 2651 ft (not near airport)
+2026-06-27 19:45:37,529 [INFO] 🔵 LOW ALERT: QFA97 (7c5321) | Score: 30% | Very low altitude: 4122 ft (not near airport)
+2026-06-27 19:45:37,536 [INFO] 🔵 LOW ALERT: TNU699 (8a0987) | Score: 30% | Very low altitude: 259 ft (not near airport)
+2026-06-27 19:45:37,539 [INFO] 🔵 LOW ALERT: ANA716 (85d42c) | Score: 30% | Very low altitude: 2682 ft (not near airport)
+2026-06-27 19:45:37,542 [INFO] 🔵 LOW ALERT: ABY817 (896740) | Score: 55% | Very low altitude: 1615 ft (not near airport), Rapid climb: 2624 ft/min
+2026-06-27 19:45:37,552 [INFO] 🔵 LOW ALERT: TLM747 (8832cb) | Score: 30% | Very low altitude: 2034 ft (not near airport)
+2026-06-27 19:45:37,554 [INFO] 🔵 LOW ALERT: TLM515 (8832d1) | Score: 30% | Very low altitude: 1379 ft (not near airport)
+2026-06-27 19:45:37,558 [INFO] 🔵 LOW ALERT: SIA222 (76cd72) | Score: 50% | Very low altitude: 693 ft (not near airport), Sudden course change: 145°
+2026-06-27 19:45:37,563 [CRITICAL] 🔴 HIGH ALERT: TTW602 (89905d) | Score: 100% | Sudden course change: 118°, STCA: Conflict with MDA7846
+2026-06-27 19:45:37,565 [INFO] 🔵 LOW ALERT: EVA101 (899076) | Score: 50% | Very low altitude: 1181 ft (not near airport), Sudden course change: 139°
+2026-06-27 19:45:37,567 [INFO] 🔵 LOW ALERT: EVA850 (899070) | Score: 30% | Very low altitude: 419 ft (not near airport)
+2026-06-27 19:45:37,569 [INFO] 🔵 LOW ALERT: UIA8836 (899072) | Score: 50% | Very low altitude: 3718 ft (not near airport), Sudden course change: 54°
+2026-06-27 19:45:37,572 [WARNING] 🟡 MEDIUM ALERT: TTW607 (89902d) | Score: 75% | Very low altitude: 3246 ft (not near airport), Rapid climb: 3391 ft/min, Sudden course change: 144°
+2026-06-27 19:45:37,577 [CRITICAL] 🔴 HIGH ALERT: TTW259 (899023) | Score: 90% | STCA: Conflict with MDA7846
+2026-06-27 19:45:37,579 [INFO] 🔵 LOW ALERT: BAW16 (406f79) | Score: 30% | Very low altitude: 1684 ft (not near airport)
+2026-06-27 19:45:37,585 [INFO] 🔵 LOW ALERT: ANA98 (868b50) | Score: 30% | Very low altitude: 2225 ft (not near airport)
+2026-06-27 19:45:37,589 [INFO] 🔵 LOW ALERT: APJ162 (845ce4) | Score: 30% | Very low altitude: 883 ft (not near airport)
+2026-06-27 19:45:37,596 [INFO] 🔵 LOW ALERT: CPA459 (780236) | Score: 30% | Very low altitude: 2263 ft (not near airport)
+2026-06-27 19:45:37,602 [INFO] 🔵 LOW ALERT: JNA037 (71c014) | Score: 50% | Very low altitude: 3162 ft (not near airport), Sudden course change: 178°
+2026-06-27 19:45:37,609 [INFO] 🔵 LOW ALERT: UIA8830 (899142) | Score: 30% | Very low altitude: 198 ft (not near airport)
+2026-06-27 19:45:37,611 [INFO] 🔵 LOW ALERT: UIA8628 (899141) | Score: 30% | Very low altitude: 2956 ft (not near airport)
+2026-06-27 19:45:37,613 [INFO] 🔵 LOW ALERT: UIA8928 (89913d) | Score: 30% | Very low altitude: 2179 ft (not near airport)
+2026-06-27 19:45:37,615 [INFO] 🔵 LOW ALERT: MDA378 (899150) | Score: 30% | Very low altitude: 2796 ft (not near airport)
+2026-06-27 19:45:37,618 [INFO] 🔵 LOW ALERT: CPA964 (7801a3) | Score: 30% | Very low altitude: 4358 ft (not near airport)
+2026-06-27 19:45:37,621 [INFO] 🔵 LOW ALERT: ASV908 (71c072) | Score: 50% | Very low altitude: 2651 ft (not near airport), Sudden course change: 48°
+2026-06-27 19:45:37,624 [INFO] 🔵 LOW ALERT: AAR8996 (71c071) | Score: 30% | Very low altitude: 4198 ft (not near airport)
+2026-06-27 19:45:37,627 [CRITICAL] 🔴 HIGH ALERT: MDA7846 (8990ad) | Score: 90% | STCA: Conflict with TTW602, TTW259
+2026-06-27 19:45:37,631 [INFO] 🔵 LOW ALERT: CPA430 (7801c7) | Score: 30% | Very low altitude: 4876 ft (not near airport)
+2026-06-27 19:45:37,633 [CRITICAL] 🔴 HIGH ALERT: HKE845 (7801c1) | Score: 100% | Very low altitude: 1089 ft (not near airport), Sudden course change: 48°, STCA: Conflict with HKC830
+2026-06-27 19:45:37,635 [INFO] 🔵 LOW ALERT: JJA136 (71c090) | Score: 50% | Very low altitude: 1196 ft (not near airport), Sudden course change: 55°
+2026-06-27 19:45:37,638 [INFO] 🔵 LOW ALERT: JJA2125 (71c087) | Score: 55% | Very low altitude: 1973 ft (not near airport), Rapid climb: 2751 ft/min
+2026-06-27 19:45:37,645 [INFO] 🔵 LOW ALERT: ANA118 (86ef4a) | Score: 30% | Very low altitude: 4861 ft (not near airport)
+2026-06-27 19:45:37,743 [INFO] 🔵 LOW ALERT: EVA6819 (899137) | Score: 30% | Very low altitude: 1988 ft (not near airport)
+2026-06-27 19:45:37,752 [CRITICAL] 🔴 HIGH ALERT: CBG8964 (780428) | Score: 90% | STCA: Conflict with CSN6514
+2026-06-27 19:45:37,757 [INFO] 🔵 LOW ALERT: SJX313 (8991d8) | Score: 30% | Very low altitude: 1363 ft (not near airport)
+2026-06-27 19:45:37,759 [CRITICAL] 🔴 HIGH ALERT: CAL222 (8991a9) | Score: 100% | Very low altitude: 1607 ft (not near airport), STCA: Conflict with JAL616
+2026-06-27 19:45:37,767 [INFO] 🔵 LOW ALERT: JAL486 (85120e) | Score: 30% | Very low altitude: 3398 ft (not near airport)
+2026-06-27 19:45:37,770 [WARNING] 🟡 MEDIUM ALERT: ADO43 (845ebc) | Score: 75% | Very low altitude: 1219 ft (not near airport), Rapid climb: 3391 ft/min, Sudden course change: 87°
+2026-06-27 19:45:37,773 [INFO] 🔵 LOW ALERT: MDA349 (8990f5) | Score: 50% | Very low altitude: 815 ft (not near airport), Sudden course change: 141°
+2026-06-27 19:45:37,777 [INFO] 🔵 LOW ALERT: SJX861 (8990bc) | Score: 50% | Very low altitude: 1272 ft (not near airport), Sudden course change: 172°
+2026-06-27 19:45:37,779 [INFO] 🔵 LOW ALERT: EVA806 (8990cf) | Score: 50% | Very low altitude: 4884 ft (not near airport), Sudden course change: 84°
+2026-06-27 19:45:37,786 [INFO] 🔵 LOW ALERT:  (780521) | Score: 30% | Very low altitude: 586 ft (not near airport)
+2026-06-27 19:45:37,790 [CRITICAL] 🔴 HIGH ALERT: CHH7564 (781871) | Score: 90% | STCA: Conflict with UEA2207
+2026-06-27 19:45:37,799 [INFO] 🔵 LOW ALERT: CSN5845 (7804c4) | Score: 30% | Very low altitude: 3634 ft (not near airport)
+2026-06-27 19:45:37,809 [INFO] 🔵 LOW ALERT: CES5240 (780582) | Score: 30% | Very low altitude: 3916 ft (not near airport)
+2026-06-27 19:45:37,811 [INFO] 🔵 LOW ALERT: MMA350 (704015) | Score: 50% | Very low altitude: 670 ft (not near airport), Sudden course change: 178°
+2026-06-27 19:45:37,813 [CRITICAL] 🔴 HIGH ALERT: DKH1789 (781942) | Score: 100% | Very low altitude: 1013 ft (not near airport), Sudden course change: 136°, STCA: Conflict with EPA6230, CSN3626
+2026-06-27 19:45:37,814 [INFO] 🔵 LOW ALERT: CSN5079 (781948) | Score: 30% | Very low altitude: 1607 ft (not near airport)
+2026-06-27 19:45:37,819 [INFO] 🔵 LOW ALERT: KAL708 (71c350) | Score: 30% | Very low altitude: 3916 ft (not near airport)
+2026-06-27 19:45:37,823 [INFO] 🔵 LOW ALERT: AIQ3311 (880c49) | Score: 30% | Very low altitude: 205 ft (not near airport)
+2026-06-27 19:45:37,826 [CRITICAL] 🔴 HIGH ALERT: ESR861 (71c374) | Score: 90% | STCA: Conflict with JNA081
+2026-06-27 19:45:37,828 [INFO] 🔵 LOW ALERT: TWB736 (71c363) | Score: 30% | Very low altitude: 3223 ft (not near airport)
+2026-06-27 19:45:37,832 [INFO] 🔵 LOW ALERT: KAL1561 (71c315) | Score: 30% | Very low altitude: 4358 ft (not near airport)
+2026-06-27 19:45:37,834 [INFO] 🔵 LOW ALERT: MMA363 (70401f) | Score: 30% | Very low altitude: 1272 ft (not near airport)
+2026-06-27 19:45:37,838 [INFO] 🔵 LOW ALERT: APZ131 (71c389) | Score: 50% | Very low altitude: 3528 ft (not near airport), Sudden course change: 139°
+2026-06-27 19:45:37,842 [INFO] 🔵 LOW ALERT: AAR212 (71c382) | Score: 50% | Very low altitude: 1684 ft (not near airport), Sudden course change: 126°
+2026-06-27 19:45:37,846 [CRITICAL] 🔴 HIGH ALERT: CXA819 (7805c2) | Score: 90% | STCA: Conflict with CPA902
+2026-06-27 19:45:37,849 [INFO] 🔵 LOW ALERT: ANA8408 (868db5) | Score: 50% | Very low altitude: 3543 ft (not near airport), Sudden course change: 151°
+2026-06-27 19:45:37,855 [CRITICAL] 🔴 HIGH ALERT: SIA128 (76b442) | Score: 100% | Very low altitude: 1135 ft (not near airport), Sudden course change: 160°, STCA: Conflict with AXM5213
+2026-06-27 19:45:37,861 [INFO] 🔵 LOW ALERT: JAL671 (8514f8) | Score: 30% | Very low altitude: 3025 ft (not near airport)
+2026-06-27 19:45:37,866 [INFO] 🔵 LOW ALERT: CXA884 (7806ed) | Score: 50% | Very low altitude: 2019 ft (not near airport), Sudden course change: 68°
+2026-06-27 19:45:37,869 [INFO] 🔵 LOW ALERT: TWB155 (71c500) | Score: 50% | Very low altitude: 1965 ft (not near airport), Sudden course change: 46°
+2026-06-27 19:45:37,871 [WARNING] 🟡 MEDIUM ALERT: JJA5257 (71c539) | Score: 75% | Very low altitude: 2042 ft (not near airport), Rapid climb: 2624 ft/min, Sudden course change: 89°
+2026-06-27 19:45:37,874 [CRITICAL] 🔴 HIGH ALERT: AAR761 (71c521) | Score: 90% | STCA: Conflict with GIA179, CPA719
+2026-06-27 19:45:37,880 [INFO] 🔵 LOW ALERT: KAL655 (71c589) | Score: 50% | Very low altitude: 4373 ft (not near airport), Sudden course change: 111°
+2026-06-27 19:45:37,885 [INFO] 🔵 LOW ALERT: CPA826 (789214) | Score: 30% | Very low altitude: 3108 ft (not near airport)
+2026-06-27 19:45:37,888 [INFO] 🔵 LOW ALERT:  (780891) | Score: 30% | Very low altitude: 1668 ft (not near airport)
+2026-06-27 19:45:37,893 [INFO] 🔵 LOW ALERT: JJA1108 (71c555) | Score: 30% | Very low altitude: 2583 ft (not near airport)
+2026-06-27 19:45:37,895 [CRITICAL] 🔴 HIGH ALERT: CPA902 (789235) | Score: 90% | STCA: Conflict with CXA819
+2026-06-27 19:45:37,899 [INFO] 🔵 LOW ALERT: CPA988 (789248) | Score: 30% | Very low altitude: 3291 ft (not near airport)
+2026-06-27 19:45:37,903 [INFO] 🔵 LOW ALERT: KAL2104 (71c571) | Score: 30% | Very low altitude: 4572 ft (not near airport)
+2026-06-27 19:45:37,906 [CRITICAL] 🔴 HIGH ALERT: JNA081 (71c568) | Score: 90% | STCA: Conflict with ESR861
+2026-06-27 19:45:37,909 [INFO] 🔵 LOW ALERT: TWB161 (71c560) | Score: 30% | Very low altitude: 2415 ft (not near airport)
+2026-06-27 19:45:37,913 [CRITICAL] 🔴 HIGH ALERT: CSZ9130 (780839) | Score: 100% | Very low altitude: 441 ft (not near airport), STCA: Conflict with UEA2219, EPA6230, CSN3626
+2026-06-27 19:45:37,917 [CRITICAL] 🔴 HIGH ALERT: GIA179 (8a021e) | Score: 90% | STCA: Conflict with AAR761, CPA719
+2026-06-27 19:45:37,930 [INFO] 🔵 LOW ALERT: CRK282 (78929e) | Score: 30% | Very low altitude: 2110 ft (not near airport)
+2026-06-27 19:45:37,944 [INFO] 🔵 LOW ALERT: HKE626 (7892a4) | Score: 50% | Very low altitude: 2209 ft (not near airport), Sudden course change: 69°
+2026-06-27 19:45:37,947 [CRITICAL] 🔴 HIGH ALERT: THA466 (88510f) | Score: 90% | STCA: Conflict with JST29, CSZ308
+2026-06-27 19:45:37,949 [INFO] 🔵 LOW ALERT: THA349 (885115) | Score: 30% | Very low altitude: 4396 ft (not near airport)
+2026-06-27 19:45:37,957 [INFO] 🔵 LOW ALERT: EOK341 (71c743) | Score: 50% | Very low altitude: 2552 ft (not near airport), Sudden course change: 62°
+2026-06-27 19:45:37,959 [INFO] 🔵 LOW ALERT: QTR1C (06a19d) | Score: 30% | Very low altitude: 3268 ft (not near airport)
+2026-06-27 19:45:37,970 [INFO] 🔵 LOW ALERT: JJA1432 (71c739) | Score: 30% | Very low altitude: 1943 ft (not near airport)
+2026-06-27 19:45:37,973 [INFO] 🔵 LOW ALERT: JTA128 (8409ed) | Score: 30% | Very low altitude: 3154 ft (not near airport)
+2026-06-27 19:45:37,980 [INFO] 🔵 LOW ALERT: ANA476 (8686aa) | Score: 30% | Very low altitude: 99 ft (not near airport)
+2026-06-27 19:45:37,990 [INFO] 🔵 LOW ALERT: ADO39 (861e92) | Score: 30% | Very low altitude: 3779 ft (not near airport)
+2026-06-27 19:45:37,992 [INFO] 🔵 LOW ALERT: QFA1 (7c4920) | Score: 30% | Very low altitude: 1943 ft (not near airport)
+2026-06-27 19:45:37,996 [INFO] 🔵 LOW ALERT: CES5640 (782134) | Score: 30% | Very low altitude: 4861 ft (not near airport)
+2026-06-27 19:45:38,001 [INFO] 🔵 LOW ALERT: CEB652 (758453) | Score: 50% | Very low altitude: 1790 ft (not near airport), Sudden course change: 111°
+2026-06-27 19:45:38,003 [INFO] 🔵 LOW ALERT: CEB1834 (75843e) | Score: 50% | Very low altitude: 3048 ft (not near airport), Sudden course change: 50°
+2026-06-27 19:45:38,006 [INFO] 🔵 LOW ALERT: CEB113 (758436) | Score: 30% | Very low altitude: 3710 ft (not near airport)
+2026-06-27 19:45:38,010 [CRITICAL] 🔴 HIGH ALERT: UEA2207 (7820b6) | Score: 90% | STCA: Conflict with CHH7564
+2026-06-27 19:45:38,013 [INFO] 🔵 LOW ALERT: CEB632 (7583e8) | Score: 30% | Very low altitude: 4130 ft (not near airport)
+2026-06-27 19:45:38,015 [CRITICAL] 🔴 HIGH ALERT: UEA2219 (7820cd) | Score: 100% | Very low altitude: 281 ft (not near airport), STCA: Conflict with CSZ9130, EPA6230
+2026-06-27 19:45:38,022 [CRITICAL] 🔴 HIGH ALERT:  (782263) | Score: 100% | Very low altitude: 3840 ft (not near airport), STCA: Conflict with CES5216
+2026-06-27 19:45:38,026 [CRITICAL] 🔴 HIGH ALERT: JST29 (7c6bbb) | Score: 100% | Sudden course change: 179°, STCA: Conflict with THA466
+2026-06-27 19:45:38,029 [INFO] 🔵 LOW ALERT: APG330 (758560) | Score: 30% | Very low altitude: 3688 ft (not near airport)
+2026-06-27 19:45:38,033 [CRITICAL] 🔴 HIGH ALERT: CSN6514 (782288) | Score: 90% | STCA: Conflict with CBG8964
+2026-06-27 19:45:38,039 [INFO] 🔵 LOW ALERT: JAL526 (842388) | Score: 30% | Very low altitude: 3436 ft (not near airport)
+2026-06-27 19:45:38,046 [INFO] 🔵 LOW ALERT: MMA773 (7584bd) | Score: 30% | Very low altitude: 4663 ft (not near airport)
+2026-06-27 19:45:38,048 [INFO] 🔵 LOW ALERT: SVA870 (7105b2) | Score: 50% | Very low altitude: 1104 ft (not near airport), Sudden course change: 169°
+2026-06-27 19:45:38,053 [CRITICAL] 🔴 HIGH ALERT: CES5216 (781087) | Score: 100% | Very low altitude: 3467 ft (not near airport), Rapid climb: 3391 ft/min, STCA: Conflict with 782263
+2026-06-27 19:45:38,060 [CRITICAL] 🔴 HIGH ALERT: EPA6230 (7822cb) | Score: 100% | Very low altitude: 792 ft (not near airport), Sudden course change: 62°, STCA: Conflict with DKH1789, CSZ9130, UEA2219, CSN3626
+2026-06-27 19:45:38,068 [CRITICAL] 🔴 HIGH ALERT: CSN3626 (7822bb) | Score: 100% | Very low altitude: 899 ft (not near airport), STCA: Conflict with DKH1789, CSZ9130, EPA6230
+2026-06-27 19:45:38,071 [INFO] 🔵 LOW ALERT: OMA816 (70c122) | Score: 50% | Very low altitude: 3787 ft (not near airport), Sudden course change: 95°
+2026-06-27 19:45:38,074 [CRITICAL] 🔴 HIGH ALERT: CSZ308 (7822d4) | Score: 90% | STCA: Conflict with THA466
+2026-06-27 19:45:38,077 [CRITICAL] 🔴 HIGH ALERT: CSN5796 (781149) | Score: 100% | Very low altitude: 990 ft (not near airport), STCA: Conflict with CCA1337
+2026-06-27 19:45:38,082 [INFO] 🔵 LOW ALERT: EPA6284 (781199) | Score: 30% | Very low altitude: 1996 ft (not near airport)
+2026-06-27 19:45:38,089 [INFO] 🔵 LOW ALERT: CKK247 (782409) | Score: 30% | Very low altitude: 4198 ft (not near airport)
+2026-06-27 19:45:38,092 [INFO] 🔵 LOW ALERT: AIQ5500 (880845) | Score: 50% | Very low altitude: 4442 ft (not near airport), Sudden course change: 48°
+2026-06-27 19:45:38,094 [INFO] 🔵 LOW ALERT: AIQ3379 (880848) | Score: 30% | Very low altitude: 2964 ft (not near airport)
+2026-06-27 19:45:38,097 [INFO] 🔵 LOW ALERT: TGW695 (76d101) | Score: 30% | Very low altitude: 1363 ft (not near airport)
+2026-06-27 19:45:38,100 [CRITICAL] 🔴 HIGH ALERT: TGW525 (76d103) | Score: 100% | Very low altitude: 678 ft (not near airport), STCA: Conflict with TGW517
+2026-06-27 19:45:38,106 [INFO] 🔵 LOW ALERT: HVN7173 (88808b) | Score: 55% | Very low altitude: 2705 ft (not near airport), Rapid climb: 2879 ft/min
+2026-06-27 19:45:38,111 [INFO] 🔵 LOW ALERT: HVN1544 (888093) | Score: 50% | Very low altitude: 2217 ft (not near airport), Sudden course change: 74°
+2026-06-27 19:45:38,120 [INFO] 🔵 LOW ALERT: HVN617 (888184) | Score: 30% | Very low altitude: 3787 ft (not near airport)
+2026-06-27 19:45:38,125 [CRITICAL] 🔴 HIGH ALERT: VJC468 (88815f) | Score: 100% | Very low altitude: 3116 ft (not near airport), STCA: Conflict with VJC7317
+2026-06-27 19:45:38,129 [CRITICAL] 🔴 HIGH ALERT: VJC7317 (88811c) | Score: 100% | Very low altitude: 3154 ft (not near airport), STCA: Conflict with VJC468
+2026-06-27 19:45:38,137 [INFO] 🔵 LOW ALERT: VJC722 (888156) | Score: 30% | Very low altitude: 1059 ft (not near airport)
+2026-06-27 19:45:38,141 [CRITICAL] 🔴 HIGH ALERT: TGW517 (76d1c7) | Score: 90% | STCA: Conflict with TGW525
+2026-06-27 19:45:38,146 [CRITICAL] 🔴 HIGH ALERT: CCA1337 (781347) | Score: 100% | Very low altitude: 1569 ft (not near airport), Sudden course change: 119°, STCA: Conflict with CSN5796
+2026-06-27 19:45:38,149 [INFO] 🔵 LOW ALERT: CSN6906 (78135e) | Score: 30% | Very low altitude: 4968 ft (not near airport)
+2026-06-27 19:45:38,153 [INFO] 🔵 LOW ALERT: CHH7711 (7812a1) | Score: 30% | Very low altitude: 2430 ft (not near airport)
+2026-06-27 19:45:38,158 [CRITICAL] 🔴 HIGH ALERT: CPA719 (78016d) | Score: 100% | Sudden course change: 101°, STCA: Conflict with AAR761, GIA179
+2026-06-27 19:45:38,163 [INFO] 🔵 LOW ALERT: CPA589 (780191) | Score: 30% | Very low altitude: 1752 ft (not near airport)
+2026-06-27 19:45:38,167 [INFO] 🔵 LOW ALERT: HVN180 (8880ab) | Score: 50% | Very low altitude: 3954 ft (not near airport), Sudden course change: 110°
+2026-06-27 19:45:38,176 [INFO] 🔵 LOW ALERT: CSC8895 (781479) | Score: 30% | Very low altitude: 3154 ft (not near airport)
+2026-06-27 19:45:38,181 [INFO] 🔵 LOW ALERT: CHH7026 (780e2a) | Score: 30% | Very low altitude: 4206 ft (not near airport)
+2026-06-27 19:45:38,191 [INFO] 🔵 LOW ALERT: SIA963 (76cda6) | Score: 50% | Very low altitude: 4411 ft (not near airport), Sudden course change: 140°
+2026-06-27 19:45:38,198 [INFO] 🔵 LOW ALERT: AXM171 (750494) | Score: 30% | Very low altitude: 1059 ft (not near airport)
+2026-06-27 19:45:38,211 [CRITICAL] 🔴 HIGH ALERT: AXM5213 (75043c) | Score: 100% | Very low altitude: 815 ft (not near airport), Sudden course change: 148°, STCA: Conflict with SIA128
+2026-06-27 19:45:38,215 [INFO] 🔵 LOW ALERT: MXD131 (75041b) | Score: 30% | Very low altitude: 1722 ft (not near airport)
+2026-06-27 19:45:38,218 [INFO] 🔵 LOW ALERT: JAL3118 (851cec) | Score: 30% | Very low altitude: 3208 ft (not near airport)
+2026-06-27 19:45:38,223 [INFO] 🔵 LOW ALERT: NOK135 (881054) | Score: 30% | Very low altitude: 3398 ft (not near airport)
+2026-06-27 19:45:38,227 [INFO] 🔵 LOW ALERT: SIA831 (76ceeb) | Score: 30% | Very low altitude: 2430 ft (not near airport)
+2026-06-27 19:45:38,233 [INFO] 🔵 LOW ALERT: MXD391 (750581) | Score: 30% | Very low altitude: 3840 ft (not near airport)
+2026-06-27 19:45:38,247 [INFO] 🔵 LOW ALERT: TGW821 (76bd49) | Score: 50% | Very low altitude: 4114 ft (not near airport), Sudden course change: 54°
+2026-06-27 19:45:38,261 [INFO] 🔵 LOW ALERT: ANA85 (868094) | Score: 30% | Very low altitude: 4511 ft (not near airport)
+2026-06-27 19:45:38,270 [INFO] 🔵 LOW ALERT: MXD1907 (7505aa) | Score: 30% | Very low altitude: 3063 ft (not near airport)
+2026-06-27 19:45:38,274 [INFO] 🔵 LOW ALERT: SNJ80 (86d259) | Score: 30% | Very low altitude: 3718 ft (not near airport)
+2026-06-27 19:45:38,277 [INFO] 🔵 LOW ALERT: TNU5166 (8a0ab8) | Score: 50% | Very low altitude: 662 ft (not near airport), Sudden course change: 159°
+2026-06-27 19:45:38,288 [INFO] 🔵 LOW ALERT: JAL576 (862d94) | Score: 30% | Very low altitude: 3147 ft (not near airport)
+2026-06-27 19:45:38,294 [CRITICAL] 🔴 HIGH ALERT: JAL616 (862db6) | Score: 100% | Very low altitude: 1242 ft (not near airport), Sudden course change: 51°, STCA: Conflict with CAL222
+2026-06-27 19:45:38,299 [INFO] 🔵 LOW ALERT: ADO36 (861b64) | Score: 30% | Very low altitude: 3436 ft (not near airport)
+2026-06-27 19:45:38,309 [INFO] 🔵 LOW ALERT: TVJ134 (885b47) | Score: 30% | Very low altitude: 4732 ft (not near airport)
+2026-06-27 19:45:38,311 [INFO] 🔵 LOW ALERT: TVJ109 (885b43) | Score: 30% | Very low altitude: 1691 ft (not near airport)
+2026-06-27 19:45:38,313 [INFO] 🔵 LOW ALERT: TVJ963 (885b41) | Score: 30% | Very low altitude: 4152 ft (not near airport)
+2026-06-27 19:45:38,319 [INFO] 🔵 LOW ALERT: SVA973 (710101) | Score: 50% | Very low altitude: 1493 ft (not near airport), Sudden course change: 95°
+2026-06-27 19:45:38,323 [INFO] 🔵 LOW ALERT: KAL1330 (71bf28) | Score: 30% | Very low altitude: 571 ft (not near airport)
+2026-06-27 19:45:38,328 [INFO] 🔵 LOW ALERT: ANA966 (86d682) | Score: 30% | Very low altitude: 693 ft (not near airport)
+2026-06-27 19:45:38,331 [INFO] 🔵 LOW ALERT: AAR178 (71bf92) | Score: 50% | Very low altitude: 3261 ft (not near airport), Sudden course change: 171°

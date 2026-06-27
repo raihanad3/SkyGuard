@@ -1,107 +1,136 @@
 """
-SkyGuard — Global Settings
-===========================
-Centralized configuration loaded from environment variables.
-Single source of truth for all 4 computer components.
+SkyGuard — Central Configuration Settings
+==========================================
+All configuration constants for the distributed pipeline.
+Loads from .env file and provides defaults.
 """
 
 import os
 from dotenv import load_dotenv
 
-# Load .env file (looks in project root)
-load_dotenv(os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__))), ".env"))
-
-
-# ============================================================
-# Kafka Configuration
-# ============================================================
-KAFKA_BOOTSTRAP_SERVERS = os.getenv("KAFKA_BOOTSTRAP_SERVERS", "localhost:9093")
-KAFKA_TOPIC_RAW_FLIGHT = os.getenv("KAFKA_TOPIC_RAW_FLIGHT", "raw-flight-data")
-KAFKA_TOPIC_RAW_NEWS = os.getenv("KAFKA_TOPIC_RAW_NEWS", "raw-news-data")
-KAFKA_TOPIC_PREPROCESSED = os.getenv("KAFKA_TOPIC_PREPROCESSED", "preprocessed-flight-data")
-KAFKA_CONSUMER_GROUP_PREPROCESSING = os.getenv("KAFKA_CONSUMER_GROUP_PREPROCESSING", "skyguard-preprocessing")
-KAFKA_CONSUMER_GROUP_INFERENCE = os.getenv("KAFKA_CONSUMER_GROUP_INFERENCE", "skyguard-inference")
-
+# Load environment variables
+load_dotenv()
 
 # ============================================================
-# PostgreSQL Configuration
+# CENTRAL NODE CONFIGURATION
 # ============================================================
-POSTGRES_HOST = os.getenv("POSTGRES_HOST", "localhost")
-POSTGRES_PORT = int(os.getenv("POSTGRES_PORT", "5433"))
+CENTRAL_NODE_IP = os.getenv("CENTRAL_NODE_IP", "localhost")
+
+# ============================================================
+# KAFKA CONFIGURATION
+# ============================================================
+KAFKA_BOOTSTRAP_SERVERS = f"{CENTRAL_NODE_IP}:9093"
+
+# Kafka Topics
+KAFKA_TOPIC_RAW_FLIGHT = "raw_flight_data"
+KAFKA_TOPIC_RAW_NEWS = "raw_news_data"
+KAFKA_TOPIC_RAW_WEATHER = "raw_weather_data"
+KAFKA_TOPIC_PREPROCESSED = "preprocessed_flight_data"
+KAFKA_TOPIC_INFERENCE = "inference_results"
+
+# Consumer Groups
+KAFKA_CONSUMER_GROUP_PREPROCESSING = "skyguard-preprocessing"
+KAFKA_CONSUMER_GROUP_INFERENCE = "skyguard-inference"
+
+# ============================================================
+# POSTGRESQL CONFIGURATION
+# ============================================================
+POSTGRES_HOST = CENTRAL_NODE_IP
+POSTGRES_PORT = 5433
 POSTGRES_USER = os.getenv("POSTGRES_USER", "skyguard")
 POSTGRES_PASSWORD = os.getenv("POSTGRES_PASSWORD", "skyguard_pass")
 POSTGRES_DB = os.getenv("POSTGRES_DB", "skyguard_db")
 
-POSTGRES_URL = (
-    f"postgresql://{POSTGRES_USER}:{POSTGRES_PASSWORD}"
-    f"@{POSTGRES_HOST}:{POSTGRES_PORT}/{POSTGRES_DB}"
+# Connection string
+POSTGRES_CONNECTION_STRING = (
+    f"postgresql://{POSTGRES_USER}:{POSTGRES_PASSWORD}@"
+    f"{POSTGRES_HOST}:{POSTGRES_PORT}/{POSTGRES_DB}"
 )
 
-# JDBC URL (for Spark)
-POSTGRES_JDBC_URL = (
-    f"jdbc:postgresql://{POSTGRES_HOST}:{POSTGRES_PORT}/{POSTGRES_DB}"
-)
-
+# ============================================================
+# OPENSKY NETWORK API
+# ============================================================
+OPENSKY_API_URL = "https://opensky-network.org/api/states/all"
+OPENSKY_USERNAME = os.getenv("OPENSKY_USERNAME", "")
+OPENSKY_PASSWORD = os.getenv("OPENSKY_PASSWORD", "")
+OPENSKY_UPDATE_INTERVAL = 300  # seconds (5 minutes = 288 req/day, SAFE for free account)
 
 # ============================================================
-# OpenSky Network API
+# DEBEZIUM CDC CONFIGURATION
 # ============================================================
-OPENSKY_API_URL = os.getenv("OPENSKY_API_URL", "https://opensky-network.org/api/states/all")
-OPENSKY_UPDATE_INTERVAL = int(os.getenv("OPENSKY_UPDATE_INTERVAL", "10"))
-
+DEBEZIUM_CONNECT_URL = f"http://{CENTRAL_NODE_IP}:8084"
 
 # ============================================================
-# Debezium
-# ============================================================
-DEBEZIUM_CONNECT_URL = os.getenv("DEBEZIUM_CONNECT_URL", "http://localhost:8084")
-
-
-# ============================================================
-# Dashboard
-# ============================================================
-DASHBOARD_PORT = int(os.getenv("DASHBOARD_PORT", "8501"))
-
-
-# ============================================================
-# Anomaly Detection Parameters
+# ANOMALY DETECTION CONFIGURATION
 # ============================================================
 ANOMALY_CONFIG = {
     # Altitude thresholds (feet)
-    "min_safe_altitude": 1000,
+    "min_safe_altitude": 5000,
     "max_normal_altitude": 45000,
-    "rapid_climb_rate": 2000,       # ft/min
-
+    
     # Speed thresholds (knots)
     "min_cruise_speed": 100,
     "max_normal_speed": 600,
-    "max_military_speed": 1200,
-
-    # Course change
-    "erratic_course_change": 90,    # degrees
-
-    # Transponder off
-    "transponder_timeout": 300,     # seconds
-
-    # Ground proximity
-    "airport_buffer_km": 20,
+    
+    # Vertical rate thresholds (feet per minute)
+    "rapid_climb_rate": 2500,
+    "rapid_descent_rate": -2500,
+    
+    # Course change threshold (degrees)
+    "erratic_course_change": 45,
+    
+    # Distance thresholds
+    "airport_proximity_km": 15,
+    "restricted_zone_buffer_km": 5,
 }
 
-
-# ============================================================
 # Alert Thresholds
-# ============================================================
 ALERT_THRESHOLDS = {
-    "HIGH": 0.7,
-    "MEDIUM": 0.5,
     "LOW": 0.3,
+    "MEDIUM": 0.6,
+    "HIGH": 0.8,
 }
 
-ALERT_COOLDOWN_MINUTES = 10
-
+# ============================================================
+# ALERT SYSTEM CONFIGURATION
+# ============================================================
+ALERT_COOLDOWN_MINUTES = 5  # Prevent alert spam for same flight
 
 # ============================================================
-# Logging
+# LOGGING CONFIGURATION
 # ============================================================
-LOG_DIR = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__))), "logs")
-LOG_FILE = os.path.join(LOG_DIR, "skyguard.log")
-ALERT_LOG_FILE = os.path.join(LOG_DIR, "alerts.log")
+LOG_DIR = "./logs"
+ALERT_LOG_FILE = "alerts.json"
+
+# ============================================================
+# WEATHER API (Optional)
+# ============================================================
+WEATHER_API_KEY = os.getenv("WEATHER_API_KEY", "")
+WEATHER_API_URL = "https://api.openweathermap.org/data/2.5/weather"
+
+# ============================================================
+# SPARK CONFIGURATION (Computer 2)
+# ============================================================
+SPARK_APP_NAME = "SkyGuard-Preprocessing"
+SPARK_MASTER = "local[*]"  # Use local mode, adjust for cluster
+SPARK_CHECKPOINT_DIR = "./spark_checkpoints"
+
+# ============================================================
+# DASHBOARD CONFIGURATION (Computer 4)
+# ============================================================
+DASHBOARD_REFRESH_INTERVAL_SEC = 30
+DASHBOARD_MAX_FLIGHTS_DISPLAY = 100
+
+# ============================================================
+# FEATURE ENGINEERING DEFAULTS
+# ============================================================
+FLIGHT_HISTORY_LIMIT = 100  # Keep last N positions per flight
+
+# ============================================================
+# NEWS SCRAPER CONFIGURATION
+# ============================================================
+NEWS_FEED_URLS = [
+    "https://www.flightradar24.com/blog/feed/",
+    "http://rss.cnn.com/rss/edition_aviation.rss",
+]
+NEWS_UPDATE_INTERVAL_HOURS = 1
