@@ -2,8 +2,8 @@
   "name": "skyguard-postgres-connector",
   "config": {
     "connector.class": "io.debezium.connector.postgresql.PostgresConnector",
-    "database.hostname": "postgres",
-    "database.port": "5432",
+    "database.hostname": "localhost",
+    "database.port": "5433",
     "database.user": "skyguard",
     "database.password": "skyguard_pass",
     "database.dbname": "skyguard_db",
