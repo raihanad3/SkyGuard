@@ -10,6 +10,7 @@ Usage:
     python scripts/start_all.py --component 2   # Start only Computer 2
     python scripts/start_all.py --component 3   # Start only Computer 3
     python scripts/start_all.py --component 4   # Start only Computer 4
+    
 """
 
 import subprocess
