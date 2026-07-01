@@ -75,4 +75,4 @@ if __name__ == "__main__":
     logger.info("Starting NOAA Weather Poller...")
     while True:
         fetch_and_store_weather()
-        time.sleep(60) # Poll every 1 minute
+        time.sleep(25) # Poll every 25 seconds

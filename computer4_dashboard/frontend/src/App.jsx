@@ -3,9 +3,13 @@ import { Radar, Activity, Map as MapIcon, BarChart3 } from 'lucide-react';
 import MapView from './components/MapView';
 import ThreatLog from './components/ThreatLog';
 import Analytics from './components/Analytics';
+import { useAlertSound } from './hooks/useAlertSound';
 
 function App() {
   const [activeTab, setActiveTab] = useState('map');
+  
+  // Enable alert sound notifications
+  useAlertSound(import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000');
 
   return (
     <div className="app-container">

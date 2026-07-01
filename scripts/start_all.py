@@ -10,6 +10,7 @@ Usage:
     python scripts/start_all.py --component 2   # Start only Computer 2
     python scripts/start_all.py --component 3   # Start only Computer 3
     python scripts/start_all.py --component 4   # Start only Computer 4
+    
 """
 
 import subprocess
@@ -35,18 +36,22 @@ COMPONENTS = {
         "cmd": [sys.executable, "-m", "computer3_inference.main"],
     },
     4: {
+        "name": "Computer 4 — Streamlit Dashboard",
+        "cmd": [sys.executable, "-m", "streamlit", "run", "computer4_dashboard/app.py", "--server.port", "8501", "--server.headless", "true"],
+    },
+    5: {
         "name": "Computer 4 — Backend API",
         "cmd": [sys.executable, "-m", "uvicorn", "computer4_dashboard.api:app", "--host", "0.0.0.0", "--port", "8000"],
     },
-    5: {
+    6: {
         "name": "Computer 4 — React UI",
         "cmd": ["npm.cmd" if os.name == "nt" else "npm", "run", "dev", "--prefix", "computer4_dashboard/frontend", "--", "--host"],
     },
-    6: {
+    7: {
         "name": "Computer 1 — Weather Scraper",
         "cmd": [sys.executable, "-m", "computer1_producer.weather_poller"],
     },
-    7: {
+    8: {
         "name": "Computer 1 — Route Resolver",
         "cmd": [sys.executable, "-m", "computer1_producer.route_resolver"],
     },
@@ -56,8 +61,16 @@ COMPONENTS = {
 def main():
     parser = argparse.ArgumentParser(description="SkyGuard — Start Components")
     parser.add_argument(
-        "--component", "-c", type=int, choices=[1, 2, 3, 4, 5, 6, 7],
-        help="Start only a specific computer (1-7). Default: start all."
+        "--component", "-c", type=int, choices=[1, 2, 3, 4, 5, 6, 7, 8],
+        help="Start only a specific computer (1-8). Default: start all."
+    )
+    parser.add_argument(
+        "--skip-dashboard", action="store_true",
+        help="Skip dashboard components (Streamlit, API, React). Only start data pipeline (1-3)."
+    )
+    parser.add_argument(
+        "--dashboard-only", action="store_true",
+        help="Start only dashboard components (Streamlit, API, React)."
     )
     args = parser.parse_args()
 
@@ -105,6 +118,14 @@ def main():
 
     if args.component:
         components_to_start = {args.component: COMPONENTS[args.component]}
+    elif args.skip_dashboard:
+        # Start only pipeline (1, 2, 3, 6, 7)
+        components_to_start = {k: v for k, v in COMPONENTS.items() if k in [1, 2, 3, 6, 7, 8]}
+        print("🚫 Skipping dashboard components (4, 5, 6)")
+    elif args.dashboard_only:
+        # Start only dashboards (4, 5, 6)
+        components_to_start = {k: v for k, v in COMPONENTS.items() if k in [4, 5, 6]}
+        print("🎯 Starting dashboard components only")
     else:
         components_to_start = COMPONENTS
 

@@ -53,7 +53,7 @@ POSTGRES_CONNECTION_STRING = (
 OPENSKY_API_URL = "https://opensky-network.org/api/states/all"
 OPENSKY_USERNAME = os.getenv("OPENSKY_USERNAME", "")
 OPENSKY_PASSWORD = os.getenv("OPENSKY_PASSWORD", "")
-OPENSKY_UPDATE_INTERVAL = int(os.getenv("OPENSKY_UPDATE_INTERVAL", 20))  # seconds (Default 20s for testing, original 300s)
+OPENSKY_UPDATE_INTERVAL = int(os.getenv("OPENSKY_UPDATE_INTERVAL", 25))  # seconds (Default 25s for testing, original 300s)
 
 # ============================================================
 # DEBEZIUM CDC CONFIGURATION

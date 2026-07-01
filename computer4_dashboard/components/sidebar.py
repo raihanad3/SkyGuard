@@ -139,13 +139,14 @@ def render_sidebar():
                 st.session_state.last_seen_alert_id = max_id if max_id is not None else 0
                 recent_alerts = []
             else:
-                # Query alerts created since the last refresh
+                # TEMPORARY DEBUG: Always get last 10 seconds of alerts
                 cur.execute("""
                     SELECT id, alert_level, callsign, icao24, anomaly_score, reasons 
                     FROM alerts 
-                    WHERE id > %s AND alert_level IN ('HIGH', 'MEDIUM', 'LOW')
+                    WHERE created_at > NOW() - INTERVAL '10 seconds'
+                      AND alert_level IN ('HIGH', 'MEDIUM', 'LOW')
                     ORDER BY id ASC
-                """, (st.session_state.last_seen_alert_id,))
+                """)
                 recent_alerts = cur.fetchall()
                 if recent_alerts:
                     # Update the last seen ID to the maximum ID in this batch
@@ -178,25 +179,85 @@ def render_sidebar():
     # ================================================================
     # TOAST NOTIFICATIONS & AUDIO — must be OUTSIDE 'with st.sidebar:'
     # ================================================================
+    
+    # FORCE TEST: Always try to play audio (bypass all checks)
+    import base64
+    import os
+    sound_file = "e:\\D_Files\\_Kuliah_\\Semester_4\\_MataPelajaran\\ROSBD\\_TBP\\Github\\SkyGuard\\computer4_dashboard\\saya_akan_lawan.mp3"
+    
+    if os.path.exists(sound_file):
+        try:
+            with open(sound_file, "rb") as f:
+                b64_audio = base64.b64encode(f.read()).decode()
+            st.markdown(
+                f'''
+                <audio autoplay preload="auto" controls>
+                    <source src="data:audio/mp3;base64,{b64_audio}" type="audio/mp3">
+                </audio>
+                ''',
+                unsafe_allow_html=True
+            )
+            st.write("DEBUG: Audio tag rendered!")
+        except Exception as e:
+            st.write(f"DEBUG: Audio error: {e}")
+    else:
+        st.write(f"DEBUG: File not found: {sound_file}")
+    
+    # Original code below
     if _new_alerts:
-        sound_paths = [
-            os.path.join(os.path.dirname(__file__), "..", "saya_akan_lawan.mp3"),
-            "computer4_dashboard/saya_akan_lawan.mp3",
-            "saya_akan_lawan.mp3"
-        ]
-        sound_file = next((p for p in sound_paths if os.path.exists(p)), None)
+        total_count = len(_new_alerts)
+        
+        # Count alerts by level
+        high_count = sum(1 for alert in _new_alerts if alert[1] == "HIGH")
+        medium_count = sum(1 for alert in _new_alerts if alert[1] == "MEDIUM")
+        low_count = sum(1 for alert in _new_alerts if alert[1] == "LOW")
+        
+        # DEBUG: Show alert counts
+        st.sidebar.write(f"DEBUG: H={high_count} M={medium_count} L={low_count}")
+        
+        # Determine MP3 to play based on thresholds (independent checks)
+        should_play = False
+        sound_filename = None
+        
+        if high_count >= 1:
+            should_play = True
+            sound_filename = "saya_akan_lawan.mp3"
+        elif medium_count >= 20:
+            should_play = True
+            sound_filename = "no_no_no_jotaro.mp3"
+        elif low_count >= 50:
+            should_play = True
+            sound_filename = "yes_yes_yes_jotaro.mp3"
+        
+        # DEBUG: Show MP3 decision
+        st.sidebar.write(f"DEBUG: Play={should_play} File={sound_filename}")
+        
+        # PLAY MP3 if threshold met
+        if should_play and sound_filename:
+            sound_paths = [
+                os.path.join(os.path.dirname(__file__), "..", sound_filename),
+                f"computer4_dashboard/{sound_filename}",
+                sound_filename
+            ]
+            sound_file = next((p for p in sound_paths if os.path.exists(p)), None)
 
-        if sound_file:
-            try:
-                with open(sound_file, "rb") as f:
-                    b64_audio = base64.b64encode(f.read()).decode()
-                st.markdown(
-                    f'<audio autoplay style="display:none;"><source src="data:audio/mp3;base64,{b64_audio}" type="audio/mp3"></audio>',
-                    unsafe_allow_html=True
-                )
-            except Exception:
-                pass
+            if sound_file:
+                try:
+                    with open(sound_file, "rb") as f:
+                        b64_audio = base64.b64encode(f.read()).decode()
+                    # AUTOPLAY untuk alerting (critical system)
+                    st.markdown(
+                        f'''
+                        <audio autoplay preload="auto" style="display:none;">
+                            <source src="data:audio/mp3;base64,{b64_audio}" type="audio/mp3">
+                        </audio>
+                        ''',
+                        unsafe_allow_html=True
+                    )
+                except Exception as e:
+                    pass  # Silent fail
 
+        # Show ALL toasts (no limit)
         for alert in _new_alerts:
             _, level, callsign, icao24, score, reasons = alert
             if isinstance(reasons, str):
