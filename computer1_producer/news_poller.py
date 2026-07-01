@@ -218,10 +218,10 @@ class NewsPoller:
         self.running = False
 
     async def start(self):
-        """Start news polling loop (60s interval)."""
+        """Start news polling loop (25s interval)."""
         self.running = True
 
-        logger.info("📰 News poller started (60s interval)")
+        logger.info("📰 News poller started (25s interval)")
         logger.info("📰 Sources: %s", ", ".join(f["name"] for f in AVIATION_RSS_FEEDS))
 
         while self.running:
@@ -236,11 +236,11 @@ class NewsPoller:
                     self.kafka_producer.send_batch(KAFKA_TOPIC_RAW_NEWS, messages)
                     logger.info("📰 Produced %d news articles to Kafka", len(articles))
 
-                await asyncio.sleep(60)
+                await asyncio.sleep(25)
 
             except Exception as e:
                 logger.error("News poller error: %s", e)
-                await asyncio.sleep(60)
+                await asyncio.sleep(25)
 
     def stop(self):
         """Stop the poller."""

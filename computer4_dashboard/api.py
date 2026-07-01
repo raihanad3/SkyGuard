@@ -98,23 +98,41 @@ def get_flight_history(icao24: str):
         raise HTTPException(status_code=500, detail=str(e))
 
 @app.get("/api/alerts/recent")
-def get_recent_alerts(limit: int = 50, hours: int = 24):
-    """Get recent alerts."""
+def get_recent_alerts(limit: int = 50, hours: int = 24, since_id: int = 0):
+    """Get recent alerts, optionally filtered by ID."""
     try:
         conn = get_db_connection()
         cur = conn.cursor()
-        cur.execute(f"""
-            SELECT a.id, a.icao24, a.callsign, a.alert_level, a.anomaly_score,
-                   a.latitude, a.longitude, a.altitude, a.speed, a.heading,
-                   a.reasons, a.zone_name, a.near_airport, a.airport_code, a.airport_name, a.created_at,
-                   r.origin_airport_icao, r.destination_airport_icao,
-                   r.registration, r.aircraft_type, r.aircraft_desc
-            FROM alerts a
-            LEFT JOIN flight_routes r ON TRIM(a.callsign) = TRIM(r.callsign)
-            WHERE a.created_at > NOW() - INTERVAL '{hours} hours'
-            ORDER BY a.created_at DESC
-            LIMIT {limit}
-        """)
+        
+        # Build query based on parameters
+        if since_id > 0:
+            query = f"""
+                SELECT a.id, a.icao24, a.callsign, a.alert_level, a.anomaly_score,
+                       a.latitude, a.longitude, a.altitude, a.speed, a.heading,
+                       a.reasons, a.zone_name, a.near_airport, a.airport_code, a.airport_name, a.created_at,
+                       r.origin_airport_icao, r.destination_airport_icao,
+                       r.registration, r.aircraft_type, r.aircraft_desc
+                FROM alerts a
+                LEFT JOIN flight_routes r ON TRIM(a.callsign) = TRIM(r.callsign)
+                WHERE a.id > {since_id}
+                ORDER BY a.id ASC
+                LIMIT {limit}
+            """
+        else:
+            query = f"""
+                SELECT a.id, a.icao24, a.callsign, a.alert_level, a.anomaly_score,
+                       a.latitude, a.longitude, a.altitude, a.speed, a.heading,
+                       a.reasons, a.zone_name, a.near_airport, a.airport_code, a.airport_name, a.created_at,
+                       r.origin_airport_icao, r.destination_airport_icao,
+                       r.registration, r.aircraft_type, r.aircraft_desc
+                FROM alerts a
+                LEFT JOIN flight_routes r ON TRIM(a.callsign) = TRIM(r.callsign)
+                WHERE a.created_at > NOW() - INTERVAL '{hours} hours'
+                ORDER BY a.created_at DESC
+                LIMIT {limit}
+            """
+        
+        cur.execute(query)
         alerts = cur.fetchall()
         conn.close()
         return alerts

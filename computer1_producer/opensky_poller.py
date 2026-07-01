@@ -34,8 +34,13 @@ class OpenSkyPoller:
         """Start the polling loop."""
         self.running = True
         
+        from shared.config.settings import OPENSKY_USERNAME, OPENSKY_PASSWORD
+        
         logger.info("🚀 OpenSky poller started")
-        logger.warning("🔓 Unauthenticated OpenSky polling. Subject to strict rate limits.")
+        if OPENSKY_USERNAME and OPENSKY_PASSWORD:
+            logger.info("✅ Authenticated OpenSky polling (username: %s)", OPENSKY_USERNAME)
+        else:
+            logger.warning("🔓 Unauthenticated OpenSky polling. Subject to strict rate limits.")
             
         logger.info("📡 Interval: %ds | Bbox: lat[%.1f, %.1f] lon[%.1f, %.1f]",
                      OPENSKY_UPDATE_INTERVAL,
@@ -77,16 +82,28 @@ class OpenSkyPoller:
 
     async def _fetch_flights(self):
         """Fetch flights from OpenSky API within Asian airspace using direct REST API."""
+        from shared.config.settings import OPENSKY_USERNAME, OPENSKY_PASSWORD
         bbox = ASIA_AIRSPACE_BBOX
 
         try:
             # Build OpenSky API URL with bbox parameters
             url = f"{OPENSKY_API_URL}?lamin={bbox['lat_min']}&lamax={bbox['lat_max']}&lomin={bbox['lon_min']}&lomax={bbox['lon_max']}"
             
+            # Setup authentication if credentials provided
+            auth = None
+            if OPENSKY_USERNAME and OPENSKY_PASSWORD:
+                auth = aiohttp.BasicAuth(OPENSKY_USERNAME, OPENSKY_PASSWORD)
+            
             import socket
             connector = aiohttp.TCPConnector(family=socket.AF_INET)
             async with aiohttp.ClientSession(connector=connector) as session:
-                async with session.get(url, timeout=aiohttp.ClientTimeout(total=30)) as response:
+                async with session.get(url, auth=auth, timeout=aiohttp.ClientTimeout(total=30)) as response:
+                    # Log rate limit headers (OpenSky provides X-Rate-Limit-* headers)
+                    if 'X-Rate-Limit-Remaining' in response.headers:
+                        remaining = response.headers.get('X-Rate-Limit-Remaining', 'N/A')
+                        limit = response.headers.get('X-Rate-Limit-Limit', 'N/A')
+                        logger.info(f"🔢 OpenSky Rate Limit: {remaining}/{limit} remaining")
+                    
                     if response.status != 200:
                         logger.warning("OpenSky API returned status %d", response.status)
                         return []
